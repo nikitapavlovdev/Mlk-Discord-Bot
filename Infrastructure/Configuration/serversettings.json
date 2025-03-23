@@ -1,0 +1,17 @@
+﻿{
+    "Channels": {
+        "VoiceChannels": {
+            "AutoLobby": {
+                "CategoryGames": {
+                    "Name": "➕ | ᴄʀᴇᴀᴛᴇ_ɢᴀᴍᴇᴠᴏɪᴄᴇ",
+                    "Id": 1228745096921354273,
+                    "IsGeneratingChannel": true
+                }
+            }
+        },
+
+        "TextChannels": {
+
+        }
+    }
+}

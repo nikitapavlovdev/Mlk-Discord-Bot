@@ -1,0 +1,48 @@
+{
+  "NewsSettings": {
+    "NewsDescriptions": "Here is all the static data of 'MLK_NEWS'",
+    "ChannelId": 1168201405199290458
+  },
+
+  "LogsSettings": {
+    "LogsDescriptions": "Here is all the static data of 'MLK_Logs'",
+    "ChannelId": 1253054401292271696
+  },
+
+  "CommandsSettings": {
+    "CommandsDescriptions": "Here is all the static data of 'MLK_Commands'",
+    "ChannelId": 1217162117405474959
+  },
+
+  "RolesSettings": {
+    "RolesDescriptions": "Here is all the static data of 'MLK_Roles'",
+    "ChannelId": 1168630794005254155,
+    "ChannelUrl": "https://discord.com/channels/1134877618034966589/1168630794005254155"
+  },
+
+  "RulesSettings": {
+    "RulesDescriptions": "Here is all the static data of 'MLK_Rules'",
+    "ChannelId": 1167951813996200016
+  },
+
+  "WelcomeSettings": {
+    "WelcomeDescriptions": "Here is all the static data of 'MLK_Starting'",
+    "ChannelId": 1227576766986453002
+  },
+
+  "FooterSettings": {
+    "FooterText": "prod. by ndev",
+    "FooterIconLink": "https://i.pinimg.com/736x/da/f6/0b/daf60bc377c1b10c1ca985b3af8c9100.jpg"
+  },
+
+  "AutoLobby": {
+    "CategoryGames": {
+      "Name": "➕ | ᴄʀᴇᴀᴛᴇ_ɢᴀᴍᴇᴠᴏɪᴄᴇ",
+      "Id": 1228745096921354273
+    }
+  },
+
+  "Guild": {
+    "Id": 1134877618034966589
+  }
+} 

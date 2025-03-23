@@ -1,0 +1,7 @@
+{
+  "Token": "MTEzNDg4Mzk0MDA4ODQxODMyNQ.G507AD.jpVMqpxLKoKNQbGjQL3hPyeW7oDXcZT3fVeqnc",
+
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=DESKTOP-J2K4RUH;Database=mlkdiscord;Trusted_Connection=True;TrustServerCertificate=True;"
+  }
+}
