@@ -1,12 +1,11 @@
 ﻿using Discord.WebSocket;
 using Discord_Bot.Core.Utilities.General;
 using Microsoft.Extensions.Logging;
-using Discord_Bot.Core.Managers.ChannelMessageManagers;
+using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
 
 namespace Discord_Bot.Core.Managers.UserManagers
 {
-    public class PersonalDataManager(ILogger<PersonalDataManager> _logger,
-        ChannelMessageManager _channelMessageManagers)
+    public class PersonalDataManager(ILogger<PersonalDataManager> _logger)
     {
         public async Task GetUserPersonalData(SocketModal modal)
         {
@@ -21,7 +20,7 @@ namespace Discord_Bot.Core.Managers.UserManagers
 
                 if (!ExtensionMethods.DateOfBirthdayIsCorrect(bday, out date))
                 {
-                    await _channelMessageManagers.SendFollowupMessageOnSuccesInputPersonalData(modal);
+                    await TextMessageSender.SendFollowupMessageOnSuccesInputPersonalData(modal);
                 }
             }
             catch (Exception ex)

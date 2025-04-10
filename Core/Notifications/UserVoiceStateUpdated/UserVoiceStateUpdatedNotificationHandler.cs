@@ -2,18 +2,20 @@
 using Discord.WebSocket;
 using Discord_Bot.Infrastructure.Cash;
 using Discord.Rest;
+using Microsoft.Extensions.Logging;
 
 namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
 {
-    class UserVoiceStateUpdatedNotificationHandler(ChannelsCash channelsCash) : INotificationHandler<UserVoiceStateUpdatedNotification>
+    class UserVoiceStateUpdatedNotificationHandler(ChannelsCash channelsCash, ILogger<UserVoiceStateUpdatedNotificationHandler> _logger) : INotificationHandler<UserVoiceStateUpdatedNotification>
     {
-        private readonly ChannelsCash channelsCash = channelsCash;
-
         public async Task Handle(UserVoiceStateUpdatedNotification notification, CancellationToken cancellationToken)
         {
             try
             {
-                SocketGuildUser guildUser = notification.SocketUser as SocketGuildUser;
+                if (notification.SocketUser is not SocketGuildUser guildUser)
+                {
+                    return;
+                }
 
                 if (notification.OldState.VoiceChannel != null && notification.NewState.VoiceChannel == null)
                 {
@@ -32,7 +34,7 @@ namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
                     }
 
                     RestVoiceChannel newChannel = await notification.NewState.VoiceChannel.Guild.CreateVoiceChannelAsync(
-                                                "mlklobby",
+                                                "ᴍʟᴋʟᴏʙʙʏ: ",
                                                 properties => 
                                                 properties.CategoryId = notification.NewState.VoiceChannel.CategoryId
                     );
@@ -52,7 +54,7 @@ namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
                     if (channelsCash.IsGeneratingChannel(notification.NewState.VoiceChannel.Id))
                     {
                         RestVoiceChannel newChannel = await notification.NewState.VoiceChannel.Guild.CreateVoiceChannelAsync(
-                                                "mlklobby",
+                                                "ᴍʟᴋʟᴏʙʙʏ: ",
                                                 properties =>
                                                 properties.CategoryId = notification.NewState.VoiceChannel.CategoryId
                         );
@@ -63,9 +65,9 @@ namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
                 }
                
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Console.WriteLine("Что то не так");
+                _logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
     }

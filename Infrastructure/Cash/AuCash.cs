@@ -13,10 +13,15 @@ namespace Discord_Bot.Infrastructure.Cash
         {
             TemporaryCodes.Remove(user);
         }
-        public string GetCodeForUser(SocketGuildUser user, out string def)
+        public string GetCodeForUser(SocketGuildUser user, out string? def)
         {
             TemporaryCodes.TryGetValue(user, out def);
-            return def;
+            if (def != null)
+            {
+                return def;
+            }
+
+            return "";
         }
     }
 }

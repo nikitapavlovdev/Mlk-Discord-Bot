@@ -28,9 +28,9 @@ namespace Discord_Bot.Infrastructure.Cash
                 _logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
-        public GuildEmote GetEmote(ulong emoteId)
+        public GuildEmote? GetEmote(ulong emoteId)
         {
-            if (MainServerEmotes.TryGetValue(emoteId, out GuildEmote emote))
+            if (MainServerEmotes.TryGetValue(emoteId, out GuildEmote? emote))
             {
                 return emote;
             }

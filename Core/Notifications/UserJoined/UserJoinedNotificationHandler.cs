@@ -1,15 +1,15 @@
 ﻿using MediatR;
 using Discord_Bot.Core.Managers.RolesManagers;
-using Discord_Bot.Core.Managers.ChannelMessageManagers;
 using Discord_Bot.Core.Managers.UserManagers;
 using Microsoft.Extensions.Logging;
+using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
 
 namespace Discord_Bot.Core.Notifications.UserJoined
 {
     class UserJoinedNotificationHandler(
         ILogger<UserJoinedNotificationHandler> _logger,
         RolesManager _rolesManager,
-        ChannelMessageManager _channelMessageManager,
+        TextMessageSender _textMessageSender,
         AutorizationManager _autorizationManager) : INotificationHandler<UserJoinedNotification>
     {
         public async Task Handle(UserJoinedNotification notification, CancellationToken cancellationToken)
@@ -18,7 +18,7 @@ namespace Discord_Bot.Core.Notifications.UserJoined
             {
                 await Task.WhenAll(
                     _rolesManager.AddNotRegisteredRoleAsync(notification.SocketGuildUser),
-                    _channelMessageManager.SendWelcomeMessageAsync(notification.SocketGuildUser),
+                    _textMessageSender.SendWelcomeMessageAsync(notification.SocketGuildUser),
                     _autorizationManager.SendAutorizationCode(notification.SocketGuildUser)
                 );
             }

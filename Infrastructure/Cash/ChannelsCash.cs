@@ -38,7 +38,7 @@ namespace Discord_Bot.Infrastructure.Cash
         }
         private async Task SendFormInRolesChannel(SocketGuild socketGuild)
         {
-            SocketTextChannel textChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == (ExtensionMethods.ConvertId(configuration["RolesSettings:ChannelId"])));
+            SocketTextChannel? textChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == (ExtensionMethods.ConvertId(configuration["RolesSettings:ChannelId"])));
             MessageComponent component = selectionMenu.GetRolesSelectionMenu();
 
             if (textChannel == null)
@@ -50,7 +50,7 @@ namespace Discord_Bot.Infrastructure.Cash
             await embedMessage.SendRolesMessage(textChannel, component);
         }
 
-        public bool GetNameForAutoLobby(ulong categoryId, out string voiceChannelName)
+        public bool GetNameForAutoLobby(ulong categoryId, out string? voiceChannelName)
         {
             return CategoryNameFromId.TryGetValue(categoryId, out voiceChannelName);
         }

@@ -24,7 +24,7 @@ namespace Discord_Bot.Core.Utilities.DI
         }
 
 
-        public Embed GetSuccesAuthorizationMessageEmbedTemplate(Emote emoteSuccess, 
+        public Embed GetSuccesAuthorizationMessageEmbedTemplate(Emote? emoteSuccess, 
             SocketRole baseServerRole, 
             ulong roleChannelId, 
             ulong botCommandChannelId, 
@@ -53,7 +53,7 @@ namespace Discord_Bot.Core.Utilities.DI
             return message;
         }
 
-        public Embed GetErrorAuthorizationMessageEmbedTemplate(Emote emoteError)
+        public Embed GetErrorAuthorizationMessageEmbedTemplate(Emote? emoteError)
         {
             string title = $"Ошибка\n\n";
             string description = $"**Введен неправильный код, повтори попытку!**{emoteError}";
@@ -101,7 +101,7 @@ namespace Discord_Bot.Core.Utilities.DI
 
         public Embed GetJoinedEmbedTemplate(SocketGuildUser socketGuildUser)
         {
-            GuildEmote welcomeMessageEmote = emotesCash.GetEmote(ExtensionMethods.ConvertId(configuration["static:zero_love:id"]));
+            GuildEmote? welcomeMessageEmote = emotesCash.GetEmote(ExtensionMethods.ConvertId(configuration["static:zero_love:id"]));
 
 
             string title = $"Новый участник";
@@ -159,7 +159,7 @@ namespace Discord_Bot.Core.Utilities.DI
                 $"Имя пользователя: **{(string.IsNullOrWhiteSpace(userName) ? "Нет данных" : userName)}**\n" +
                 $"Имя на сервере: **{(string.IsNullOrWhiteSpace(displayname) ? "Нет данных" : displayname)}**\n" +
                 $"Глобальное имя: **{(string.IsNullOrWhiteSpace(globalName) ? "Нет данных" : globalName)}**\n" +
-                $"Дата вступления: **{joinedAt.GetValueOrDefault().ToString("D")}**\n" +
+                $"Дата вступления: **{joinedAt.GetValueOrDefault():D}**\n" +
                 $"Бустер сервера с: {(string.IsNullOrEmpty(premiumSince.GetValueOrDefault().ToString()) ? premiumSince : "**Не является бустером**")}\n";
 
             string blockOfAdditionInformation = $"### Дополнительная информация\n\n" +

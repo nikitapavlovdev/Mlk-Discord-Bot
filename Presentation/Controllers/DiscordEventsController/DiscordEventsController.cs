@@ -1,4 +1,5 @@
-﻿using Discord.WebSocket;
+﻿using Discord;
+using Discord.WebSocket;
 using MediatR;
 using Discord_Bot.Core.Notifications.UserJoined;
 using Discord_Bot.Core.Notifications.UserLeft;
@@ -7,8 +8,7 @@ using Discord_Bot.Core.Notifications.ButtonExecuted;
 using Discord_Bot.Core.Notifications.GuildAvailable;
 using Discord_Bot.Core.Notifications.SelectMenuExecuted;
 using Discord_Bot.Core.Notifications.UserVoiceStateUpdated;
-using Discord;
-using Discord_Bot.Core.Logs.Log;
+using Discord_Bot.Core.Notifications.Log;
 
 namespace Discord_Bot.Presentation.Controllers.DiscordEventsController
 {

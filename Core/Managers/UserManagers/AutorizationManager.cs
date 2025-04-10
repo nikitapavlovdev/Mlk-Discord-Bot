@@ -4,14 +4,14 @@ using Discord_Bot.Core.Utilities.General;
 using Discord_Bot.Infrastructure.Cash;
 using Microsoft.Extensions.Logging;
 using Discord_Bot.Core.Managers.RolesManagers;
-using Discord_Bot.Core.Managers.ChannelMessageManagers;
+using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
 
 namespace Discord_Bot.Core.Managers.UserManagers;
 
 public class AutorizationManager(ILogger<AutorizationManager> _logger, 
     AuCash _auCash, 
     RolesManager _rolesManagers,
-    ChannelMessageManager _channelMessageManagers
+    TextMessageSender _channelMessageManagers
     )
 {
 
@@ -54,7 +54,7 @@ public class AutorizationManager(ILogger<AutorizationManager> _logger,
     private bool IsValidCode(SocketModal modal, SocketGuildUser socketGuildUser)
     {
         string fromModalCode = modal.Data.Components.First(x => x.CustomId == "au_selection_input").Value;
-        string fromDictrCode = _auCash.GetCodeForUser(socketGuildUser, out string def);
+        string fromDictrCode = _auCash.GetCodeForUser(socketGuildUser, out string? def);
 
         return fromModalCode == fromDictrCode;
     }

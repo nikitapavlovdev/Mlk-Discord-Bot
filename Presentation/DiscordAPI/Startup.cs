@@ -4,7 +4,6 @@ using Microsoft.Extensions.Hosting;
 using MediatR;
 using Discord;
 using Discord.WebSocket;
-using Discord_Bot.Core.Logs.Log;
 using Discord_Bot.Core.Utilities.DI;
 using Discord_Bot.Core.Notifications.UserJoined;
 using Discord_Bot.Core.Notifications.UserLeft;
@@ -12,8 +11,8 @@ using Discord_Bot.Core.Notifications.ModalSubmitted;
 using Discord_Bot.Core.Notifications.SelectMenuExecuted;
 using Discord_Bot.Core.Notifications.ButtonExecuted;
 using Discord_Bot.Core.Notifications.GuildAvailable;
-using Discord_Bot.Core.Managers.AutorizationManagers;
-using Discord_Bot.Core.Managers.ChannelMessageManagers;
+using Discord_Bot.Core.Providers.JsonProvider;
+using Discord_Bot.Core.Managers.UserManagers;
 using Discord_Bot.Core.Managers.RolesManagers;
 using Discord_Bot.Presentation.Controllers.DiscordEventsController;
 using Discord_Bot.Presentation.Controllers.DiscordCommandsController;
@@ -21,6 +20,8 @@ using Discord_Bot.Infrastructure.Cash;
 using Discord_Bot.Core.Notifications.UserVoiceStateUpdated;
 using Discord.Commands;
 using Microsoft.Extensions.Logging;
+using Discord_Bot.Core.Notifications.Log;
+using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
 
 namespace Discord_Bot.Presentation.DiscordAPI
 {
@@ -96,9 +97,16 @@ namespace Discord_Bot.Presentation.DiscordAPI
                     services.AddSingleton<AuCash>();
                     services.AddSingleton<RolesManager>();
                     services.AddSingleton<AutorizationManager>();
-                    services.AddSingleton<ChannelMessageManager>();
+                    services.AddSingleton<PersonalDataManager>();
+                    services.AddSingleton<TextMessageSender>();
                     services.AddSingleton<ExtensionMessageComponents>();
                     services.AddSingleton(new DiscordSocketClient(_discordSocketConfiguration));
+                    services.AddSingleton<JsonVoiceChannelsProvider>(x =>
+                    {
+                        ILogger<JsonVoiceChannelsProvider> _logger = x.GetRequiredService<ILogger<JsonVoiceChannelsProvider>>();
+                        string _filePath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Infrastructure", "Configuration", "DiscordChannelsMap.json"));
+                        return new JsonVoiceChannelsProvider(_filePath, _logger);
+                    });
                 })
                 .ConfigureLogging((context, logging) =>
                 {
@@ -117,7 +125,6 @@ namespace Discord_Bot.Presentation.DiscordAPI
             await botClient.LoginAsync(TokenType.Bot, configuration["Token"]);
             await botClient.StartAsync();
             
-
             await Task.Delay(-1);
         }
     }
