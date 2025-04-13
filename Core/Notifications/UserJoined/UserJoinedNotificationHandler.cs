@@ -7,24 +7,24 @@ using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
 namespace Discord_Bot.Core.Notifications.UserJoined
 {
     class UserJoinedNotificationHandler(
-        ILogger<UserJoinedNotificationHandler> _logger,
-        RolesManager _rolesManager,
-        TextMessageSender _textMessageSender,
-        AutorizationManager _autorizationManager) : INotificationHandler<UserJoinedNotification>
+        ILogger<UserJoinedNotificationHandler> logger,
+        RolesManager rolesManager,
+        TextMessageSender textMessageSender,
+        AutorizationManager autorizationManager) : INotificationHandler<UserJoinedNotification>
     {
         public async Task Handle(UserJoinedNotification notification, CancellationToken cancellationToken)
         {
             try
             {
                 await Task.WhenAll(
-                    _rolesManager.AddNotRegisteredRoleAsync(notification.SocketGuildUser),
-                    _textMessageSender.SendWelcomeMessageAsync(notification.SocketGuildUser),
-                    _autorizationManager.SendAutorizationCode(notification.SocketGuildUser)
+                    rolesManager.AddNotRegisteredRoleAsync(notification.SocketGuildUser),
+                    textMessageSender.SendWelcomeMessageAsync(notification.SocketGuildUser),
+                    autorizationManager.SendAutorizationCode(notification.SocketGuildUser)
                 );
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
     }

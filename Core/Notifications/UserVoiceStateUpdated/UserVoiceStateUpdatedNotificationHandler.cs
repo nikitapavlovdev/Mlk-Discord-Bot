@@ -34,7 +34,7 @@ namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
                     }
 
                     RestVoiceChannel newChannel = await notification.NewState.VoiceChannel.Guild.CreateVoiceChannelAsync(
-                                                "ᴍʟᴋʟᴏʙʙʏ: ",
+                                                " | ᴍʟᴋʟᴏʙʙʏ",
                                                 properties => 
                                                 properties.CategoryId = notification.NewState.VoiceChannel.CategoryId
                     );
@@ -54,7 +54,7 @@ namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
                     if (channelsCash.IsGeneratingChannel(notification.NewState.VoiceChannel.Id))
                     {
                         RestVoiceChannel newChannel = await notification.NewState.VoiceChannel.Guild.CreateVoiceChannelAsync(
-                                                "ᴍʟᴋʟᴏʙʙʏ: ",
+                                                "ᴍʟᴋʟᴏʙʙʏ",
                                                 properties =>
                                                 properties.CategoryId = notification.NewState.VoiceChannel.CategoryId
                         );

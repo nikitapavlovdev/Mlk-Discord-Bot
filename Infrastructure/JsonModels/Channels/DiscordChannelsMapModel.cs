@@ -2,7 +2,7 @@
 
 namespace Discord_Bot.Infrastructure.JsonModels.Channels
 {
-    public class RootVoiceChannels
+    public class RootChannel
     {
         [JsonProperty(nameof(Channels))]
         public Channels? Channels { get; set; }

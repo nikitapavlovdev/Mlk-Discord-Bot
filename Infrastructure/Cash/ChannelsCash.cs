@@ -28,8 +28,6 @@ namespace Discord_Bot.Infrastructure.Cash
                 );
 
                 await SendFormInRolesChannel(socketGuild);
-
-                _logger.LogInformation("CUSTOM LOG | SetChannelsConfiguration succes");
             }
             catch (Exception ex)
             {
@@ -48,11 +46,6 @@ namespace Discord_Bot.Infrastructure.Cash
 
             await ExtensionChannelsManager.DeleteAllMessageFromChannel(textChannel);
             await embedMessage.SendRolesMessage(textChannel, component);
-        }
-
-        public bool GetNameForAutoLobby(ulong categoryId, out string? voiceChannelName)
-        {
-            return CategoryNameFromId.TryGetValue(categoryId, out voiceChannelName);
         }
 
         public bool IsGeneratingChannel(ulong channelId)

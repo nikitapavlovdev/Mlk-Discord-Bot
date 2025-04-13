@@ -22,6 +22,7 @@ using Discord.Commands;
 using Microsoft.Extensions.Logging;
 using Discord_Bot.Core.Notifications.Log;
 using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
+using System.ComponentModel.Design;
 
 namespace Discord_Bot.Presentation.DiscordAPI
 {
@@ -33,28 +34,28 @@ namespace Discord_Bot.Presentation.DiscordAPI
                 .ConfigureAppConfiguration((context, config) =>
                 {
                     string? dsconfiguration = Environment.GetEnvironmentVariable("CONFIG_FILE_PATH");
-                    if(string.IsNullOrEmpty(dsconfiguration)) 
+                    if (string.IsNullOrEmpty(dsconfiguration))
                     {
                         dsconfiguration = Path.Combine(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..")), "Infrastructure", "Configuration", "dsconfiguration.json");
                     }
                     string? channelssettings = Environment.GetEnvironmentVariable("CHANELSSETTINGS_FILE_PATH");
-                    if (string.IsNullOrEmpty(channelssettings)) 
-                    { 
-                        channelssettings = Path.Combine(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..")), "Infrastructure", "Configuration", "channelssettings.json"); ; 
+                    if (string.IsNullOrEmpty(channelssettings))
+                    {
+                        channelssettings = Path.Combine(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..")), "Infrastructure", "Configuration", "channelssettings.json"); ;
                     }
                     string? rolessettings = Environment.GetEnvironmentVariable("ROLESSETTING_FILE_PATH");
-                    if (string.IsNullOrEmpty(rolessettings)) 
-                    { 
+                    if (string.IsNullOrEmpty(rolessettings))
+                    {
                         rolessettings = Path.Combine(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..")), "Infrastructure", "Configuration", "rolessettings.json");
                     }
                     string? emotessettings = Environment.GetEnvironmentVariable("ENOTESSETTINGS_FILE_PATH");
-                    if(string.IsNullOrEmpty(emotessettings)) 
-                    { 
+                    if (string.IsNullOrEmpty(emotessettings))
+                    {
                         emotessettings = Path.Combine(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..")), "Infrastructure", "Configuration", "emotessettings.json");
                     }
                     string? picturesettings = Environment.GetEnvironmentVariable("PICTURESETTINGS_FILE_PATH");
-                    if(string.IsNullOrEmpty(picturesettings)) 
-                    { 
+                    if (string.IsNullOrEmpty(picturesettings))
+                    {
                         picturesettings = Path.Combine(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..")), "Infrastructure", "Configuration", "picturesettings.json");
                     }
 
@@ -64,7 +65,7 @@ namespace Discord_Bot.Presentation.DiscordAPI
                           .AddJsonFile(rolessettings, optional: false, reloadOnChange: true)
                           .AddJsonFile(emotessettings, optional: false, reloadOnChange: true)
                           .AddJsonFile(picturesettings, optional: false, reloadOnChange: true);
-                          
+
                 })
                 .ConfigureServices((context, services) =>
                 {
@@ -101,11 +102,31 @@ namespace Discord_Bot.Presentation.DiscordAPI
                     services.AddSingleton<TextMessageSender>();
                     services.AddSingleton<ExtensionMessageComponents>();
                     services.AddSingleton(new DiscordSocketClient(_discordSocketConfiguration));
-                    services.AddSingleton<JsonVoiceChannelsProvider>(x =>
+
+                    services.AddSingleton<JsonChannelsMapProvider>(x =>
                     {
-                        ILogger<JsonVoiceChannelsProvider> _logger = x.GetRequiredService<ILogger<JsonVoiceChannelsProvider>>();
-                        string _filePath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Infrastructure", "Configuration", "DiscordChannelsMap.json"));
-                        return new JsonVoiceChannelsProvider(_filePath, _logger);
+                        return new JsonChannelsMapProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Infrastructure", "Configuration", "DiscordChannelsMap.json")),
+                            x.GetRequiredService<ILogger<JsonChannelsMapProvider>>());
+                    });
+                    services.AddSingleton<JsonDiscordConfigurationProvider>(x =>
+                    {
+                        return new JsonDiscordConfigurationProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Infrastructure", "Configuration", "DiscordConfiguration.json")),
+                            x.GetRequiredService<ILogger<JsonDiscordConfigurationProvider>>());
+                    });
+                    services.AddSingleton<JsonDiscordEmotesProvider>(x =>
+                    {
+                        return new JsonDiscordEmotesProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Infrastructure", "Configuration", "DiscordEmotes.json")),
+                            x.GetRequiredService<ILogger<JsonDiscordEmotesProvider>>());
+                    });
+                    services.AddSingleton<JsonDiscordPicturesProvider>(x =>
+                    {
+                        return new JsonDiscordPicturesProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Infrastructure", "Configuration", "DiscordPictures.json")),
+                            x.GetRequiredService<ILogger<JsonDiscordPicturesProvider>>());
+                    });
+                    services.AddSingleton<JsonDiscordRolesProvider>(x =>
+                    {
+                        return new JsonDiscordRolesProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Infrastructure", "Configuration", "DiscordPictures.json")),
+                            x.GetRequiredService<ILogger<JsonDiscordRolesProvider>>());
                     });
                 })
                 .ConfigureLogging((context, logging) =>
@@ -121,10 +142,16 @@ namespace Discord_Bot.Presentation.DiscordAPI
             DiscordSocketClient botClient = host.Services.GetRequiredService<DiscordSocketClient>();
             DiscordEventsController eventsController = host.Services.GetRequiredService<DiscordEventsController>();
             DiscordCommandsController commandsController = host.Services.GetRequiredService<DiscordCommandsController>();
+            JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider = host.Services.GetRequiredService<JsonDiscordConfigurationProvider>();
 
-            await botClient.LoginAsync(TokenType.Bot, configuration["Token"]);
+            string? _discordToker = jsonDiscordConfigurationProvider.RootDiscordConfiguration?.MalenkieAdminBot?.API_KEY;
+
+            if (_discordToker != null)
+            {
+                await botClient.LoginAsync(TokenType.Bot, _discordToker);
+            }
+
             await botClient.StartAsync();
-            
             await Task.Delay(-1);
         }
     }

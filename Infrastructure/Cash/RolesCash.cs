@@ -29,14 +29,13 @@ namespace Discord_Bot.Infrastructure.Cash
                 _logger.LogError("Error: {Message}", ex.Message);
             }
         }
-
         private async Task SetRoles(SocketGuild socketGuild)
         {
             try
             {
                 IReadOnlyCollection<SocketRole> roles = socketGuild.Roles;
 
-                foreach (var role in roles)
+                foreach (SocketRole role in roles)
                 {
                     MainServerRoles.Add(role.Id, role);
 

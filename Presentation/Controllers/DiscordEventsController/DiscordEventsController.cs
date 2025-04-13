@@ -14,11 +14,9 @@ namespace Discord_Bot.Presentation.Controllers.DiscordEventsController
 {
     class DiscordEventsController
     {
-        private readonly DiscordSocketClient client;
         private readonly IMediator mediator;
         public DiscordEventsController(DiscordSocketClient client, IMediator mediator)
         {
-            this.client = client;
             this.mediator = mediator;
 
             client.Log += OnLog;

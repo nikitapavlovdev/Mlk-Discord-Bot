@@ -1,0 +1,45 @@
+{
+    "AnimatedEmotes": {
+        "GeneralAnimatedDesignations": {
+            "AnimatedGreenCheck": {
+                "Id": 1254302653517664309,
+                "Discription": "Зеленая галочка"
+            }
+        },
+        "AnimatedZero": {
+            "Peaceout": {
+                "Id": 1275808446478024791,
+                "Discription": "Одно из состояний Zero"
+            }
+        }
+    },
+
+    "StaticEmotes": {
+        "StaticZero": {
+            "Love": {
+                "Id": 1267182549697040486,
+                "Discription": "Одно из состояний Zero"
+            },
+            "Hmph": {
+                "Id": 1275808687184805952,
+                "Discription": "Одно из состояний Zero"
+            }
+        },
+        "Paimon": {
+            "Little": {
+                "id": 1267182391399813285,
+                "Discription": "Одно из состояний Paimon"
+            }
+        },
+        "GeneralStaticDesignations": {
+            "StaticGreenCheck": {
+                "Id": 1254303311272874065,
+                "Discription": "Статичная зеленая галочка"
+            },
+            "StaticCross": {
+                "Id": 1254303526889324576,
+                "Discription": "Статичный крестик"
+            }
+        }
+    }
+}
