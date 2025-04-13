@@ -1,15 +1,30 @@
 ﻿using Discord.WebSocket;
 using Discord_Bot.Infrastructure.Cash;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Discord_Bot.Core.Utilities.General;
+using Discord_Bot.Core.Providers.JsonProvider;
 
 namespace Discord_Bot.Core.Managers.RolesManagers
 {
-    public class RolesManager(ILogger<RolesManager> _logger, IConfiguration _configuration, RolesCash _rolesCash)
+    public class RolesManager(ILogger<RolesManager> logger, 
+        RolesCash rolesCash,
+        JsonDiscordRolesProvider jsonDiscordRolesProvider)
     {
-        private readonly SocketRole _notRegisteredRole = _rolesCash.GetRole(ExtensionMethods.ConvertId(_configuration["Roles:NotRegistered:Id"]));
-        private readonly SocketRole _baseServerRole = _rolesCash.GetRole(ExtensionMethods.ConvertId(_configuration["Roles:MalenkiyMember:Id"]));
+        private readonly SocketRole _notRegisteredRole = rolesCash.GetRole(
+            jsonDiscordRolesProvider
+            .RootDiscordRoles
+            .GeneralRole
+            .Autorization
+            .NotRegistered
+            .Id);
+
+        private readonly SocketRole _baseServerRole = rolesCash.GetRole(
+            jsonDiscordRolesProvider
+            .RootDiscordRoles
+            .GeneralRole
+            .Autorization
+            .MalenkiyMember
+            .Id);
+
         public async Task AddNotRegisteredRoleAsync(SocketGuildUser socketGuildUser)
         {
             try
@@ -18,7 +33,7 @@ namespace Discord_Bot.Core.Managers.RolesManagers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
         public async Task DeleteNotRegisteredRoleAsync(SocketGuildUser socketGuildUser)
@@ -29,7 +44,7 @@ namespace Discord_Bot.Core.Managers.RolesManagers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
         public async Task AddBaseServerRoleAsync(SocketGuildUser socketGuildUser)
@@ -40,7 +55,7 @@ namespace Discord_Bot.Core.Managers.RolesManagers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
     }

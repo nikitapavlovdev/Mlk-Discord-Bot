@@ -6,7 +6,10 @@ using Discord_Bot.Core.Utilities.General;
 
 namespace Discord_Bot.Core.Utilities.DI
 {
-    public class ExtensionEmbedMessage(IConfiguration configuration, RolesCash rolesCash, EmotesCash emotesCash)
+    public class ExtensionEmbedMessage(
+        IConfiguration configuration, 
+        RolesCash rolesCash, 
+        EmotesCash emotesCash)
     {
         public async Task SendRolesMessage(SocketTextChannel textChannel, MessageComponent component)
         {

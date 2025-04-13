@@ -22,7 +22,6 @@ using Discord.Commands;
 using Microsoft.Extensions.Logging;
 using Discord_Bot.Core.Notifications.Log;
 using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
-using System.ComponentModel.Design;
 
 namespace Discord_Bot.Presentation.DiscordAPI
 {
@@ -105,7 +104,8 @@ namespace Discord_Bot.Presentation.DiscordAPI
 
                     services.AddSingleton<JsonChannelsMapProvider>(x =>
                     {
-                        return new JsonChannelsMapProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Infrastructure", "Configuration", "DiscordChannelsMap.json")),
+                        return new JsonChannelsMapProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, 
+                            "..", "..", "..", "Infrastructure", "Configuration", "DiscordChannelsMap.json")),
                             x.GetRequiredService<ILogger<JsonChannelsMapProvider>>());
                     });
                     services.AddSingleton<JsonDiscordConfigurationProvider>(x =>
@@ -125,7 +125,8 @@ namespace Discord_Bot.Presentation.DiscordAPI
                     });
                     services.AddSingleton<JsonDiscordRolesProvider>(x =>
                     {
-                        return new JsonDiscordRolesProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Infrastructure", "Configuration", "DiscordPictures.json")),
+                        return new JsonDiscordRolesProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, 
+                            "..", "..", "..", "Infrastructure", "Configuration", "DiscordRoles.json")),
                             x.GetRequiredService<ILogger<JsonDiscordRolesProvider>>());
                     });
                 })

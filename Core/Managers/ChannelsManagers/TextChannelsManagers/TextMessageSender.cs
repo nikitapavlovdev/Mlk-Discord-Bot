@@ -1,6 +1,4 @@
 ﻿using Discord.WebSocket;
-using Discord_Bot.Core.Utilities.General;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Discord;
 using Discord_Bot.Core.Utilities.DI;
@@ -10,11 +8,12 @@ using Discord_Bot.Core.Providers.JsonProvider;
 namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
 {
     public class TextMessageSender(ILogger<TextMessageSender> logger, 
-        IConfiguration configuration, 
         ExtensionEmbedMessage extensionEmbedMessage,
         EmotesCash emotesCash,
         RolesCash rolesCash, 
-        JsonChannelsMapProvider channelsProvider)
+        JsonChannelsMapProvider channelsProvider,
+        JsonDiscordEmotesProvider emotesProvider, 
+        JsonDiscordRolesProvider rolesProvider)
     {
         public async Task SendWelcomeMessageAsync(SocketGuildUser socketGuildUser)
         {
@@ -38,24 +37,19 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
         }
         public async Task SendFollowupMessageOnSuccessAutorization(SocketModal modal)
         {
-            ulong roleChannelId = configuration["RolesSettings:ChannelId"].ConvertId(); 
-            ulong botCommandChannelId = configuration["CommandsSettings:ChannelId"].ConvertId();
-            ulong newsChannelId = configuration["NewsSettings:ChannelId"].ConvertId();
-
-            SocketRole baseServerRole = rolesCash.GetRole(configuration["Roles:MalenkiyMember:Id"].ConvertId());
-            GuildEmote? emoteSuccess = emotesCash.GetEmote(configuration["animated:zero_peaceout:id"].ConvertId());
-
-            await modal.FollowupAsync(embed: extensionEmbedMessage.GetSuccesAuthorizationMessageEmbedTemplate(emoteSuccess, baseServerRole, roleChannelId, botCommandChannelId, newsChannelId), ephemeral: true);
+            await modal.FollowupAsync(embed: extensionEmbedMessage.GetSuccesAuthorizationMessageEmbedTemplate(
+                emotesCash.GetEmote(emotesProvider.RootDiscordEmotes.AnimatedEmotes.AnimatedZero.Paceout.Id),
+                rolesCash.GetRole(rolesProvider.RootDiscordRoles.GeneralRole.Autorization.MalenkiyMember.Id),
+                channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Id,
+                channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.BotCommands.Id,
+                channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.News.Id), 
+                ephemeral: true);
         }
         public async Task SendFollowupMessageOnErrorAutorization(SocketModal modal)
         {
-            GuildEmote? emoteError = emotesCash.GetEmote(configuration["static:zero_hmph:id"].ConvertId());
+            GuildEmote? emoteError = emotesCash.GetEmote(emotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Hmph.Id);
 
             await modal.FollowupAsync(embed: extensionEmbedMessage.GetErrorAuthorizationMessageEmbedTemplate(emoteError), ephemeral: true);
-        }
-        public static async Task SendFollowupMessageOnSuccesInputPersonalData(SocketModal modal)
-        {
-            await modal.FollowupAsync("Any text", ephemeral: true);
         }
     }
 }
