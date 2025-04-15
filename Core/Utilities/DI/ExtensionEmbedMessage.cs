@@ -1,26 +1,28 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using Microsoft.Extensions.Configuration;
-using Discord_Bot.Infrastructure.Cash;
+using Discord_Bot.Infrastructure.Cache;
 using Discord_Bot.Core.Utilities.General;
+using Discord_Bot.Core.Providers.JsonProvider;
 
 namespace Discord_Bot.Core.Utilities.DI
 {
     public class ExtensionEmbedMessage(
-        IConfiguration configuration, 
-        RolesCash rolesCash, 
-        EmotesCash emotesCash)
+        RolesCache rolesCachhe, 
+        EmotesCache emotesCache,
+        JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider,
+        JsonDiscordPicturesProvider jsonDiscordPicturesProvider,
+        JsonDiscordEmotesProvider jsonDiscordEmotesProvider)
     {
         public async Task SendRolesMessage(SocketTextChannel textChannel, MessageComponent component)
         {
             Embed rolesChooseMessage = new EmbedBuilder()
                 .WithTitle("Список для выбора")
-                .WithDescription(rolesCash.GetDescriptionForСhoiceRoles())
-                .WithFooter(ExtensionMethods.GetStringFromConfiguration(configuration["FooterSettings:FooterText"]),
-                            ExtensionMethods.GetStringFromConfiguration(configuration["FooterSettings:FooterIconLink"]))
+                .WithDescription(rolesCachhe.GetDescriptionForСhoiceRoles())
+                .WithFooter(ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name),
+                            ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
                 .WithTimestamp(DateTimeOffset.Now)
                 .WithColor(123, 104, 238)
-                .WithImageUrl(ExtensionMethods.GetStringFromConfiguration(configuration["Pinterest:Message:LinkPurpleEyes"]))
+                .WithImageUrl(ExtensionMethods.GetStringFromConfiguration(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.LinkPurpleEyes))
                 .Build();
 
             await textChannel.SendMessageAsync(embed: rolesChooseMessage, components: component);
@@ -49,8 +51,8 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithColor(color)
                 .WithTimestamp(DateTime.UtcNow)
                 .WithFooter(new EmbedFooterBuilder()
-                .WithText(configuration["FooterSettings:FooterText"])
-                .WithIconUrl(configuration["FooterSettings:FooterIconLink"]))
+                .WithText(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name)
+                .WithIconUrl(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
                 .Build();
 
             return message;
@@ -67,8 +69,8 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithDescription(description)
                 .WithColor(color)
                 .WithFooter(new EmbedFooterBuilder()
-                .WithText(configuration["FooterSettings:FooterText"])
-                .WithIconUrl(configuration["FooterSettings:FooterIconLink"]))
+                .WithText(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name)
+                .WithIconUrl(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
                 .Build();
 
             return embed;
@@ -96,7 +98,7 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithColor(color)
                 .WithFooter(new EmbedFooterBuilder()
                 .WithText(footerText)
-                .WithIconUrl(configuration["FooterSettings:FooterIconLink"]))
+                .WithIconUrl(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
                 .Build();
 
             return embed;
@@ -104,7 +106,7 @@ namespace Discord_Bot.Core.Utilities.DI
 
         public Embed GetJoinedEmbedTemplate(SocketGuildUser socketGuildUser)
         {
-            GuildEmote? welcomeMessageEmote = emotesCash.GetEmote(ExtensionMethods.ConvertId(configuration["static:zero_love:id"]));
+            GuildEmote? welcomeMessageEmote = emotesCache.GetEmote(jsonDiscordEmotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Love.Id);
 
 
             string title = $"Новый участник";
@@ -119,8 +121,8 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithAuthor(socketGuildUser.DisplayName, socketGuildUser.GetAvatarUrl(ImageFormat.Auto, 48))
                 .WithCurrentTimestamp()
                 .WithFooter(new EmbedFooterBuilder()
-                .WithText(configuration["FooterSettings:FooterText"])
-                .WithIconUrl(configuration["FooterSettings:FooterIconLink"]))
+                .WithText(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name)
+                .WithIconUrl(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
                 .Build();
 
             return embed;
@@ -133,8 +135,8 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithDescription(description)
                 .WithColor(135, 206, 250)
                 .WithFooter(new EmbedFooterBuilder()
-                .WithText(configuration["FooterSettings:FooterText"])
-                .WithIconUrl(configuration["FooterSettings:FooterIconLink"]))
+                .WithText(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name)
+                .WithIconUrl(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
                 .WithTimestamp(DateTime.UtcNow)
                 .Build();
 

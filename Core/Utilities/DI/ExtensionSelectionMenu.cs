@@ -1,14 +1,10 @@
 ﻿using Discord;
-using Microsoft.Extensions.Configuration;
-using Discord_Bot.Infrastructure.Cash;
-using Discord_Bot.Core.Utilities.General;
+using Discord_Bot.Core.Providers.JsonProvider;
 
 namespace Discord_Bot.Core.Utilities.DI
 {
-    public class ExtensionSelectionMenu(IConfiguration configuration)
+    public class ExtensionSelectionMenu(JsonDiscordRolesProvider jsonDiscordRolesProvider)
     {
-        private readonly IConfiguration configuration = configuration;
-
         public MessageComponent GetRolesSelectionMenu()
         {
             SelectMenuBuilder selectionMenuCategoryRole = new SelectMenuBuilder()
@@ -16,16 +12,16 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithCustomId("choice_role_select")
                 .AddOption(new SelectMenuOptionBuilder()
                     .WithLabel("📍┆Valorant player")
-                    .WithValue(ExtensionMethods.GetStringFromConfiguration(configuration["Roles:Valoranter:Id"])))
+                    .WithValue(jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.Valoranter.Id.ToString()))
                 .AddOption(new SelectMenuOptionBuilder()
                     .WithLabel("👑┆Destiny player")
-                    .WithValue(ExtensionMethods.GetStringFromConfiguration(configuration["Roles:DestinyEnjoyer:Id"])))
+                    .WithValue(jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.DestinyEnjoyer.Id.ToString()))
                 .AddOption(new SelectMenuOptionBuilder()
                     .WithLabel("👨‍🎓┆IKIT Student")
-                    .WithValue(ExtensionMethods.GetStringFromConfiguration(configuration["Roles:IKIT:Id"])))
+                    .WithValue(jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.IKIT.Id.ToString()))
                 .AddOption(new SelectMenuOptionBuilder()
                     .WithLabel("💻┆Information Hunter")
-                    .WithValue(ExtensionMethods.GetStringFromConfiguration(configuration["Roles:InformationHunter:Id"])))
+                    .WithValue(jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.InformationHunter.Id.ToString()))
                 .AddOption(new SelectMenuOptionBuilder()
                     .WithLabel("Очистить роли")
                     .WithValue("delete_all_roles"));
@@ -35,22 +31,22 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithCustomId("choice_color_name")
                 .AddOption(new SelectMenuOptionBuilder()
                     .WithLabel("Лаймовый")
-                    .WithValue(ExtensionMethods.GetStringFromConfiguration(configuration["ServerBoostRoles:Lime:Id"])))
+                    .WithValue(jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.NotBooster.Lime.Id.ToString()))
                 .AddOption(new SelectMenuOptionBuilder()
                     .WithLabel("Хаки")
-                    .WithValue(ExtensionMethods.GetStringFromConfiguration(configuration["ServerBoostRoles:Khaki:Id"])))
+                    .WithValue(jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.Booster.Khaki.Id.ToString()))
                 .AddOption(new SelectMenuOptionBuilder()
                     .WithLabel("Фиолетовый")
-                    .WithValue(ExtensionMethods.GetStringFromConfiguration(configuration["ServerBoostRoles:Violet:Id"])))
+                    .WithValue(jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.Booster.Violet.Id.ToString()))
                 .AddOption(new SelectMenuOptionBuilder()
                     .WithLabel("Малиновый")
-                    .WithValue(ExtensionMethods.GetStringFromConfiguration(configuration["ServerBoostRoles:Crimson:Id"])))
+                    .WithValue(jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.NotBooster.Crimson.Id.ToString()))
                 .AddOption(new SelectMenuOptionBuilder()
                     .WithLabel("Сланцево-голубой")
-                    .WithValue(ExtensionMethods.GetStringFromConfiguration(configuration["ServerBoostRoles:Slateblue:Id"])))
+                    .WithValue(jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.NotBooster.Slateblue.Id.ToString()))
                 .AddOption(new SelectMenuOptionBuilder()
                     .WithLabel("Кораловый")
-                    .WithValue(ExtensionMethods.GetStringFromConfiguration(configuration["ServerBoostRoles:Coral:Id"])));
+                    .WithValue(jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.Booster.Coral.Id.ToString()));
                 
 
             MessageComponent component = new ComponentBuilder()

@@ -1,15 +1,15 @@
 ﻿using Discord.WebSocket;
-using Discord_Bot.Infrastructure.Cash;
+using Discord_Bot.Infrastructure.Cache;
 using Microsoft.Extensions.Logging;
 using Discord_Bot.Core.Providers.JsonProvider;
 
 namespace Discord_Bot.Core.Managers.RolesManagers
 {
     public class RolesManager(ILogger<RolesManager> logger, 
-        RolesCash rolesCash,
+        RolesCache rolesCache,
         JsonDiscordRolesProvider jsonDiscordRolesProvider)
     {
-        private readonly SocketRole _notRegisteredRole = rolesCash.GetRole(
+        private readonly SocketRole _notRegisteredRole = rolesCache.GetRole(
             jsonDiscordRolesProvider
             .RootDiscordRoles
             .GeneralRole
@@ -17,7 +17,7 @@ namespace Discord_Bot.Core.Managers.RolesManagers
             .NotRegistered
             .Id);
 
-        private readonly SocketRole _baseServerRole = rolesCash.GetRole(
+        private readonly SocketRole _baseServerRole = rolesCache.GetRole(
             jsonDiscordRolesProvider
             .RootDiscordRoles
             .GeneralRole

@@ -1,29 +1,28 @@
-﻿using System.Reactive;
-using Discord;
+﻿using Discord;
 using Discord.WebSocket;
+using Discord_Bot.Core.Providers.JsonProvider;
 using Discord_Bot.Core.Utilities.DI;
-using Discord_Bot.Core.Utilities.General;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Discord_Bot.Infrastructure.Cash
+namespace Discord_Bot.Infrastructure.Cache
 {
-    public class ChannelsCash(IConfiguration configuration, 
-        ILogger<ChannelsCash> logger,
+    public class ChannelsCache(
+        ILogger<ChannelsCache> logger,
         ExtensionEmbedMessage embedMessage,
-        ExtensionSelectionMenu selectionMenu)
+        ExtensionSelectionMenu selectionMenu,
+        JsonChannelsMapProvider jsonChannelsMapProvider)
     {
+        private readonly List<SocketVoiceChannel> AllVoiceChannels = [];
         private readonly List<ulong> GenereatingChannelsIds = [];
         private readonly List<ulong> TemporaryChannelIds = [];
-        private readonly Dictionary<ulong, string> CategoryNameFromId = [];
 
         public async Task ChannelsInitialization(SocketGuild socketGuild)
         {
             try
             {
                 await Task.WhenAll(
-                FillCategoryFromName(),
-                SetGeneratingChannelsId()
+                    FillGeneratingChannels(socketGuild),
+                    FillAllVoiceChannels(socketGuild)
                 );
 
                 await SendFormInRolesChannel(socketGuild);
@@ -33,9 +32,31 @@ namespace Discord_Bot.Infrastructure.Cash
                 logger.LogError("Error: {Message}", ex.Message);
             }
         }
+
+        private async Task FillAllVoiceChannels(SocketGuild socketGuild)
+        {
+            foreach(SocketVoiceChannel channel in socketGuild.VoiceChannels)
+            {
+                AllVoiceChannels.Add(channel);
+            }
+
+            await Task.CompletedTask;
+        }
+        private async Task FillGeneratingChannels(SocketGuild socketGuild)
+        {
+            foreach(SocketVoiceChannel channel in socketGuild.VoiceChannels)
+            {
+                if(channel.Id == jsonChannelsMapProvider.RootChannel.Channels.VoiceChannels.AutoLobby.AutoGamesLobby.Id)
+                {
+                    GenereatingChannelsIds.Add(jsonChannelsMapProvider.RootChannel.Channels.VoiceChannels.AutoLobby.AutoGamesLobby.Id);
+                }
+            }
+
+            await Task.CompletedTask;
+        }
         private async Task SendFormInRolesChannel(SocketGuild socketGuild)
         {
-            SocketTextChannel? textChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == (ExtensionMethods.ConvertId(configuration["RolesSettings:ChannelId"])));
+            SocketTextChannel? textChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == (jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Id));
             MessageComponent component = selectionMenu.GetRolesSelectionMenu();
 
             if (textChannel == null)
@@ -45,25 +66,6 @@ namespace Discord_Bot.Infrastructure.Cash
 
             await ExtensionChannelsManager.DeleteAllMessageFromChannel(textChannel);
             await embedMessage.SendRolesMessage(textChannel, component);
-        }
-        private async Task FillCategoryFromName()
-        {
-            try
-            {
-                CategoryNameFromId.TryAdd(ExtensionMethods.ConvertId(configuration["GameCategory:Id"]), "ɢᴀᴍᴇᴠᴏɪᴄᴇ");
-
-                await Task.CompletedTask;
-            }
-            catch (Exception)
-            {
-
-            }
-        }
-        private async Task SetGeneratingChannelsId()
-        {
-            GenereatingChannelsIds.Add(ExtensionMethods.ConvertId(configuration["AutoLobby:CategoryGames:Id"]));
-
-            await Task.CompletedTask;
         }
         public bool IsGeneratingChannel(ulong channelId)
         {
@@ -81,6 +83,9 @@ namespace Discord_Bot.Infrastructure.Cash
         {
             TemporaryChannelIds.Remove(channel.Id);
         }
-        
+        public int GetLobbyNumber()
+        {
+            return TemporaryChannelIds.Count;
+        }
     }
 }

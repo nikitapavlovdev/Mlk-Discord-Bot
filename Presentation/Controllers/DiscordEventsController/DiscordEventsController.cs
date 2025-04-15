@@ -17,8 +17,12 @@ namespace Discord_Bot.Presentation.Controllers.DiscordEventsController
         private readonly IMediator mediator;
         public DiscordEventsController(DiscordSocketClient client, IMediator mediator)
         {
-            this.mediator = mediator;
+            this.mediator = mediator;   
+            SubscribeOnEvents(client);
+        }
 
+        private void SubscribeOnEvents(DiscordSocketClient client)
+        {
             client.Log += OnLog;
             client.UserJoined += OnUserJoined;
             client.UserLeft += OnUserLeft;

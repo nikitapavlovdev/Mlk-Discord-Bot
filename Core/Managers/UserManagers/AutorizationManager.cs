@@ -1,7 +1,7 @@
 ﻿using Discord.WebSocket;
 using Discord;
 using Discord_Bot.Core.Utilities.General;
-using Discord_Bot.Infrastructure.Cash;
+using Discord_Bot.Infrastructure.Cache;
 using Microsoft.Extensions.Logging;
 using Discord_Bot.Core.Managers.RolesManagers;
 using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
@@ -9,7 +9,7 @@ using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
 namespace Discord_Bot.Core.Managers.UserManagers;
 
 public class AutorizationManager(ILogger<AutorizationManager> logger, 
-    AuCash auCash, 
+    AutorizationCache auCache, 
     RolesManager rolesManagers,
     TextMessageSender channelMessageManagers)
 {
@@ -18,7 +18,7 @@ public class AutorizationManager(ILogger<AutorizationManager> logger,
         try
         {
             string auCode = GetAutorizationCode();
-            auCash.SetTemporaryCodes(socketGuildUser, auCode);
+            auCache.SetTemporaryCodes(socketGuildUser, auCode);
 
             await socketGuildUser.SendMessageAsync($"Твой код авторизации: `{auCode}`");
         }
@@ -37,8 +37,8 @@ public class AutorizationManager(ILogger<AutorizationManager> logger,
                 rolesManagers.AddBaseServerRoleAsync(socketGuildUser),
                 channelMessageManagers.SendFollowupMessageOnSuccessAutorization(modal)
             );
-            
-            auCash.RemoveCodeFromDict(socketGuildUser);
+
+            auCache.RemoveCodeFromDict(socketGuildUser);
         }
         else
         {
@@ -52,7 +52,7 @@ public class AutorizationManager(ILogger<AutorizationManager> logger,
     private bool IsValidCode(SocketModal modal, SocketGuildUser socketGuildUser)
     {
         string fromModalCode = modal.Data.Components.First(x => x.CustomId == "au_selection_input").Value;
-        string fromDictrCode = auCash.GetCodeForUser(socketGuildUser, out string? def);
+        string fromDictrCode = auCache.GetCodeForUser(socketGuildUser, out string? def);
 
         return fromModalCode == fromDictrCode;
     }

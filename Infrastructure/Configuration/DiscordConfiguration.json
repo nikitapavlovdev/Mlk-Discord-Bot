@@ -1,5 +1,15 @@
 {
     "MalenkieAdminBot": {
         "API_KEY": "MTEzNDg4Mzk0MDA4ODQxODMyNQ.G507AD.jpVMqpxLKoKNQbGjQL3hPyeW7oDXcZT3fVeqnc"
+    },
+
+    "DevelopersData": {
+        "Name": "prod. by nikitkaDev",
+        "IconLink": "https://i.pinimg.com/736x/da/f6/0b/daf60bc377c1b10c1ca985b3af8c9100.jpg"
+    },
+
+    "Guild": {
+        "Id": 1134877618034966589,
+        "Discription": "Сервер Malenkie"
     }
 }

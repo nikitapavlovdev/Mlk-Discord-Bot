@@ -1,18 +1,12 @@
 ﻿using Discord.WebSocket;
 using MediatR;
 using Discord_Bot.Core.Utilities.General;
-using Discord_Bot.Infrastructure.Cash;
+using Discord_Bot.Infrastructure.Cache;
 
 namespace Discord_Bot.Core.Notifications.SelectMenuExecuted
 {
-    class SelectMenuExecutedNotificationHandler : INotificationHandler<SelectMenuExecutedNotification>
+    class SelectMenuExecutedNotificationHandler(RolesCache rolesCache) : INotificationHandler<SelectMenuExecutedNotification>
     {
-        private readonly RolesCash rolesCash;
-        public SelectMenuExecutedNotificationHandler(RolesCash rolesCash)
-        {
-            this.rolesCash = rolesCash;
-        }
-
         public async Task Handle (SelectMenuExecutedNotification notification, CancellationToken cancellationToken)
         {
 			try
@@ -32,18 +26,18 @@ namespace Discord_Bot.Core.Notifications.SelectMenuExecuted
 
                     if (value == "delete_all_roles")
                     {
-                        await rolesCash.DeleteAllRolesFromUser(socketGuildUser);
+                        await rolesCache.DeleteAllRolesFromUser(socketGuildUser);
                         return;
                     }
 
                     if (!socketGuildUser.Roles.Any(role => role.Id == ExtensionMethods.ConvertId(values.ElementAt(0))))
                     {
-                        await socketGuildUser.AddRoleAsync(rolesCash.GetRole(ExtensionMethods.ConvertId(values.ElementAt(0))));
+                        await socketGuildUser.AddRoleAsync(rolesCache.GetRole(ExtensionMethods.ConvertId(values.ElementAt(0))));
                     }
                 }
                 if (notification.SocketMessageComponent.Data.CustomId == "choice_color_name")
                 {
-                    List<SocketRole> ColorNameList = rolesCash.ReturnColorNameListForCheck();
+                    List<SocketRole> ColorNameList = rolesCache.ReturnColorNameListForCheck();
 
                     foreach(SocketRole roleInCycle in ColorNameList)
                     {
@@ -55,7 +49,7 @@ namespace Discord_Bot.Core.Notifications.SelectMenuExecuted
 
                     foreach(var role in notification.SocketMessageComponent.Data.Values)
                     {
-                        await socketGuildUser.AddRoleAsync(rolesCash.GetRole(ExtensionMethods.ConvertId(role)));
+                        await socketGuildUser.AddRoleAsync(rolesCache.GetRole(ExtensionMethods.ConvertId(role)));
                         break;
                     }
                 }

@@ -2,15 +2,15 @@
 using Microsoft.Extensions.Logging;
 using Discord;
 using Discord_Bot.Core.Utilities.DI;
-using Discord_Bot.Infrastructure.Cash;
+using Discord_Bot.Infrastructure.Cache;
 using Discord_Bot.Core.Providers.JsonProvider;
 
 namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
 {
     public class TextMessageSender(ILogger<TextMessageSender> logger, 
         ExtensionEmbedMessage extensionEmbedMessage,
-        EmotesCash emotesCash,
-        RolesCash rolesCash, 
+        EmotesCache emotesCache,
+        RolesCache rolesCache, 
         JsonChannelsMapProvider channelsProvider,
         JsonDiscordEmotesProvider emotesProvider, 
         JsonDiscordRolesProvider rolesProvider)
@@ -38,8 +38,8 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
         public async Task SendFollowupMessageOnSuccessAutorization(SocketModal modal)
         {
             await modal.FollowupAsync(embed: extensionEmbedMessage.GetSuccesAuthorizationMessageEmbedTemplate(
-                emotesCash.GetEmote(emotesProvider.RootDiscordEmotes.AnimatedEmotes.AnimatedZero.Paceout.Id),
-                rolesCash.GetRole(rolesProvider.RootDiscordRoles.GeneralRole.Autorization.MalenkiyMember.Id),
+                emotesCache.GetEmote(emotesProvider.RootDiscordEmotes.AnimatedEmotes.AnimatedZero.Paceout.Id),
+                rolesCache.GetRole(rolesProvider.RootDiscordRoles.GeneralRole.Autorization.MalenkiyMember.Id),
                 channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Id,
                 channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.BotCommands.Id,
                 channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.News.Id), 
@@ -47,7 +47,7 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
         }
         public async Task SendFollowupMessageOnErrorAutorization(SocketModal modal)
         {
-            GuildEmote? emoteError = emotesCash.GetEmote(emotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Hmph.Id);
+            GuildEmote? emoteError = emotesCache.GetEmote(emotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Hmph.Id);
 
             await modal.FollowupAsync(embed: extensionEmbedMessage.GetErrorAuthorizationMessageEmbedTemplate(emoteError), ephemeral: true);
         }

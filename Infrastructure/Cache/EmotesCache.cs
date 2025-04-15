@@ -2,9 +2,9 @@
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 
-namespace Discord_Bot.Infrastructure.Cash
+namespace Discord_Bot.Infrastructure.Cache
 {
-    public class EmotesCash(ILogger<EmotesCash> _logger)
+    public class EmotesCache(ILogger<EmotesCache> _logger)
     {
         private readonly Dictionary<ulong, GuildEmote> MainServerEmotes = [];
 
