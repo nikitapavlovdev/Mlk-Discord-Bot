@@ -1,8 +1,8 @@
 ﻿using Discord.WebSocket;
 
-namespace Discord_Bot.Infrastructure.Cash
+namespace Discord_Bot.Infrastructure.Cache
 {
-    public class AuCash
+    public class AutorizationCache
     {
         private readonly Dictionary<SocketGuildUser, string> TemporaryCodes = [];
         public void SetTemporaryCodes(SocketGuildUser user, string code)
@@ -13,10 +13,15 @@ namespace Discord_Bot.Infrastructure.Cash
         {
             TemporaryCodes.Remove(user);
         }
-        public string GetCodeForUser(SocketGuildUser user, out string def)
+        public string GetCodeForUser(SocketGuildUser user, out string? def)
         {
             TemporaryCodes.TryGetValue(user, out def);
-            return def;
+            if (def != null)
+            {
+                return def;
+            }
+
+            return "";
         }
     }
 }

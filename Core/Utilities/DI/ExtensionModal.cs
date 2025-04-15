@@ -6,7 +6,7 @@ namespace Discord_Bot.Core.Utilities.DI
     {
         public static Modal GetAutorizationModal()
         {
-            Modal modal = new ModalBuilder()
+            return new ModalBuilder()
                     .WithTitle($"Имя на сервере")
                     .WithCustomId("au_selection")
                     .AddTextInput(new TextInputBuilder()
@@ -16,12 +16,10 @@ namespace Discord_Bot.Core.Utilities.DI
                         .WithPlaceholder("Например: WjRokI8xXC")
                         .WithStyle(TextInputStyle.Short))
                     .Build();
-
-            return modal;
         }
         public static Modal GetPersonalInformationModal()
         {
-            Modal modal = new ModalBuilder()
+            return new ModalBuilder()
                 .WithTitle("Личная информация (Необязательно)")
                 .WithCustomId("personal_data")
                 .AddTextInput(new TextInputBuilder()
@@ -50,7 +48,6 @@ namespace Discord_Bot.Core.Utilities.DI
                     .WithStyle(TextInputStyle.Short))
                 .Build();
 
-            return modal;
         }
     }
 }

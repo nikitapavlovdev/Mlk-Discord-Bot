@@ -2,9 +2,9 @@
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 
-namespace Discord_Bot.Infrastructure.Cash
+namespace Discord_Bot.Infrastructure.Cache
 {
-    public class EmotesCash(ILogger<EmotesCash> _logger)
+    public class EmotesCache(ILogger<EmotesCache> _logger)
     {
         private readonly Dictionary<ulong, GuildEmote> MainServerEmotes = [];
 
@@ -28,9 +28,9 @@ namespace Discord_Bot.Infrastructure.Cash
                 _logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
-        public GuildEmote GetEmote(ulong emoteId)
+        public GuildEmote? GetEmote(ulong emoteId)
         {
-            if (MainServerEmotes.TryGetValue(emoteId, out GuildEmote emote))
+            if (MainServerEmotes.TryGetValue(emoteId, out GuildEmote? emote))
             {
                 return emote;
             }

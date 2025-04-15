@@ -2,9 +2,8 @@
 using Discord.WebSocket;
 using MediatR;
 using System.Reflection;
-using Microsoft.Extensions.Configuration;
-using Discord_Bot.Core.Utilities.General;
 using Discord;
+using Discord_Bot.Core.Providers.JsonProvider;
 
 namespace Discord_Bot.Presentation.Controllers.DiscordCommandsController
 {
@@ -12,17 +11,17 @@ namespace Discord_Bot.Presentation.Controllers.DiscordCommandsController
     {
         private readonly DiscordSocketClient discordSocketClient;
         private readonly IMediator mediator;
-        private readonly IConfiguration configuration;
-        
-        public DiscordCommandsController(DiscordSocketClient discordSocketClient, 
+        private readonly JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider;
+        public DiscordCommandsController(
+            DiscordSocketClient discordSocketClient, 
             CommandService commandService, 
             IServiceProvider serviceProvider,
             IMediator mediator,
-            IConfiguration configuration)
+            JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider)
         {
             this.discordSocketClient = discordSocketClient;
             this.mediator = mediator;
-            this.configuration = configuration;
+            this.jsonDiscordConfigurationProvider = jsonDiscordConfigurationProvider;
 
             discordSocketClient.Ready += OnRegisterCommands;
             //discordSocketClient.SlashCommandExecuted += OnRouteCommand;
@@ -32,7 +31,7 @@ namespace Discord_Bot.Presentation.Controllers.DiscordCommandsController
         
         private async Task OnRegisterCommands()
         {
-            var guild = discordSocketClient.GetGuild(ExtensionMethods.ConvertId(configuration["Guild:Id"]));
+            SocketGuild guild = discordSocketClient.GetGuild(jsonDiscordConfigurationProvider.RootDiscordConfiguration.Guild.Id);
 
             try
             {

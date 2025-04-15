@@ -1,4 +1,5 @@
-﻿using Discord.WebSocket;
+﻿using Discord;
+using Discord.WebSocket;
 using MediatR;
 using Discord_Bot.Core.Notifications.UserJoined;
 using Discord_Bot.Core.Notifications.UserLeft;
@@ -7,20 +8,21 @@ using Discord_Bot.Core.Notifications.ButtonExecuted;
 using Discord_Bot.Core.Notifications.GuildAvailable;
 using Discord_Bot.Core.Notifications.SelectMenuExecuted;
 using Discord_Bot.Core.Notifications.UserVoiceStateUpdated;
-using Discord;
-using Discord_Bot.Core.Logs.Log;
+using Discord_Bot.Core.Notifications.Log;
 
 namespace Discord_Bot.Presentation.Controllers.DiscordEventsController
 {
     class DiscordEventsController
     {
-        private readonly DiscordSocketClient client;
         private readonly IMediator mediator;
         public DiscordEventsController(DiscordSocketClient client, IMediator mediator)
         {
-            this.client = client;
-            this.mediator = mediator;
+            this.mediator = mediator;   
+            SubscribeOnEvents(client);
+        }
 
+        private void SubscribeOnEvents(DiscordSocketClient client)
+        {
             client.Log += OnLog;
             client.UserJoined += OnUserJoined;
             client.UserLeft += OnUserLeft;

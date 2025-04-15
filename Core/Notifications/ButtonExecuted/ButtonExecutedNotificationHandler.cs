@@ -13,16 +13,16 @@ namespace Discord_Bot.Core.Notifications.ButtonExecuted
                 if (notification.SocketMessageComponent.Data.CustomId == $"nikname_selection_component_{notification.SocketMessageComponent.User.Id}")
                 {
                     await notification.SocketMessageComponent.RespondWithModalAsync(ExtensionModal.GetAutorizationModal());
+                    return;
                 }
+
                 if(notification.SocketMessageComponent.Data.CustomId == $"personal_data_{notification.SocketMessageComponent.User.Id}")
                 {
                     await notification.SocketMessageComponent.RespondWithModalAsync(ExtensionModal.GetPersonalInformationModal());
+                    return;
                 }
-                else
-                {
-                    await notification.SocketMessageComponent.RespondAsync($"Эта кнопочка для другого пользователя!", 
-                        ephemeral: true);
-                }
+
+                await notification.SocketMessageComponent.RespondAsync($"Эта кнопочка для другого пользователя!",ephemeral: true);
             }
             catch (Exception ex)
             {

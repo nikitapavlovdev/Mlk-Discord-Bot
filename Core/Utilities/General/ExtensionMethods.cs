@@ -107,6 +107,5 @@ namespace Discord_Bot.Core.Utilities.General
 
             return code.ToString();
         }
-
-    }
+    } 
 }
