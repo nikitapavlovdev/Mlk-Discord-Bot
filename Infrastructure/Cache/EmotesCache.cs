@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Discord_Bot.Infrastructure.Cache
 {
-    public class EmotesCache(ILogger<EmotesCache> _logger)
+    public class EmotesCache(ILogger<EmotesCache> logger)
     {
         private readonly Dictionary<ulong, GuildEmote> MainServerEmotes = [];
 
@@ -19,13 +19,13 @@ namespace Discord_Bot.Infrastructure.Cache
                     MainServerEmotes.TryAdd(emote.Id, emote);
                 }
 
-                _logger.LogInformation("Fill emotes status: Done");
+                logger.LogInformation("Fill emotes status: Done");
 
                 await Task.CompletedTask;
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
         public GuildEmote? GetEmote(ulong emoteId)
@@ -35,7 +35,7 @@ namespace Discord_Bot.Infrastructure.Cache
                 return emote;
             }
 
-            _logger.LogWarning("Смайлик с ID {EmoteId} не найден", emoteId);
+            logger.LogWarning("Смайлик с ID {EmoteId} не найден", emoteId);
             return null;
         }
     }

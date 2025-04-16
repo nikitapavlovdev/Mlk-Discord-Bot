@@ -2,10 +2,13 @@
 using MediatR;
 using Discord_Bot.Core.Utilities.General;
 using Discord_Bot.Infrastructure.Cache;
+using Discord_Bot.Core.Managers.RolesManagers;
 
 namespace Discord_Bot.Core.Notifications.SelectMenuExecuted
 {
-    class SelectMenuExecutedNotificationHandler(RolesCache rolesCache) : INotificationHandler<SelectMenuExecutedNotification>
+    class SelectMenuExecutedNotificationHandler(
+        RolesCache rolesCache,
+        RolesManager rolesManager) : INotificationHandler<SelectMenuExecutedNotification>
     {
         public async Task Handle (SelectMenuExecutedNotification notification, CancellationToken cancellationToken)
         {
@@ -26,7 +29,7 @@ namespace Discord_Bot.Core.Notifications.SelectMenuExecuted
 
                     if (value == "delete_all_roles")
                     {
-                        await rolesCache.DeleteAllRolesFromUser(socketGuildUser);
+                        await rolesManager.DeleteSelectionRoles(notification.SocketMessageComponent.User as SocketGuildUser);
                         return;
                     }
 
@@ -37,9 +40,9 @@ namespace Discord_Bot.Core.Notifications.SelectMenuExecuted
                 }
                 if (notification.SocketMessageComponent.Data.CustomId == "choice_color_name")
                 {
-                    List<SocketRole> ColorNameList = rolesCache.ReturnColorNameListForCheck();
+                    Dictionary<ulong, SocketRole> ColorNameList = rolesCache.GetColorNameDictionaryForCheck();
 
-                    foreach(SocketRole roleInCycle in ColorNameList)
+                    foreach(SocketRole roleInCycle in ColorNameList.Values)
                     {
                         if(socketGuildUser.Roles.Any(role => role.Id == roleInCycle.Id))
                         {

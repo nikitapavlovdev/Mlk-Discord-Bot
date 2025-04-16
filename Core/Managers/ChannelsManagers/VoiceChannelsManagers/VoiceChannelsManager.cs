@@ -2,11 +2,35 @@
 using Discord.Rest;
 using Discord.WebSocket;
 using Discord_Bot.Infrastructure.Cache;
+using Microsoft.Extensions.Logging;
 
 namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
 {
-    public class VoiceChannelsCreator(ChannelsCache channelsCache)
+    public class VoiceChannelsManager(
+        ChannelsCache channelsCache,
+        ILogger<VoiceChannelsManager> logger)
     {
+        private async Task LoadVoiceChannelsFromGuild(SocketGuild socketGuild)
+        {
+            foreach (SocketVoiceChannel socketVoiceChannel in socketGuild.VoiceChannels)
+            {
+                channelsCache.AddVoiceChannel(socketVoiceChannel);
+            }
+
+            await Task.CompletedTask;
+        }
+        public async Task GuildVoiceChannelsInitialization(SocketGuild socketGuild)
+        {
+            try
+            {
+                await LoadVoiceChannelsFromGuild(socketGuild);
+                logger.LogInformation("Guild Voice Channels has been loaded");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Error: {Message}", ex.Message);
+            }
+        }
         public async Task<RestVoiceChannel> CreateVoiceChannelAsync(SocketGuild socketGuild, SocketVoiceChannel socketVoiceChannel, SocketUser leader)
         {
             return await socketGuild.CreateVoiceChannelAsync(

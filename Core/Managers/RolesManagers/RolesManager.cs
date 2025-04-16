@@ -9,27 +9,38 @@ namespace Discord_Bot.Core.Managers.RolesManagers
         RolesCache rolesCache,
         JsonDiscordRolesProvider jsonDiscordRolesProvider)
     {
-        private readonly SocketRole _notRegisteredRole = rolesCache.GetRole(
-            jsonDiscordRolesProvider
-            .RootDiscordRoles
-            .GeneralRole
-            .Autorization
-            .NotRegistered
-            .Id);
+        private async Task LoadRolesFromGuild(SocketGuild socketGuild)
+        {
+            foreach (SocketRole socketRole in socketGuild.Roles)
+            {
+                rolesCache.AddRole(socketRole);
+            }
 
-        private readonly SocketRole _baseServerRole = rolesCache.GetRole(
-            jsonDiscordRolesProvider
-            .RootDiscordRoles
-            .GeneralRole
-            .Autorization
-            .MalenkiyMember
-            .Id);
+            await Task.CompletedTask;
+        }
+        public async Task GuildRolesInitialization(SocketGuild socketGuild)
+        {
+            try
+            {
+                await LoadRolesFromGuild(socketGuild);
 
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+            }
+        }
         public async Task AddNotRegisteredRoleAsync(SocketGuildUser socketGuildUser)
         {
             try
             {
-                await socketGuildUser.AddRoleAsync(_notRegisteredRole);
+                await socketGuildUser.AddRoleAsync(rolesCache.GetRole(
+                    jsonDiscordRolesProvider
+                    .RootDiscordRoles
+                    .GeneralRole
+                    .Autorization
+                    .NotRegistered
+                    .Id));
             }
             catch (Exception ex)
             {
@@ -40,7 +51,13 @@ namespace Discord_Bot.Core.Managers.RolesManagers
         {
             try
             {
-                await socketGuildUser.RemoveRoleAsync(_notRegisteredRole);
+                await socketGuildUser.RemoveRoleAsync(rolesCache.GetRole(
+                    jsonDiscordRolesProvider
+                    .RootDiscordRoles
+                    .GeneralRole
+                    .Autorization
+                    .NotRegistered
+                    .Id));
             }
             catch (Exception ex)
             {
@@ -51,11 +68,29 @@ namespace Discord_Bot.Core.Managers.RolesManagers
         {
             try
             {
-                await socketGuildUser.AddRoleAsync(_baseServerRole);
+                await socketGuildUser.AddRoleAsync(rolesCache.GetRole(
+                    jsonDiscordRolesProvider
+                    .RootDiscordRoles
+                    .GeneralRole
+                    .Autorization
+                    .MalenkiyMember
+                    .Id));
             }
             catch (Exception ex)
             {
                 logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+            }
+        }
+        public async Task DeleteSelectionRoles(SocketGuildUser socketGuildUser)
+        {
+            Dictionary<ulong, SocketRole> AvailableForSelectionRoles = rolesCache.GetDictionarySelectionRoles();
+
+            foreach (SocketRole role in AvailableForSelectionRoles.Values)
+            {
+                if (socketGuildUser.Roles.Any(userRole => userRole == role))
+                {
+                    await socketGuildUser.RemoveRoleAsync(role);
+                }
             }
         }
     }

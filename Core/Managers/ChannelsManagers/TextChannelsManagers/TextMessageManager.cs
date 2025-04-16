@@ -7,14 +7,39 @@ using Discord_Bot.Core.Providers.JsonProvider;
 
 namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
 {
-    public class TextMessageSender(ILogger<TextMessageSender> logger, 
+    public class TextMessageManager(ILogger<TextMessageManager> logger, 
         ExtensionEmbedMessage extensionEmbedMessage,
         EmotesCache emotesCache,
         RolesCache rolesCache, 
         JsonChannelsMapProvider channelsProvider,
         JsonDiscordEmotesProvider emotesProvider, 
-        JsonDiscordRolesProvider rolesProvider)
+        JsonDiscordRolesProvider rolesProvider,
+        JsonChannelsMapProvider jsonChannelsMapProvider,
+        ExtensionSelectionMenu extensionSelectionMenu,
+        ChannelsCache channelsCache)
     {
+        
+        private async Task LoadTextChannelsFromGuild(SocketGuild socketGuild)
+        {
+            foreach (SocketTextChannel channel in socketGuild.TextChannels)
+            {
+                channelsCache.AddTextChannel(channel);
+            }
+
+            await Task.CompletedTask;
+        }
+        public async Task GuildTextChannelsInitialization(SocketGuild socketGuild)
+        {
+            try
+            {
+                await LoadTextChannelsFromGuild(socketGuild);
+                logger.LogInformation("Guild Text Channels has been loaded");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Error: {Message}", ex.Message);
+            }
+        }
         public async Task SendWelcomeMessageAsync(SocketGuildUser socketGuildUser)
         {
             try
@@ -50,6 +75,19 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
             GuildEmote? emoteError = emotesCache.GetEmote(emotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Hmph.Id);
 
             await modal.FollowupAsync(embed: extensionEmbedMessage.GetErrorAuthorizationMessageEmbedTemplate(emoteError), ephemeral: true);
+        }
+        public async Task SendMessageWithGuildRoles(SocketGuild socketGuild)
+        {
+            SocketTextChannel? textChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == (jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Id));
+            MessageComponent component = extensionSelectionMenu.GetRolesSelectionMenu();
+
+            if (textChannel == null)
+            {
+                return;
+            }
+
+            await ExtensionChannelsManager.DeleteAllMessageFromChannel(textChannel);
+            await extensionEmbedMessage.SendRolesMessage(textChannel, component);
         }
     }
 }

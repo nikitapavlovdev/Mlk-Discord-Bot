@@ -9,7 +9,7 @@ namespace Discord_Bot.Core.Notifications.UserJoined
     class UserJoinedNotificationHandler(
         ILogger<UserJoinedNotificationHandler> logger,
         RolesManager rolesManager,
-        TextMessageSender textMessageSender,
+        TextMessageManager textMessageSender,
         AutorizationManager autorizationManager) : INotificationHandler<UserJoinedNotification>
     {
         public async Task Handle(UserJoinedNotification notification, CancellationToken cancellationToken)

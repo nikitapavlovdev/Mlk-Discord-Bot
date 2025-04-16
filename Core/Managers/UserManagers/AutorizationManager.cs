@@ -11,7 +11,7 @@ namespace Discord_Bot.Core.Managers.UserManagers;
 public class AutorizationManager(ILogger<AutorizationManager> logger, 
     AutorizationCache auCache, 
     RolesManager rolesManagers,
-    TextMessageSender channelMessageManagers)
+    TextMessageManager channelMessageManagers)
 {
     public async Task SendAutorizationCode(SocketGuildUser socketGuildUser)
     {

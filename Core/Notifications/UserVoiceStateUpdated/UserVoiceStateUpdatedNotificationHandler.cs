@@ -10,7 +10,7 @@ namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
     class UserVoiceStateUpdatedNotificationHandler(
         ChannelsCache channelsCache, 
         ILogger<UserVoiceStateUpdatedNotificationHandler> _logger,
-        VoiceChannelsCreator voiceChannelsCreator) : INotificationHandler<UserVoiceStateUpdatedNotification>
+        VoiceChannelsManager voiceChannelsCreator) : INotificationHandler<UserVoiceStateUpdatedNotification>
     {
         public async Task Handle(UserVoiceStateUpdatedNotification notification, CancellationToken cancellationToken)
         {
@@ -23,39 +23,39 @@ namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
 
                 if (notification.OldState.VoiceChannel != null && notification.NewState.VoiceChannel == null)
                 {
-                    if (channelsCache.IsTemporaryChannel(notification.OldState.VoiceChannel.Id) && notification.OldState.VoiceChannel.ConnectedUsers.Count == 0)
+                    if (channelsCache.IsTemporaryChannel(notification.OldState.VoiceChannel) && notification.OldState.VoiceChannel.ConnectedUsers.Count == 0)
                     {
-                        channelsCache.DeleteTemoraryChannelFromList(notification.OldState.VoiceChannel);
+                        channelsCache.DeleteTemporaryChannel(notification.OldState.VoiceChannel);
                         await notification.OldState.VoiceChannel.DeleteAsync();
                     }
                 }
 
                 if (notification.OldState.VoiceChannel == null && notification.NewState.VoiceChannel != null)
                 {
-                    if (!channelsCache.IsGeneratingChannel(notification.NewState.VoiceChannel.Id))
+                    if (!channelsCache.IsGeneratingChannel(notification.NewState.VoiceChannel))
                     {
                         return;
                     }
 
                     RestVoiceChannel newChannel = await voiceChannelsCreator.CreateVoiceChannelAsync(notification.NewState.VoiceChannel.Guild, notification.NewState.VoiceChannel, notification.SocketUser);
 
-                    channelsCache.AddTemporaryChannelInList(newChannel);
+                    channelsCache.AddTemporaryChannel(newChannel);
                     await guildUser.ModifyAsync(properties => properties.ChannelId = newChannel.Id);
                 }
                 
                 if (notification.OldState.VoiceChannel != null && notification.NewState.VoiceChannel != null)
                 {
-                    if (channelsCache.IsTemporaryChannel(notification.OldState.VoiceChannel.Id) && notification.OldState.VoiceChannel.ConnectedUsers.Count == 0)
+                    if (channelsCache.IsTemporaryChannel(notification.OldState.VoiceChannel) && notification.OldState.VoiceChannel.ConnectedUsers.Count == 0)
                     {
-                        channelsCache.DeleteTemoraryChannelFromList(notification.OldState.VoiceChannel);
+                        channelsCache.DeleteTemporaryChannel(notification.OldState.VoiceChannel);
                         await notification.OldState.VoiceChannel.DeleteAsync();
                     }
 
-                    if (channelsCache.IsGeneratingChannel(notification.NewState.VoiceChannel.Id))
+                    if (channelsCache.IsGeneratingChannel(notification.NewState.VoiceChannel))
                     {
                         RestVoiceChannel newChannel = await voiceChannelsCreator.CreateVoiceChannelAsync(notification.NewState.VoiceChannel.Guild, notification.NewState.VoiceChannel, notification.SocketUser);
 
-                        channelsCache.AddTemporaryChannelInList(newChannel);
+                        channelsCache.AddTemporaryChannel(newChannel);
                         await guildUser.ModifyAsync(properties => properties.ChannelId = newChannel.Id);
                     }
                 }

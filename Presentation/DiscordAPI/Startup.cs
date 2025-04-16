@@ -32,7 +32,7 @@ namespace Discord_Bot.Presentation.DiscordAPI
             IHost host = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
-                    DiscordSocketConfig _discordSocketConfiguration = new()
+                    DiscordSocketConfig discordConfiguration= new()
                     {
                         GatewayIntents = GatewayIntents.All
                     };
@@ -48,24 +48,28 @@ namespace Discord_Bot.Presentation.DiscordAPI
                         typeof(UserVoiceStateUpdatedNotificationHandler).Assembly,
                         typeof(SelectMenuExecutedNotificationHandler).Assembly));
 
-                    services.AddSingleton(context.Configuration);
+                    services.AddSingleton(new DiscordSocketClient(discordConfiguration));
+
                     services.AddSingleton<DiscordEventsController>();
                     services.AddSingleton<DiscordCommandsController>();
+
                     services.AddSingleton<CommandService>();
                     services.AddSingleton<ExtensionEmbedMessage>();
                     services.AddSingleton<ExtensionSelectionMenu>();
+                    services.AddSingleton<ExtensionMessageComponents>();
                     services.AddSingleton<ExtensionModal>();
+
                     services.AddSingleton<ChannelsCache>();
                     services.AddSingleton<RolesCache>();
                     services.AddSingleton<EmotesCache>();
                     services.AddSingleton<AutorizationCache>();
+
                     services.AddSingleton<RolesManager>();
                     services.AddSingleton<AutorizationManager>();
-                    services.AddSingleton<VoiceChannelsCreator>();
+                    services.AddSingleton<VoiceChannelsManager>();
                     services.AddSingleton<PersonalDataManager>();
-                    services.AddSingleton<TextMessageSender>();
-                    services.AddSingleton<ExtensionMessageComponents>();
-                    services.AddSingleton(new DiscordSocketClient(_discordSocketConfiguration));
+                    services.AddSingleton<TextMessageManager>();
+
                     services.AddSingleton<JsonChannelsMapProvider>(x =>
                     {
                         return new JsonChannelsMapProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, 
