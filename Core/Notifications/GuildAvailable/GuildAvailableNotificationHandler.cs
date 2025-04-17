@@ -26,6 +26,8 @@ namespace Discord_Bot.Core.Notifications.GuildAvailable
                     textMessageManager.SendMessageWithGuildRoles(notification.SocketGuild)
                 );
 
+                await voiceChannelsManager.ClearTemoraryVoiceChannels(notification.SocketGuild);
+
                 logger.LogInformation("Guild entities has been loaded");
 
             }

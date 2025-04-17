@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
+using Discord_Bot.Core.Providers.JsonProvider;
 using Discord_Bot.Infrastructure.Cache;
 using Microsoft.Extensions.Logging;
 
@@ -8,7 +9,8 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
 {
     public class VoiceChannelsManager(
         ChannelsCache channelsCache,
-        ILogger<VoiceChannelsManager> logger)
+        ILogger<VoiceChannelsManager> logger,
+        JsonDiscordCategoriesProvider jsonDiscordCategoriesProvider)
     {
         private async Task LoadVoiceChannelsFromGuild(SocketGuild socketGuild)
         {
@@ -31,13 +33,30 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
                 logger.LogError("Error: {Message}", ex.Message);
             }
         }
-        public async Task<RestVoiceChannel> CreateVoiceChannelAsync(SocketGuild socketGuild, SocketVoiceChannel socketVoiceChannel, SocketUser leader)
+        public async Task ClearTemoraryVoiceChannels(SocketGuild socketGuild)
+        {
+            foreach(SocketVoiceChannel socketVoiceChannel in socketGuild.VoiceChannels)
+            {
+                if(socketVoiceChannel.Category.Id == jsonDiscordCategoriesProvider.RootDiscordCategories.Guild.Autolobby.Id)
+                {
+                    if(socketVoiceChannel.ConnectedUsers.Count == 0)
+                    {
+                        await socketVoiceChannel.DeleteAsync();
+                    }
+                    else
+                    {
+                        channelsCache.AddTemporaryChannel(socketVoiceChannel);
+                    }
+                }
+            }
+        }
+        public async Task<RestVoiceChannel> CreateVoiceChannelAsync(SocketGuild socketGuild, SocketUser leader)
         {
             return await socketGuild.CreateVoiceChannelAsync(
                 $"🎵 | ᴍʟᴋʟᴏʙʙʏ {channelsCache.GetLobbyNumber()}",
                 properties =>
                 {
-                    properties.CategoryId = socketVoiceChannel.CategoryId;
+                    properties.CategoryId = jsonDiscordCategoriesProvider.RootDiscordCategories.Guild.Autolobby.Id;
                     properties.Bitrate = 96000;
                     properties.RTCRegion = "rotterdam";
                     properties.PermissionOverwrites = new Overwrite[]

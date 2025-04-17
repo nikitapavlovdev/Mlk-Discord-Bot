@@ -97,6 +97,12 @@ namespace Discord_Bot.Presentation.DiscordAPI
                             "..", "..", "..", "Infrastructure", "Configuration", "DiscordRoles.json")),
                             x.GetRequiredService<ILogger<JsonDiscordRolesProvider>>());
                     });
+                    services.AddSingleton<JsonDiscordCategoriesProvider>(x =>
+                    {
+                        return new JsonDiscordCategoriesProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory,
+                            "..", "..", "..", "Infrastructure", "Configuration", "DiscordCategoriesMap.json")),
+                                x.GetRequiredService<ILogger<JsonDiscordCategoriesProvider>>());
+                    });
                 })
                 .ConfigureLogging((context, logging) =>
                 {
@@ -110,11 +116,11 @@ namespace Discord_Bot.Presentation.DiscordAPI
             DiscordCommandsController commandsController = host.Services.GetRequiredService<DiscordCommandsController>();
             JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider = host.Services.GetRequiredService<JsonDiscordConfigurationProvider>();
 
-            string? _discordToker = jsonDiscordConfigurationProvider.RootDiscordConfiguration?.MalenkieAdminBot?.API_KEY;
+            string? discordToken = jsonDiscordConfigurationProvider.RootDiscordConfiguration?.MalenkieAdminBot?.API_KEY;
 
-            if (_discordToker != null)
+            if (discordToken != null)
             {
-                await botClient.LoginAsync(TokenType.Bot, _discordToker);
+                await botClient.LoginAsync(TokenType.Bot, discordToken);
             }
 
             await botClient.StartAsync();

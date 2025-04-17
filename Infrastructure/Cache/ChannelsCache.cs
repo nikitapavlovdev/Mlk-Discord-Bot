@@ -9,7 +9,7 @@ namespace Discord_Bot.Infrastructure.Cache
         private readonly List<SocketVoiceChannel> GuildVoiceChannels = [];
         private readonly List<SocketTextChannel> GuildTextChannels = [];
         private readonly List<SocketVoiceChannel> GenereatingChannels = [];
-        private readonly List<RestVoiceChannel> TemporaryVoiceChannels = [];
+        private readonly List<ulong> TemporaryVoiceChannels = [];
 
         public int GetLobbyNumber()
         {
@@ -21,12 +21,17 @@ namespace Discord_Bot.Infrastructure.Cache
         }
         public bool IsTemporaryChannel(SocketVoiceChannel socketVoiceChannel)
         {
-            return TemporaryVoiceChannels.Any(x => x.Id == socketVoiceChannel.Id);
+            return TemporaryVoiceChannels.Any(x => x == socketVoiceChannel.Id);
         }
-        public void AddTemporaryChannel(RestVoiceChannel channel)
+        public void AddTemporaryChannel(RestVoiceChannel socketVoiceChannel)
         {
-            TemporaryVoiceChannels.Add(channel);
+            TemporaryVoiceChannels.Add(socketVoiceChannel.Id);
         }
+        public void AddTemporaryChannel(SocketVoiceChannel socketVoiceChannel)
+        {
+            TemporaryVoiceChannels.Add(socketVoiceChannel.Id);
+        }
+
         public void AddVoiceChannel(SocketVoiceChannel socketVoiceChannel)
         {
             if(socketVoiceChannel.Id == jsonChannelsMapProvider.RootChannel.Channels.VoiceChannels.AutoLobby.AutoGamesLobby.Id)
@@ -43,13 +48,13 @@ namespace Discord_Bot.Infrastructure.Cache
         {
             GuildTextChannels.Add(socketTextChannel);
         }
-        public void DeleteTemporaryChannel(SocketVoiceChannel channel)
+        public void DeleteTemporaryChannel(SocketVoiceChannel socketVoiceChannel)
         {
-            foreach (RestVoiceChannel restVoicechannel in TemporaryVoiceChannels)
+            foreach (ulong channelId in TemporaryVoiceChannels)
             {
-                if (restVoicechannel.Id == channel.Id)
+                if (channelId == socketVoiceChannel.Id)
                 {
-                    TemporaryVoiceChannels.Remove(restVoicechannel);
+                    TemporaryVoiceChannels.Remove(channelId);
                     return;
                 }
             }

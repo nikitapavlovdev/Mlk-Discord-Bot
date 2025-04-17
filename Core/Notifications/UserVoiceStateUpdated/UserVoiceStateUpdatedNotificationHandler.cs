@@ -9,7 +9,7 @@ namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
 {
     class UserVoiceStateUpdatedNotificationHandler(
         ChannelsCache channelsCache, 
-        ILogger<UserVoiceStateUpdatedNotificationHandler> _logger,
+        ILogger<UserVoiceStateUpdatedNotificationHandler> logger,
         VoiceChannelsManager voiceChannelsCreator) : INotificationHandler<UserVoiceStateUpdatedNotification>
     {
         public async Task Handle(UserVoiceStateUpdatedNotification notification, CancellationToken cancellationToken)
@@ -37,10 +37,10 @@ namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
                         return;
                     }
 
-                    RestVoiceChannel newChannel = await voiceChannelsCreator.CreateVoiceChannelAsync(notification.NewState.VoiceChannel.Guild, notification.NewState.VoiceChannel, notification.SocketUser);
+                    RestVoiceChannel brandNewRestChannel = await voiceChannelsCreator.CreateVoiceChannelAsync(notification.NewState.VoiceChannel.Guild, notification.SocketUser);
+                    channelsCache.AddTemporaryChannel(brandNewRestChannel);
 
-                    channelsCache.AddTemporaryChannel(newChannel);
-                    await guildUser.ModifyAsync(properties => properties.ChannelId = newChannel.Id);
+                    await guildUser.ModifyAsync(properties => properties.ChannelId = brandNewRestChannel.Id);
                 }
                 
                 if (notification.OldState.VoiceChannel != null && notification.NewState.VoiceChannel != null)
@@ -53,17 +53,16 @@ namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
 
                     if (channelsCache.IsGeneratingChannel(notification.NewState.VoiceChannel))
                     {
-                        RestVoiceChannel newChannel = await voiceChannelsCreator.CreateVoiceChannelAsync(notification.NewState.VoiceChannel.Guild, notification.NewState.VoiceChannel, notification.SocketUser);
+                        RestVoiceChannel brandNewRestChannel = await voiceChannelsCreator.CreateVoiceChannelAsync(notification.NewState.VoiceChannel.Guild, notification.SocketUser);
+                        channelsCache.AddTemporaryChannel(brandNewRestChannel);
 
-                        channelsCache.AddTemporaryChannel(newChannel);
-                        await guildUser.ModifyAsync(properties => properties.ChannelId = newChannel.Id);
+                        await guildUser.ModifyAsync(properties => properties.ChannelId = brandNewRestChannel.Id);
                     }
                 }
-               
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
     }
