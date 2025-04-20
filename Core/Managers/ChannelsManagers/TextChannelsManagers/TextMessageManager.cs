@@ -18,28 +18,18 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
         ExtensionSelectionMenu extensionSelectionMenu,
         ChannelsCache channelsCache)
     {
-        
-        private async Task LoadTextChannelsFromGuild(SocketGuild socketGuild)
-        {
-            foreach (SocketTextChannel channel in socketGuild.TextChannels)
-            {
-                channelsCache.AddTextChannel(channel);
-            }
-
-            await Task.CompletedTask;
-        }
         public async Task GuildTextChannelsInitialization(SocketGuild socketGuild)
         {
             try
             {
                 await LoadTextChannelsFromGuild(socketGuild);
-                logger.LogInformation("Guild Text Channels has been loaded");
             }
             catch (Exception ex)
             {
                 logger.LogError("Error: {Message}", ex.Message);
             }
         }
+         
         public async Task SendWelcomeMessageAsync(SocketGuildUser socketGuildUser)
         {
             try
@@ -68,6 +58,7 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
                 channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Id,
                 channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.BotCommands.Id,
                 channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.News.Id), 
+                components: ExtensionMessageComponents.GetAdditionalWelcomeMessageComponent(modal.User.Id),
                 ephemeral: true);
         }
         public async Task SendFollowupMessageOnErrorAutorization(SocketModal modal)
@@ -88,6 +79,25 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
 
             await ExtensionChannelsManager.DeleteAllMessageFromChannel(textChannel);
             await extensionEmbedMessage.SendRolesMessage(textChannel, component);
+        }
+        public async Task SendFarewellMessageAsync(SocketGuild socketGuild, SocketUser socketUser)
+        {
+            SocketTextChannel? socketTextChannel = socketGuild.GetTextChannel(jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Chat.Id);
+            Embed embedMessage = extensionEmbedMessage.GetFarewellEmbedTamplate(socketUser);
+
+            if(socketTextChannel == null) {  return; }
+
+            await socketTextChannel.SendMessageAsync(embed: embedMessage);
+        }
+
+        private async Task LoadTextChannelsFromGuild(SocketGuild socketGuild)
+        {
+            foreach (SocketTextChannel channel in socketGuild.TextChannels)
+            {
+                channelsCache.AddTextChannel(channel);
+            }
+
+            await Task.CompletedTask;
         }
     }
 }

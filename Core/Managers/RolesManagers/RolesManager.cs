@@ -9,15 +9,6 @@ namespace Discord_Bot.Core.Managers.RolesManagers
         RolesCache rolesCache,
         JsonDiscordRolesProvider jsonDiscordRolesProvider)
     {
-        private async Task LoadRolesFromGuild(SocketGuild socketGuild)
-        {
-            foreach (SocketRole socketRole in socketGuild.Roles)
-            {
-                rolesCache.AddRole(socketRole);
-            }
-
-            await Task.CompletedTask;
-        }
         public async Task GuildRolesInitialization(SocketGuild socketGuild)
         {
             try
@@ -30,6 +21,7 @@ namespace Discord_Bot.Core.Managers.RolesManagers
                 logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
+
         public async Task AddNotRegisteredRoleAsync(SocketGuildUser socketGuildUser)
         {
             try
@@ -93,5 +85,16 @@ namespace Discord_Bot.Core.Managers.RolesManagers
                 }
             }
         }
+
+        private async Task LoadRolesFromGuild(SocketGuild socketGuild)
+        {
+            foreach (SocketRole socketRole in socketGuild.Roles)
+            {
+                rolesCache.AddRole(socketRole);
+            }
+
+            await Task.CompletedTask;
+        }
+
     }
 }

@@ -1,18 +1,18 @@
 ﻿using MediatR;
-using Discord_Bot.Infrastructure.Cache;
 using Microsoft.Extensions.Logging;
 using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
 using Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers;
 using Discord_Bot.Core.Managers.RolesManagers;
+using Discord_Bot.Core.Managers.EmotesManagers;
 
 namespace Discord_Bot.Core.Notifications.GuildAvailable
 {
     class GuildAvailableNotificationHandler(
-        EmotesCache emotesCache,
         ILogger<GuildAvailableNotificationHandler> logger,
         TextMessageManager textMessageManager,
         VoiceChannelsManager voiceChannelsManager,
-        RolesManager rolesManager) : INotificationHandler<GuildAvailableNotification>
+        RolesManager rolesManager,
+        EmotesManager emotesManager) : INotificationHandler<GuildAvailableNotification>
     {
         public async Task Handle(GuildAvailableNotification notification, CancellationToken cancellationToken)
         {
@@ -22,11 +22,11 @@ namespace Discord_Bot.Core.Notifications.GuildAvailable
                     textMessageManager.GuildTextChannelsInitialization(notification.SocketGuild),
                     voiceChannelsManager.GuildVoiceChannelsInitialization(notification.SocketGuild),
                     rolesManager.GuildRolesInitialization(notification.SocketGuild),
-                    emotesCache.EmotesInitialization(notification.SocketGuild),
-                    textMessageManager.SendMessageWithGuildRoles(notification.SocketGuild)
+                    emotesManager.EmotesInitialization(notification.SocketGuild)
                 );
 
-                await voiceChannelsManager.ClearTemoraryVoiceChannels(notification.SocketGuild);
+                await textMessageManager.SendMessageWithGuildRoles(notification.SocketGuild);
+                await voiceChannelsManager.ClearTemporaryVoiceChannels(notification.SocketGuild);
 
                 logger.LogInformation("Guild entities has been loaded");
 

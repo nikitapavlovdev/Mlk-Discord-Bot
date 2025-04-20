@@ -109,15 +109,13 @@ namespace Discord_Bot.Core.Utilities.DI
             GuildEmote? welcomeMessageEmote = emotesCache.GetEmote(jsonDiscordEmotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Love.Id);
 
 
-            string title = $"Новый участник";
+            string title = "Новый участник";
             string description = $"Привет, **{socketGuildUser.Username}**! {welcomeMessageEmote}\nДобро пожаловать на сервер **{socketGuildUser.Guild.Name}**" +
                                                                                                         $"\n\nДля продолжения введи код, отправленный тебе в личное сообщение, в форме по кнопочке **«‎Ввести код»‎**";
-            Color color = new(30, 144, 255);
-
             Embed embed = new EmbedBuilder()
                 .WithTitle(title)
                 .WithDescription(description)
-                .WithColor(color)
+                .WithColor(new(30, 144, 255))
                 .WithAuthor(socketGuildUser.DisplayName, socketGuildUser.GetAvatarUrl(ImageFormat.Auto, 48))
                 .WithCurrentTimestamp()
                 .WithFooter(new EmbedFooterBuilder()
@@ -126,6 +124,21 @@ namespace Discord_Bot.Core.Utilities.DI
                 .Build();
 
             return embed;
+        }
+        public Embed GetFarewellEmbedTamplate(SocketUser socketUser)
+        {
+            string title = "Покинувший сервер";
+            string description = $"Пользовтель {socketUser.Mention} покинул сервер.";
+
+            return new EmbedBuilder()
+                .WithTitle(title)
+                .WithDescription(description)
+                .WithColor(new(240, 128, 128))
+                .WithCurrentTimestamp()
+                .WithFooter(new EmbedFooterBuilder()
+                    .WithText(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name)
+                    .WithIconUrl(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
+                .Build();
         }
 
         public Embed GetNewsTamplate(string description)

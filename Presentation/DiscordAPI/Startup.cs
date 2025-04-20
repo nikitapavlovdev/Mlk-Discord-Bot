@@ -22,6 +22,7 @@ using Microsoft.Extensions.Logging;
 using Discord_Bot.Core.Notifications.Log;
 using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
 using Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers;
+using Discord_Bot.Core.Managers.EmotesManagers;
 
 namespace Discord_Bot.Presentation.DiscordAPI
 {
@@ -69,6 +70,7 @@ namespace Discord_Bot.Presentation.DiscordAPI
                     services.AddSingleton<VoiceChannelsManager>();
                     services.AddSingleton<PersonalDataManager>();
                     services.AddSingleton<TextMessageManager>();
+                    services.AddSingleton<EmotesManager>();
 
                     services.AddSingleton<JsonChannelsMapProvider>(x =>
                     {

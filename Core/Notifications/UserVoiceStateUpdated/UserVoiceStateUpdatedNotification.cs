@@ -3,17 +3,10 @@ using Discord.WebSocket;
 
 namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
 {
-    class UserVoiceStateUpdatedNotification : INotification
+    class UserVoiceStateUpdatedNotification(SocketUser socketUser, SocketVoiceState oldState, SocketVoiceState newState) : INotification
     {
-        public SocketUser SocketUser { get; }
-        public SocketVoiceState OldState { get; }
-        public SocketVoiceState NewState { get; }
-
-        public UserVoiceStateUpdatedNotification(SocketUser socketUser, SocketVoiceState oldState, SocketVoiceState newState)
-        {
-            SocketUser = socketUser;
-            OldState = oldState;
-            NewState = newState;
-        }
+        public SocketUser SocketUser { get; } = socketUser;
+        public SocketVoiceState OldState { get; } = oldState;
+        public SocketVoiceState NewState { get; } = newState;
     }
 }

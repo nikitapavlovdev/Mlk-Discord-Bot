@@ -12,28 +12,19 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
         ILogger<VoiceChannelsManager> logger,
         JsonDiscordCategoriesProvider jsonDiscordCategoriesProvider)
     {
-        private async Task LoadVoiceChannelsFromGuild(SocketGuild socketGuild)
-        {
-            foreach (SocketVoiceChannel socketVoiceChannel in socketGuild.VoiceChannels)
-            {
-                channelsCache.AddVoiceChannel(socketVoiceChannel);
-            }
-
-            await Task.CompletedTask;
-        }
         public async Task GuildVoiceChannelsInitialization(SocketGuild socketGuild)
         {
             try
             {
                 await LoadVoiceChannelsFromGuild(socketGuild);
-                logger.LogInformation("Guild Voice Channels has been loaded");
             }
             catch (Exception ex)
             {
                 logger.LogError("Error: {Message}", ex.Message);
             }
         }
-        public async Task ClearTemoraryVoiceChannels(SocketGuild socketGuild)
+
+        public async Task ClearTemporaryVoiceChannels(SocketGuild socketGuild)
         {
             foreach(SocketVoiceChannel socketVoiceChannel in socketGuild.VoiceChannels)
             {
@@ -76,5 +67,16 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
                 }
             );
         }
+
+        private async Task LoadVoiceChannelsFromGuild(SocketGuild socketGuild)
+        {
+            foreach (SocketVoiceChannel socketVoiceChannel in socketGuild.VoiceChannels)
+            {
+                channelsCache.AddVoiceChannel(socketVoiceChannel);
+            }
+
+            await Task.CompletedTask;
+        }
+
     }
 }
