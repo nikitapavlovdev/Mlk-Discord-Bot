@@ -89,7 +89,6 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
 
             await socketTextChannel.SendMessageAsync(embed: embedMessage);
         }
-
         private async Task LoadTextChannelsFromGuild(SocketGuild socketGuild)
         {
             foreach (SocketTextChannel channel in socketGuild.TextChannels)

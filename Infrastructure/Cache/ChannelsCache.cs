@@ -25,7 +25,10 @@ namespace Discord_Bot.Infrastructure.Cache
         }
         public void AddTemporaryChannel(RestVoiceChannel socketVoiceChannel)
         {
-            TemporaryVoiceChannels.Add(socketVoiceChannel.Id);
+            if(!TemporaryVoiceChannels.Any(x => x == socketVoiceChannel.Id))
+            {
+                TemporaryVoiceChannels.Add(socketVoiceChannel.Id);
+            }
         }
         public void AddTemporaryChannel(SocketVoiceChannel socketVoiceChannel)
         {
@@ -34,19 +37,23 @@ namespace Discord_Bot.Infrastructure.Cache
 
         public void AddVoiceChannel(SocketVoiceChannel socketVoiceChannel)
         {
-            if(socketVoiceChannel.Id == jsonChannelsMapProvider.RootChannel.Channels.VoiceChannels.AutoLobby.AutoGamesLobby.Id)
+            if(!GuildVoiceChannels.Any(x => x.Id == socketVoiceChannel.Id))
             {
-                GenereatingChannels.Add(socketVoiceChannel);
-            }
-            else
-            {
+                if (socketVoiceChannel.Id == jsonChannelsMapProvider.RootChannel.Channels.VoiceChannels.AutoLobby.AutoGamesLobby.Id)
+                {
+                    GenereatingChannels.Add(socketVoiceChannel);
+                }
+
                 GuildVoiceChannels.Add(socketVoiceChannel);
-            }
+            } 
         }
         
         public void AddTextChannel(SocketTextChannel socketTextChannel)
         {
-            GuildTextChannels.Add(socketTextChannel);
+            if(!GuildTextChannels.Any(x => x.Id == socketTextChannel.Id))
+            {
+                GuildTextChannels.Add(socketTextChannel);
+            }
         }
         public void DeleteTemporaryChannel(SocketVoiceChannel socketVoiceChannel)
         {
