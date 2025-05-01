@@ -10,29 +10,44 @@ namespace Discord_Bot.Core.Utilities.DI
         RolesCache rolesCachhe, 
         EmotesCache emotesCache,
         JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider,
-        JsonDiscordEmotesProvider jsonDiscordEmotesProvider)
+        JsonDiscordEmotesProvider jsonDiscordEmotesProvider,
+        JsonDiscordPicturesProvider jsonDiscordPicturesProvider)
     {
         public Embed GetMainRolesEmbedMessage()
         {
             return new EmbedBuilder()
-                .WithTitle("Роли сервера ᴍᴀʟᴇɴᴋɪᴇ")
+                .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ 🠒 ʀᴏʟᴇs")
                 .WithDescription(rolesCachhe.GetDescriptionForMainRoles())
                 .WithFooter(ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name),
                             ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
                 .WithTimestamp(DateTimeOffset.Now)
-                .WithColor(105, 105, 105)
+                .WithColor(19, 20, 22)
+                .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.RolesBanner)
                 .Build();
         }
         public Embed GetSwitchColorEmbedMessage()
         {
             return new EmbedBuilder()
-                .WithTitle("Цвет имени")
+                .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ 🠒 ɴɪᴄᴋɴᴀᴍᴇ ᴄᴏʟᴏʀ")
                 .WithDescription(rolesCachhe.GetDescriptionForSwitchColorRoles())
                 .WithFooter(ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name),
                             ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
                 .WithTimestamp(DateTimeOffset.Now)
-                .WithColor(105, 105, 105)
+                .WithColor(19, 20, 22)
+                .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.ColorNameBanner)
                 .Build();
+        }
+        public Embed GetRulesEmbedMessage()
+        {
+            return new EmbedBuilder()
+               .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ 🠒 ʀᴜʟᴇs")
+               .WithDescription(rolesCachhe.GetDescriptionForRules())
+               .WithFooter(ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name),
+                           ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
+               .WithTimestamp(DateTimeOffset.Now)
+               .WithColor(19, 20, 22)
+               .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.RulesBanner)
+               .Build();
         }
         public Embed GetSuccesAuthorizationMessageEmbedTemplate(Emote? emoteSuccess, 
             SocketRole baseServerRole, 

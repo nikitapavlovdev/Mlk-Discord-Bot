@@ -8,6 +8,8 @@ namespace Discord_Bot.Infrastructure.Cache
         JsonDiscordRolesProvider jsonDiscordRolesProvider,
         EmotesCache emotesCache)
     {
+        const string invisSumbol = "ㅤ";
+
         private readonly Dictionary<ulong, SocketRole> GuildRoles = [];
         private readonly Dictionary<ulong, SocketRole> HierarchyRoles = [];
         private readonly Dictionary<ulong, SocketRole> CategoryRoles = [];
@@ -57,31 +59,31 @@ namespace Discord_Bot.Infrastructure.Cache
         }
         public string GetDescriptionForMainRoles()
         {
-            string textDescription = $"> В данном блоке представлены все основные роли нашего сервера. " +
+            string textDescription = $"В данном блоке представлены все основные роли нашего сервера. " +
                 $"Что-то можно выбрать самостоятельно, " +
                 $"а что-то получить лично по желанию/на усмотрение администрации!\n";
             
             GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
 
-            textDescription += "### РОЛИ ИЕРАРХИИ\n";
+            textDescription += "### иᴇᴩᴀᴩхия ᴄᴇᴩʙᴇᴩᴀ\n";
 
             foreach (var role in HierarchyRoles)
             {
-                textDescription += $"{pointEmote} {role.Value.Mention} -\t {RolesDescriptions[role.Key]}\n";
+                textDescription += $"{pointEmote} {role.Value.Mention} 🠒 {RolesDescriptions[role.Key]}\n";
             }
 
-            textDescription += $"### РОЛИ КАТЕГОРИИ\n";
+            textDescription += "### ᴋᴀᴛᴇᴦоᴩии\n";
 
             foreach (var role in CategoryRoles)
             {
-                textDescription += $"{pointEmote} {role.Value.Mention} -\t {RolesDescriptions[role.Key]}\n";
+                textDescription += $"{pointEmote} {role.Value.Mention} 🠒 {RolesDescriptions[role.Key]}\n";
             }
 
-            textDescription += $"### УНИКАЛЬНЫЕ РОЛИ\n";
+            textDescription += "### униᴋᴀᴧьныᴇ ᴩоᴧи\n";
 
             foreach (var role in UniqieRoles)
             {
-                textDescription += $"{pointEmote} {role.Value.Mention} -\t {RolesDescriptions[role.Key]}\n";
+                textDescription += $"{pointEmote} {role.Value.Mention} 🠒 {RolesDescriptions[role.Key]}\n";
             }
 
 
@@ -89,16 +91,36 @@ namespace Discord_Bot.Infrastructure.Cache
         }
         public string GetDescriptionForSwitchColorRoles()
         {
-            string textDescription = $"> В данном блоке содержатся роли, которые изменяют цвет вашего никнейма на сервере. Обратите внимание, что некоторые цвета доступны только для **Nitro-бустеров**!\n";
+            string textDescription = $"В данном блоке содержатся роли, которые изменяют цвет вашего никнейма на сервере. Обратите внимание, что некоторые цвета доступны только для **Nitro-бустеров**!\n";
 
             GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
 
-            textDescription += "### Доступные цвета\n\n";
+            textDescription += "### доᴄᴛуᴨныᴇ цʙᴇᴛᴀ\n\n";
 
             foreach (var role in SwitchColorRoles)
             {
-                textDescription += $"{pointEmote} {role.Value.Mention}\n";
+                textDescription += $"> {role.Value.Mention}\n";
             }
+
+            return textDescription;
+        }
+        public string GetDescriptionForRules()
+        {
+            GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
+
+            string textDescription =
+                $"{pointEmote} Внимательно прочтите правила ниже.\n" +
+                $"{pointEmote} Будьте искренними с самим собой и вашими собеседниками.\n" +
+                $"{pointEmote} Не засоряйте тематические каналы информационным мусором, который никак не связан с темой канала.\n" +
+                $"{pointEmote} Постарайтесь уважительно относиться к точке зрения собеседника - у всех нас разный опыт за плечами.\n" +
+                $"{pointEmote} Не осуждайте человека за его ошибки. Постарайтесь понять корень проблемы прежде чем делать выводы.\n" +
+                $"{pointEmote} Не обсуждайте мировую политику и не создавайте ситуационных споров на этой почве.\n" +
+                $"{pointEmote} Постарайтесь не выливать весь негатив на ваших собеседников. Либо делайте это, но с заранее выключеным микрофоном.\n" +
+                $"{pointEmote} Будьте самими собою\n" +
+                $"{pointEmote} Не стесняйтесь просить помощи у других.\n" +
+                $"{pointEmote} Не стоит быть чересчур навязчивым\n\n";
+
+            textDescription += "И самое главное - наслаждайтесь моментом!";
 
             return textDescription;
         }
@@ -142,7 +164,8 @@ namespace Discord_Bot.Infrastructure.Cache
                 role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.Gacha.Id ||
                 role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.LadyFlora.Id ||
                 role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.Svin.Id ||
-                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.Twitch.Id)
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.Twitch.Id || 
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.Gus.Id)
             {
                 return true;
             }

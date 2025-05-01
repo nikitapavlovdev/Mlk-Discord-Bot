@@ -24,5 +24,17 @@ namespace Discord_Bot.Infrastructure.JsonModels.Pictures
 
         [JsonProperty(nameof(LinkGreenEyes))]
         public string? LinkGreenEyes { get; set; }
+
+        [JsonProperty(nameof(BlackWhiteCloud1))]
+        public string? BlackWhiteCloud1 { get; set; }
+
+        [JsonProperty(nameof(RolesBanner))]
+        public string? RolesBanner { get; set; }
+
+        [JsonProperty(nameof(ColorNameBanner))]
+        public string? ColorNameBanner { get; set; }
+
+        [JsonProperty(nameof(RulesBanner))]
+        public string? RulesBanner { get; set; }
     }
 }

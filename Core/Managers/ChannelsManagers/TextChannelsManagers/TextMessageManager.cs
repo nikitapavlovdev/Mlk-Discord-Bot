@@ -4,8 +4,6 @@ using Discord;
 using Discord_Bot.Core.Utilities.DI;
 using Discord_Bot.Infrastructure.Cache;
 using Discord_Bot.Core.Providers.JsonProvider;
-using Microsoft.Identity.Client;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
 {
@@ -123,6 +121,22 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
             else
             {
                 await textRolesChannel.SendMessageAsync(embed: extensionEmbedMessage.GetSwitchColorEmbedMessage());
+            }
+        }
+        public async Task SendRulesMessage(SocketGuild socketGuild)
+        {
+            SocketTextChannel? textRulesChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Rules.Id);
+
+            if (await textRulesChannel.GetMessageAsync(jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.Roles.Rules.Id) is IUserMessage sentMessage)
+            {
+                await sentMessage.ModifyAsync(message =>
+                {
+                    message.Embed = extensionEmbedMessage.GetRulesEmbedMessage();
+                });
+            }
+            else
+            {
+                await textRulesChannel.SendMessageAsync(embed: extensionEmbedMessage.GetRulesEmbedMessage());
             }
         }
 

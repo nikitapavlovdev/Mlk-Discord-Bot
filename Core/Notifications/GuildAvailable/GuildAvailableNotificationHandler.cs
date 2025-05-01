@@ -6,7 +6,7 @@ using Discord_Bot.Core.Managers.RolesManagers;
 using Discord_Bot.Core.Managers.EmotesManagers;
 
 namespace Discord_Bot.Core.Notifications.GuildAvailable
-{
+{   
     class GuildAvailableNotificationHandler(
         ILogger<GuildAvailableNotificationHandler> logger,
         TextMessageManager textMessageManager,

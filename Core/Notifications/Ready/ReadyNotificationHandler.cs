@@ -18,7 +18,8 @@ namespace Discord_Bot.Core.Notifications.Ready
 
             await Task.WhenAll(
                     textMessageManager.SendMessageWithGuildRoles(Guild),
-                    voiceChannelsManager.ClearTemporaryVoiceChannels(Guild)
+                    textMessageManager.SendRulesMessage(Guild),
+                    voiceChannelsManager.ClearTemporaryVoiceChannels(Guild) 
             );
         }
     }

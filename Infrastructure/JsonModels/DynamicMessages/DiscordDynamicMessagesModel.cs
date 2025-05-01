@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Discord_Bot.Infrastructure.JsonModels.Channels;
+using Newtonsoft.Json;
 
 namespace Discord_Bot.Infrastructure.JsonModels.DynamicMessages
 {
@@ -21,6 +22,9 @@ namespace Discord_Bot.Infrastructure.JsonModels.DynamicMessages
 
         [JsonProperty(nameof(SwitchColor))]
         public SwitchColor? SwitchColor { get; set; }
+
+        [JsonProperty(nameof(Rules))]
+        public Rules? Rules { get; set; }
     }
 
     public class MainRoles
@@ -30,6 +34,12 @@ namespace Discord_Bot.Infrastructure.JsonModels.DynamicMessages
     }
 
     public class SwitchColor
+    {
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+    }
+
+    public class Rules
     {
         [JsonProperty(nameof(Id))]
         public ulong Id { get; set; }
