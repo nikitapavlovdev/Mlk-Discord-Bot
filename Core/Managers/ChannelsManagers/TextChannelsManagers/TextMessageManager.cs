@@ -4,6 +4,8 @@ using Discord;
 using Discord_Bot.Core.Utilities.DI;
 using Discord_Bot.Infrastructure.Cache;
 using Discord_Bot.Core.Providers.JsonProvider;
+using Microsoft.Identity.Client;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
 {
@@ -15,7 +17,7 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
         JsonDiscordEmotesProvider emotesProvider, 
         JsonDiscordRolesProvider rolesProvider,
         JsonChannelsMapProvider jsonChannelsMapProvider,
-        ExtensionSelectionMenu extensionSelectionMenu,
+        JsonDiscordDynamicMessagesProvider jsonDiscordDynamicMessagesProvider,
         ChannelsCache channelsCache)
     {
         public async Task GuildTextChannelsInitialization(SocketGuild socketGuild)
@@ -69,16 +71,9 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
         }
         public async Task SendMessageWithGuildRoles(SocketGuild socketGuild)
         {
-            SocketTextChannel? textChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == (jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Id));
-            MessageComponent component = extensionSelectionMenu.GetRolesSelectionMenu();
-
-            if (textChannel == null)
-            {
-                return;
-            }
-
-            await ExtensionChannelsManager.DeleteAllMessageFromChannel(textChannel);
-            await extensionEmbedMessage.SendRolesMessage(textChannel, component);
+            await Task.WhenAll(
+                SendMainGuildRolesMessage(socketGuild),
+                SendSwitchColorRolesMessage(socketGuild));
         }
         public async Task SendFarewellMessageAsync(SocketGuild socketGuild, SocketUser socketUser)
         {
@@ -98,5 +93,38 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
 
             await Task.CompletedTask;
         }
+        private async Task SendMainGuildRolesMessage(SocketGuild socketGuild)
+        {
+            SocketTextChannel? textRolesChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Id);
+
+            if (await textRolesChannel.GetMessageAsync(jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.Roles.MainRoles.Id) is IUserMessage sentMessage)
+            {
+                await sentMessage.ModifyAsync(message =>
+                {
+                    message.Embed = extensionEmbedMessage.GetMainRolesEmbedMessage();
+                });
+            }
+            else
+            {
+                await textRolesChannel.SendMessageAsync(embed: extensionEmbedMessage.GetMainRolesEmbedMessage());
+            }
+        }
+        private async Task SendSwitchColorRolesMessage(SocketGuild socketGuild)
+        {
+            SocketTextChannel? textRolesChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Id);
+
+            if (await textRolesChannel.GetMessageAsync(jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.Roles.SwitchColor.Id) is IUserMessage sentMessage)
+            {
+                await sentMessage.ModifyAsync(message =>
+                {
+                    message.Embed = extensionEmbedMessage.GetSwitchColorEmbedMessage();
+                });
+            }
+            else
+            {
+                await textRolesChannel.SendMessageAsync(embed: extensionEmbedMessage.GetSwitchColorEmbedMessage());
+            }
+        }
+
     }
 }

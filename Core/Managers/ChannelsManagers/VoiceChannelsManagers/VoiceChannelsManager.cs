@@ -23,7 +23,6 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
                 logger.LogError("Error: {Message}", ex.Message);
             }
         }
-
         public async Task ClearTemporaryVoiceChannels(SocketGuild socketGuild)
         {
             foreach(SocketVoiceChannel socketVoiceChannel in socketGuild.VoiceChannels)
@@ -44,11 +43,11 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
         public async Task<RestVoiceChannel> CreateVoiceChannelAsync(SocketGuild socketGuild, SocketUser leader)
         {
             return await socketGuild.CreateVoiceChannelAsync(
-                $"🎵 | ᴍʟᴋʟᴏʙʙʏ {channelsCache.GetLobbyNumber()}",
+                $"🔉 | ᴍʟᴋʟᴏʙʙʏ {channelsCache.GetLobbyNumber()}",
                 properties =>
                 {
                     properties.CategoryId = jsonDiscordCategoriesProvider.RootDiscordCategories.Guild.Autolobby.Id;
-                    properties.Bitrate = 96000;
+                    properties.Bitrate = 64000;
                     properties.RTCRegion = "rotterdam";
                     properties.PermissionOverwrites = new Overwrite[]
                     {
@@ -67,7 +66,6 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
                 }
             );
         }
-
         private async Task LoadVoiceChannelsFromGuild(SocketGuild socketGuild)
         {
             foreach (SocketVoiceChannel socketVoiceChannel in socketGuild.VoiceChannels)
@@ -77,6 +75,5 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
 
             await Task.CompletedTask;
         }
-
     }
 }

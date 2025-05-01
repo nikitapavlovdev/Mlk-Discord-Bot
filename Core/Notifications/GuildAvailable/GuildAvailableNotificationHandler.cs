@@ -24,12 +24,8 @@ namespace Discord_Bot.Core.Notifications.GuildAvailable
                     rolesManager.GuildRolesInitialization(notification.SocketGuild),
                     emotesManager.EmotesInitialization(notification.SocketGuild)
                 );
-
-                await textMessageManager.SendMessageWithGuildRoles(notification.SocketGuild);
-                await voiceChannelsManager.ClearTemporaryVoiceChannels(notification.SocketGuild);
-
+                
                 logger.LogInformation("Guild entities has been loaded");
-
             }
             catch (Exception ex)
             {

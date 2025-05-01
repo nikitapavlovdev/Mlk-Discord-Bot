@@ -32,6 +32,20 @@ namespace Discord_Bot.Infrastructure.JsonModels.Roles
 
         [JsonProperty(nameof(Moderator))]
         public Moderator? Moderator { get; set; }
+
+        [JsonProperty(nameof(ServerBooster))]
+        public ServerBooster? ServerBooster { get; set; }
+    }
+    public class ServerBooster
+    {
+        [JsonProperty(nameof(Name))]
+        public string? Name { get; set; }
+
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+
+        [JsonProperty(nameof(Description))]
+        public string? Description { get; set; }
     }
     public class Autorization
     {
@@ -48,20 +62,126 @@ namespace Discord_Bot.Infrastructure.JsonModels.Roles
 
         [JsonProperty(nameof(DeadInside))]
         public DeadInside? DeadInside { get; set; }
+
+        [JsonProperty(nameof(Gus))]
+        public Gus? Gus { get; set; }
+
+        [JsonProperty(nameof(Amnyam))]
+        public Amnyam? Amnyam { get; set; }
+
+        [JsonProperty(nameof(Gacha))]
+        public Gacha? Gacha { get; set; }
+
+        [JsonProperty(nameof(Twitch))]
+        public Twitch? Twitch { get; set; }
+
+        [JsonProperty(nameof(LadyFlora))]
+        public LadyFlora? LadyFlora { get; set; }
+
+        [JsonProperty(nameof(BlackBeer))]
+        public BlackBeer? BlackBeer { get; set; }
+
+        [JsonProperty(nameof(Svin))]
+        public Svin? Svin { get; set; }
     }
     public class Categories
     {
-        [JsonProperty(nameof(DestinyEnjoyer))]
-        public DestinyEnjoyer? DestinyEnjoyer { get; set; }
+        [JsonProperty(nameof(Gamer))]
+        public Gamer? Gamer { get; set; }
 
         [JsonProperty(nameof(InformationHunter))]
         public InformationHunter? InformationHunter { get; set; }
 
-        [JsonProperty(nameof(Valoranter))]
-        public Valoranter? Valoranter { get; set; }
-
         [JsonProperty(nameof(IKIT))]
         public IKIT? IKIT { get; set; }
+    }
+    public class Svin
+    {
+        [JsonProperty(nameof(Name))]
+        public string? Name { get; set; }
+
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+
+        [JsonProperty(nameof(Description))]
+        public string? Description { get; set; }
+    }
+    public class BlackBeer
+    {
+        [JsonProperty(nameof(Name))]
+        public string? Name { get; set; }
+
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+
+        [JsonProperty(nameof(Description))]
+        public string? Description { get; set; }
+    }
+    public class LadyFlora
+    {
+        [JsonProperty(nameof(Name))]
+        public string? Name { get; set; }
+
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+
+        [JsonProperty(nameof(Description))]
+        public string? Description { get; set; }
+    }
+    public class Twitch
+    {
+        [JsonProperty(nameof(Name))]
+        public string? Name { get; set; }
+
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+
+        [JsonProperty(nameof(Description))]
+        public string? Description { get; set; }
+    }
+    public class Gacha
+    {
+        [JsonProperty(nameof(Name))]
+        public string? Name { get; set; }
+
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+
+        [JsonProperty(nameof(Description))]
+        public string? Description { get; set; }
+    }
+    public class Amnyam
+    {
+        [JsonProperty(nameof(Name))]
+        public string? Name { get; set; }
+
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+
+        [JsonProperty(nameof(Description))]
+        public string? Description { get; set; }
+    }
+    public class Gus
+    {
+        [JsonProperty(nameof(Name))]
+        public string? Name { get; set; }
+
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+
+        [JsonProperty(nameof(Description))]
+        public string? Description { get; set; }
+    }
+    public class Gamer
+    {
+        [JsonProperty(nameof(Name))]
+        public string? Name { get; set; }
+
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+
+        [JsonProperty(nameof(Description))]
+        public string? Description { get; set; }
     }
     public class MalenkiyHead
     {
@@ -129,29 +249,7 @@ namespace Discord_Bot.Infrastructure.JsonModels.Roles
         [JsonProperty(nameof(Description))]
         public string? Description { get; set; }
     }
-    public class DestinyEnjoyer
-    {
-        [JsonProperty(nameof(Name))]
-        public string? Name { get; set; }
-
-        [JsonProperty(nameof(Id))]
-        public ulong Id { get; set; }
-
-        [JsonProperty(nameof(Description))]
-        public string? Description { get; set; }
-    }
     public class InformationHunter
-    {
-        [JsonProperty(nameof(Name))]
-        public string? Name { get; set; }
-
-        [JsonProperty(nameof(Id))]
-        public ulong Id { get; set; }
-
-        [JsonProperty(nameof(Description))]
-        public string? Description { get; set; }
-    }
-    public class Valoranter
     {
         [JsonProperty(nameof(Name))]
         public string? Name { get; set; }

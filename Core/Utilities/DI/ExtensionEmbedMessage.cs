@@ -10,25 +10,30 @@ namespace Discord_Bot.Core.Utilities.DI
         RolesCache rolesCachhe, 
         EmotesCache emotesCache,
         JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider,
-        JsonDiscordPicturesProvider jsonDiscordPicturesProvider,
         JsonDiscordEmotesProvider jsonDiscordEmotesProvider)
     {
-        public async Task SendRolesMessage(SocketTextChannel textChannel, MessageComponent component)
+        public Embed GetMainRolesEmbedMessage()
         {
-            Embed rolesChooseMessage = new EmbedBuilder()
-                .WithTitle("Список для выбора")
-                .WithDescription(rolesCachhe.GetDescriptionForСhoiceRoles())
+            return new EmbedBuilder()
+                .WithTitle("Роли сервера ᴍᴀʟᴇɴᴋɪᴇ")
+                .WithDescription(rolesCachhe.GetDescriptionForMainRoles())
                 .WithFooter(ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name),
                             ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
                 .WithTimestamp(DateTimeOffset.Now)
-                .WithColor(123, 104, 238)
-                .WithImageUrl(ExtensionMethods.GetStringFromConfiguration(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.LinkPurpleEyes))
+                .WithColor(105, 105, 105)
                 .Build();
-
-            await textChannel.SendMessageAsync(embed: rolesChooseMessage, components: component);
         }
-
-
+        public Embed GetSwitchColorEmbedMessage()
+        {
+            return new EmbedBuilder()
+                .WithTitle("Цвет имени")
+                .WithDescription(rolesCachhe.GetDescriptionForSwitchColorRoles())
+                .WithFooter(ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name),
+                            ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
+                .WithTimestamp(DateTimeOffset.Now)
+                .WithColor(105, 105, 105)
+                .Build();
+        }
         public Embed GetSuccesAuthorizationMessageEmbedTemplate(Emote? emoteSuccess, 
             SocketRole baseServerRole, 
             ulong roleChannelId, 
@@ -75,7 +80,6 @@ namespace Discord_Bot.Core.Utilities.DI
 
             return embed;
         }
-
         public Embed GetErrorDateMessageEmbedTemplate()
         {
             Color color = new(178, 34, 34);
@@ -103,7 +107,6 @@ namespace Discord_Bot.Core.Utilities.DI
 
             return embed;
         }
-
         public Embed GetJoinedEmbedTemplate(SocketGuildUser socketGuildUser)
         {
             GuildEmote? welcomeMessageEmote = emotesCache.GetEmote(jsonDiscordEmotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Love.Id);
@@ -140,7 +143,6 @@ namespace Discord_Bot.Core.Utilities.DI
                     .WithIconUrl(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
                 .Build();
         }
-
         public Embed GetNewsTamplate(string description)
         {
             Embed embed = new EmbedBuilder()
@@ -155,8 +157,6 @@ namespace Discord_Bot.Core.Utilities.DI
 
             return embed;
         }
-
-
         public static Embed GetGuildUserInformationMessageTemplate(
             string displayname,
             string globalName,
@@ -235,7 +235,6 @@ namespace Discord_Bot.Core.Utilities.DI
 
             return message;
         }
-
         public static Embed GetNoAccessTemplate()
         {
             Embed message = new EmbedBuilder()
@@ -247,7 +246,6 @@ namespace Discord_Bot.Core.Utilities.DI
 
             return message;
         }
-
         public static Embed GetExceptionsMessageTamplate(string description, string method)
         {
             Embed embed = new EmbedBuilder()
@@ -259,6 +257,5 @@ namespace Discord_Bot.Core.Utilities.DI
 
             return embed;
         }
-
     }
 };

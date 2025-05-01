@@ -9,6 +9,7 @@ using Discord_Bot.Core.Notifications.GuildAvailable;
 using Discord_Bot.Core.Notifications.SelectMenuExecuted;
 using Discord_Bot.Core.Notifications.UserVoiceStateUpdated;
 using Discord_Bot.Core.Notifications.Log;
+using Discord_Bot.Core.Notifications.Ready;
 
 namespace Discord_Bot.Presentation.Controllers.DiscordEventsController
 {
@@ -31,6 +32,7 @@ namespace Discord_Bot.Presentation.Controllers.DiscordEventsController
             client.GuildAvailable += OnGuildAvailable;
             client.UserVoiceStateUpdated += OnUserVoiceStateUpdated;
             client.SelectMenuExecuted += OnSelectMenuExecuted;
+            client.Ready += OnReady;
         }
         private async Task OnUserJoined(SocketGuildUser socketGuildUser)
         {
@@ -70,6 +72,11 @@ namespace Discord_Bot.Presentation.Controllers.DiscordEventsController
         private async Task OnSelectMenuExecuted(SocketMessageComponent socketMessageComponent)
         {
             await mediator.Publish(new SelectMenuExecutedNotification(socketMessageComponent));
+        }
+
+        private async Task OnReady()
+        {
+            await mediator.Publish(new ReadyNotification());
         }
     }
 }

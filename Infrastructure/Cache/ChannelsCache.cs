@@ -34,7 +34,6 @@ namespace Discord_Bot.Infrastructure.Cache
         {
             TemporaryVoiceChannels.Add(socketVoiceChannel.Id);
         }
-
         public void AddVoiceChannel(SocketVoiceChannel socketVoiceChannel)
         {
             if(!GuildVoiceChannels.Any(x => x.Id == socketVoiceChannel.Id))
@@ -47,7 +46,6 @@ namespace Discord_Bot.Infrastructure.Cache
                 GuildVoiceChannels.Add(socketVoiceChannel);
             } 
         }
-        
         public void AddTextChannel(SocketTextChannel socketTextChannel)
         {
             if(!GuildTextChannels.Any(x => x.Id == socketTextChannel.Id))

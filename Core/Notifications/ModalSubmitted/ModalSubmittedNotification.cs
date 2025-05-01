@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Discord;
 using Discord.WebSocket;
 
 namespace Discord_Bot.Core.Notifications.ModalSubmitted

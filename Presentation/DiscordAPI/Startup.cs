@@ -23,6 +23,7 @@ using Discord_Bot.Core.Notifications.Log;
 using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
 using Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers;
 using Discord_Bot.Core.Managers.EmotesManagers;
+using Discord_Bot.Core.Notifications.Ready;
 
 namespace Discord_Bot.Presentation.DiscordAPI
 {
@@ -47,7 +48,8 @@ namespace Discord_Bot.Presentation.DiscordAPI
                         typeof(ButtonExecutedNotificationHandler).Assembly,
                         typeof(GuildAvailableNotificationHandler).Assembly,
                         typeof(UserVoiceStateUpdatedNotificationHandler).Assembly,
-                        typeof(SelectMenuExecutedNotificationHandler).Assembly));
+                        typeof(SelectMenuExecutedNotificationHandler).Assembly,
+                        typeof(ReadyNotificationHandler).Assembly));
 
                     services.AddSingleton(new DiscordSocketClient(discordConfiguration));
 
@@ -104,6 +106,12 @@ namespace Discord_Bot.Presentation.DiscordAPI
                         return new JsonDiscordCategoriesProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory,
                             "..", "..", "..", "Infrastructure", "Configuration", "DiscordCategoriesMap.json")),
                                 x.GetRequiredService<ILogger<JsonDiscordCategoriesProvider>>());
+                    });
+                    services.AddSingleton<JsonDiscordDynamicMessagesProvider>(x =>
+                    {
+                        return new JsonDiscordDynamicMessagesProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory,
+                            "..", "..", "..", "Infrastructure", "Configuration", "DiscordDynamicMessages.json")),
+                                x.GetRequiredService<ILogger<JsonDiscordDynamicMessagesProvider>>());
                     });
                 })
                 .ConfigureLogging((context, logging) =>
