@@ -16,8 +16,10 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
         JsonDiscordRolesProvider rolesProvider,
         JsonChannelsMapProvider jsonChannelsMapProvider,
         JsonDiscordDynamicMessagesProvider jsonDiscordDynamicMessagesProvider,
-        ChannelsCache channelsCache)
+        ChannelsCache channelsCache,
+        ExtensionSelectionMenu extensionSelectionMenu)
     {
+        #region Conrollers
         public async Task GuildTextChannelsInitialization(SocketGuild socketGuild)
         {
             try
@@ -29,59 +31,16 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
                 logger.LogError("Error: {Message}", ex.Message);
             }
         }
-         
-        public async Task SendWelcomeMessageAsync(SocketGuildUser socketGuildUser)
-        {
-            try
-            {
-                SocketTextChannel? textChannel = socketGuildUser.Guild.TextChannels.FirstOrDefault(x => x.Id == channelsProvider.RootChannel?.Channels?.TextChannels?.ServerCategory?.Starting?.Id);
-                MessageComponent auMessageComponent = ExtensionMessageComponents.GetWelcomeMessageComponent(socketGuildUser.Id);
-                Embed embedMessage = extensionEmbedMessage.GetJoinedEmbedTemplate(socketGuildUser);
-
-                if(textChannel is null)
-                {
-                    return;
-                }
-
-                await textChannel.SendMessageAsync($"{socketGuildUser.Mention}", embed: embedMessage, components: auMessageComponent);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
-            }
-        }
-        public async Task SendFollowupMessageOnSuccessAutorization(SocketModal modal)
-        {
-            await modal.FollowupAsync(embed: extensionEmbedMessage.GetSuccesAuthorizationMessageEmbedTemplate(
-                emotesCache.GetEmote(emotesProvider.RootDiscordEmotes.AnimatedEmotes.AnimatedZero.Paceout.Id),
-                rolesCache.GetRole(rolesProvider.RootDiscordRoles.GeneralRole.Autorization.MalenkiyMember.Id),
-                channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Id,
-                channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.BotCommands.Id,
-                channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.News.Id), 
-                components: ExtensionMessageComponents.GetAdditionalWelcomeMessageComponent(modal.User.Id),
-                ephemeral: true);
-        }
-        public async Task SendFollowupMessageOnErrorAutorization(SocketModal modal)
-        {
-            GuildEmote? emoteError = emotesCache.GetEmote(emotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Hmph.Id);
-
-            await modal.FollowupAsync(embed: extensionEmbedMessage.GetErrorAuthorizationMessageEmbedTemplate(emoteError), ephemeral: true);
-        }
         public async Task SendMessageWithGuildRoles(SocketGuild socketGuild)
         {
             await Task.WhenAll(
                 SendMainGuildRolesMessage(socketGuild),
                 SendSwitchColorRolesMessage(socketGuild));
         }
-        public async Task SendFarewellMessageAsync(SocketGuild socketGuild, SocketUser socketUser)
-        {
-            SocketTextChannel? socketTextChannel = socketGuild.GetTextChannel(jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Chat.Id);
-            Embed embedMessage = extensionEmbedMessage.GetFarewellEmbedTamplate(socketUser);
 
-            if(socketTextChannel == null) {  return; }
+        #endregion
 
-            await socketTextChannel.SendMessageAsync(embed: embedMessage);
-        }
+        #region Private
         private async Task LoadTextChannelsFromGuild(SocketGuild socketGuild)
         {
             foreach (SocketTextChannel channel in socketGuild.TextChannels)
@@ -116,12 +75,62 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
                 await sentMessage.ModifyAsync(message =>
                 {
                     message.Embed = extensionEmbedMessage.GetSwitchColorEmbedMessage();
+                    message.Components = extensionSelectionMenu.GetColorSwitchSelectionMenu();
                 });
             }
             else
             {
-                await textRolesChannel.SendMessageAsync(embed: extensionEmbedMessage.GetSwitchColorEmbedMessage());
+                await textRolesChannel.SendMessageAsync(embed: extensionEmbedMessage.GetSwitchColorEmbedMessage(), components: extensionSelectionMenu.GetColorSwitchSelectionMenu());
             }
+        }
+        #endregion
+
+        #region Public
+        public async Task SendFarewellMessageAsync(SocketGuild socketGuild, SocketUser socketUser)
+        {
+            SocketTextChannel? socketTextChannel = socketGuild.GetTextChannel(jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Chat.Id);
+            Embed embedMessage = extensionEmbedMessage.GetFarewellEmbedTamplate(socketUser);
+
+            if (socketTextChannel == null) { return; }
+
+            await socketTextChannel.SendMessageAsync(embed: embedMessage);
+        }
+        public async Task SendWelcomeMessageAsync(SocketGuildUser socketGuildUser)
+        {
+            try
+            {
+                SocketTextChannel? textChannel = socketGuildUser.Guild.TextChannels.FirstOrDefault(x => x.Id == channelsProvider.RootChannel?.Channels?.TextChannels?.ServerCategory?.Starting?.Id);
+                MessageComponent auMessageComponent = ExtensionMessageComponents.GetWelcomeMessageComponent(socketGuildUser.Id);
+                Embed embedMessage = extensionEmbedMessage.GetJoinedEmbedTemplate(socketGuildUser);
+
+                if (textChannel is null)
+                {
+                    return;
+                }
+
+                await textChannel.SendMessageAsync($"{socketGuildUser.Mention}", embed: embedMessage, components: auMessageComponent);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+            }
+        }
+        public async Task SendFollowupMessageOnSuccessAutorization(SocketModal modal)
+        {
+            await modal.FollowupAsync(embed: extensionEmbedMessage.GetSuccesAuthorizationMessageEmbedTemplate(
+                emotesCache.GetEmote(emotesProvider.RootDiscordEmotes.AnimatedEmotes.AnimatedZero.Paceout.Id),
+                rolesCache.GetRole(rolesProvider.RootDiscordRoles.GeneralRole.Autorization.MalenkiyMember.Id),
+                channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Id,
+                channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.BotCommands.Id,
+                channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.News.Id),
+                components: ExtensionMessageComponents.GetAdditionalWelcomeMessageComponent(modal.User.Id),
+                ephemeral: true);
+        }
+        public async Task SendFollowupMessageOnErrorAutorization(SocketModal modal)
+        {
+            GuildEmote? emoteError = emotesCache.GetEmote(emotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Hmph.Id);
+
+            await modal.FollowupAsync(embed: extensionEmbedMessage.GetErrorAuthorizationMessageEmbedTemplate(emoteError), ephemeral: true);
         }
         public async Task SendRulesMessage(SocketGuild socketGuild)
         {
@@ -139,6 +148,13 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
                 await textRulesChannel.SendMessageAsync(embed: extensionEmbedMessage.GetRulesEmbedMessage());
             }
         }
+        public async Task SendMemberInformation(SocketGuildUser socketGuildUser)
+        {
+            Embed memberInformationEmbed = extensionEmbedMessage.GetGuildUserInformationMessageTemplate(socketGuildUser);
+            SocketTextChannel adminTextChannel = socketGuildUser.Guild.GetTextChannel(jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Chat.Id);
 
+            await adminTextChannel.SendMessageAsync(embed: memberInformationEmbed);
+        }
+        #endregion
     }
 }

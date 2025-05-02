@@ -24,6 +24,7 @@ using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
 using Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers;
 using Discord_Bot.Core.Managers.EmotesManagers;
 using Discord_Bot.Core.Notifications.Ready;
+using Discord_Bot.Core.Notifications.MessageReceived;
 
 namespace Discord_Bot.Presentation.DiscordAPI
 {
@@ -49,7 +50,8 @@ namespace Discord_Bot.Presentation.DiscordAPI
                         typeof(GuildAvailableNotificationHandler).Assembly,
                         typeof(UserVoiceStateUpdatedNotificationHandler).Assembly,
                         typeof(SelectMenuExecutedNotificationHandler).Assembly,
-                        typeof(ReadyNotificationHandler).Assembly));
+                        typeof(ReadyNotificationHandler).Assembly,
+                        typeof(MessageReceivedNotificationHandler).Assembly));
 
                     services.AddSingleton(new DiscordSocketClient(discordConfiguration));
 

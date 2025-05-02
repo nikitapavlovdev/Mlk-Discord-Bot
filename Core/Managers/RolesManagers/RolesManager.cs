@@ -74,6 +74,29 @@ namespace Discord_Bot.Core.Managers.RolesManagers
                 logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
+        public async Task SetColorNameRole(SocketUser socketUser, ulong roleId)
+        {
+            SocketGuildUser? socketGuildUser = socketUser as SocketGuildUser;
+
+            if (!socketGuildUser.Roles.Any(role => role.Id == roleId))
+            {
+                await socketGuildUser.AddRoleAsync(roleId);
+            }
+        }
+        public async Task RemoveHavingSwitchColorRole(SocketUser socketUser)
+        {
+            Dictionary<ulong, SocketRole> SwitchColorDictionary = rolesCache.GetSwitchColorDictionary();
+            SocketGuildUser? socketGuildUser = socketUser as SocketGuildUser;
+
+            foreach (ulong dictRoleId in SwitchColorDictionary.Keys)
+            {
+                if(socketGuildUser.Roles.Any(x => x.Id == dictRoleId))
+                {
+                    await socketGuildUser.RemoveRoleAsync(dictRoleId);
+                    break;
+                }
+            }
+        }
         private async Task LoadRolesFromGuild(SocketGuild socketGuild)
         {
             foreach (SocketRole socketRole in socketGuild.Roles)

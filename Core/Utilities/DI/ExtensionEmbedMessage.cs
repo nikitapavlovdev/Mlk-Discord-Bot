@@ -172,77 +172,41 @@ namespace Discord_Bot.Core.Utilities.DI
 
             return embed;
         }
-        public static Embed GetGuildUserInformationMessageTemplate(
-            string displayname,
-            string globalName,
-            string userName,
-            string avatarId,
-            ulong userId,
-            int hierarchy,
-            bool IsBot,
-            IReadOnlyCollection<SocketRole> socketRoles,
-            IReadOnlyCollection<ClientType> activeClients,
-            IReadOnlyCollection<IActivity> activities,
-            DateTimeOffset? premiumSince,
-            DateTimeOffset? joinedAt,
-            UserStatus userStatus,
-            GuildUserFlags flags)
+        public Embed GetGuildUserInformationMessageTemplate(SocketGuildUser socketGuildUser)
         {
             string blockOfName = $"### Общая информация\n\n" +
-                $"Имя пользователя: **{(string.IsNullOrWhiteSpace(userName) ? "Нет данных" : userName)}**\n" +
-                $"Имя на сервере: **{(string.IsNullOrWhiteSpace(displayname) ? "Нет данных" : displayname)}**\n" +
-                $"Глобальное имя: **{(string.IsNullOrWhiteSpace(globalName) ? "Нет данных" : globalName)}**\n" +
-                $"Дата вступления: **{joinedAt.GetValueOrDefault():D}**\n" +
-                $"Бустер сервера с: {(string.IsNullOrEmpty(premiumSince.GetValueOrDefault().ToString()) ? premiumSince : "**Не является бустером**")}\n";
+                $"Имя пользователя: **{(string.IsNullOrWhiteSpace(socketGuildUser.Username) ? "Нет данных" : socketGuildUser.Username)}**\n" +
+                $"Имя на сервере: **{(string.IsNullOrWhiteSpace(socketGuildUser.DisplayName) ? "Нет данных" : socketGuildUser.DisplayName)}**\n" +
+                $"Глобальное имя: **{(string.IsNullOrWhiteSpace(socketGuildUser.GlobalName) ? "Нет данных" : socketGuildUser.GlobalName)}**\n" +
+                $"Дата вступления: **{socketGuildUser.JoinedAt.GetValueOrDefault():D}**\n" +
+                $"Бустер сервера с: {(string.IsNullOrEmpty(socketGuildUser.PremiumSince.GetValueOrDefault().ToString()) ? socketGuildUser.PremiumSince : "**Не является бустером**")}\n";
 
             string blockOfAdditionInformation = $"### Дополнительная информация\n\n" +
-                $"ID пользователя: **{userId}**\n" +
-                $"ID аватара: **{avatarId}**\n" +
-                $"Пользователь бот: **{(IsBot ? "Да" : "Нет")}**\n" +
-                $"Статус пользователя: **{userStatus}**\n" +
-                $"Позиция в иерархии ролей: **{hierarchy}**\n";
-
-            string blockOfRoles = "### Роли\n\n" +
-                $"Количество ролей: **{socketRoles.Count}**\n";
-
-            foreach(SocketRole role in socketRoles)
-            {
-                blockOfRoles += $"> {role.Mention}\n";
-            }
+                $"ID пользователя: **{socketGuildUser.Id}**\n" +
+                $"ID аватара: **{socketGuildUser.AvatarId}**\n" +
+                $"Пользователь бот: **{(socketGuildUser .IsBot ? "Да" : "Нет")}**\n" +
+                $"Статус пользователя: **{socketGuildUser.Status}**\n" +
+                $"Позиция в иерархии ролей: **{socketGuildUser.Hierarchy}**\n";
 
             string blockOfClients = "### Активные клиенты\n\n" +
-                $"Пользователь **{displayname}** активен с **{activeClients.Count}** клиента (-ов)\n";
+                $"Пользователь **{socketGuildUser.DisplayName}** активен с **{socketGuildUser.ActiveClients.Count}** клиента (-ов)\n";
 
-            foreach(ClientType clientType in activeClients)
+            foreach(ClientType clientType in socketGuildUser.ActiveClients)
             {
                 blockOfClients += $"> {clientType}\n";
             }
 
-            string blockOfCurrentActivities = "### Текущие активности\n\n" +
-                $"Пользователь **{displayname}** активен в **{activities.Count}** активности (-ях)\n";
-
-            string currentActivities = "";
-
-            foreach (IActivity activity in activities)
-            {
-                currentActivities += $"> {activity.Type} - {activity.Name}\n";
-            }
-
             string blockOfPublicFlags = "### Флаги\n\n" +
-                $"Флаги для пользователя **{displayname}**:\n>>> {flags}\n";
+                $"Флаги для пользователя **{socketGuildUser.DisplayName}**:\n>>> {socketGuildUser.Flags}\n";
 
-            blockOfCurrentActivities += $"{(activities.Count == 0 ? "> Активностей нет\n" : currentActivities)}";
-            
             string ALL_USER_INFO = ""
                 + blockOfName
                 + blockOfAdditionInformation
-                + blockOfRoles 
                 + blockOfClients 
-                + blockOfCurrentActivities
                 + blockOfPublicFlags;
 
             Embed message = new EmbedBuilder()
-                .WithTitle($"Информация об участнике {displayname}")
+                .WithTitle($"Информация об участнике {socketGuildUser.DisplayName}")
                 .WithDescription(ALL_USER_INFO)
                 .WithColor(30, 144, 255)
                 .WithCurrentTimestamp()

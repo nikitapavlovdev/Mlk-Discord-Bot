@@ -20,7 +20,7 @@ public class AutorizationManager(ILogger<AutorizationManager> logger,
             string auCode = GetAutorizationCode();
             auCache.SetTemporaryCodes(socketGuildUser, auCode);
 
-            await socketGuildUser.SendMessageAsync($"Твой код авторизации: `{auCode}`");
+            await socketGuildUser.SendMessageAsync($"Твой код авторизации: ```{auCode}```");
         }
         catch (Exception ex)
         {

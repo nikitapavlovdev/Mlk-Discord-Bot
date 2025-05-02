@@ -27,7 +27,7 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
         {
             foreach(SocketVoiceChannel socketVoiceChannel in socketGuild.VoiceChannels)
             {
-                if(socketVoiceChannel.Category.Id == jsonDiscordCategoriesProvider.RootDiscordCategories.Guild.Autolobby.Id)
+                if(socketVoiceChannel.Category.Id == jsonDiscordCategoriesProvider.RootDiscordCategories.Guild.Autolobby.Id && !channelsCache.IsGeneratingChannel(socketVoiceChannel))
                 {
                     if(socketVoiceChannel.ConnectedUsers.Count == 0)
                     {

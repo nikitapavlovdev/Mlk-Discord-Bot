@@ -18,34 +18,6 @@ namespace Discord_Bot.Infrastructure.Cache
         private readonly Dictionary<ulong, string> RolesDescriptions = [];
 
         #region Action
-        public void AddRole(SocketRole role)
-        {
-            GuildRoles.TryAdd(role.Id, role);
-
-            if (IsHierarchyServerRole(role))
-            {
-                HierarchyRoles.TryAdd(role.Id, role);
-            }
-
-            if (IsCategoryRole(role))
-            {
-                CategoryRoles.TryAdd(role.Id, role);
-            }
-
-            if (IsUniqueRole(role))
-            {
-                UniqieRoles.TryAdd(role.Id, role);
-            }
-
-            if (IsSwitchColorRole(role))
-            {
-                SwitchColorRoles.TryAdd(role.Id, role);
-            }
-        }
-        public void AddRoleDescription(ulong roleId, string roleDescription)
-        {
-            RolesDescriptions.TryAdd(roleId, roleDescription);
-        }
         public SocketRole GetRole(ulong roleId)
         {
             SocketRole role = GuildRoles[roleId];
@@ -62,7 +34,7 @@ namespace Discord_Bot.Infrastructure.Cache
             string textDescription = $"В данном блоке представлены все основные роли нашего сервера. " +
                 $"Что-то можно выбрать самостоятельно, " +
                 $"а что-то получить лично по желанию/на усмотрение администрации!\n";
-            
+
             GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
 
             textDescription += "### иᴇᴩᴀᴩхия ᴄᴇᴩʙᴇᴩᴀ\n";
@@ -123,6 +95,38 @@ namespace Discord_Bot.Infrastructure.Cache
             textDescription += "И самое главное - наслаждайтесь моментом!";
 
             return textDescription;
+        }
+        public void AddRole(SocketRole role)
+        {
+            GuildRoles.TryAdd(role.Id, role);
+
+            if (IsHierarchyServerRole(role))
+            {
+                HierarchyRoles.TryAdd(role.Id, role);
+            }
+
+            if (IsCategoryRole(role))
+            {
+                CategoryRoles.TryAdd(role.Id, role);
+            }
+
+            if (IsUniqueRole(role))
+            {
+                UniqieRoles.TryAdd(role.Id, role);
+            }
+
+            if (IsSwitchColorRole(role))
+            {
+                SwitchColorRoles.TryAdd(role.Id, role);
+            }
+        }
+        public void AddRoleDescription(ulong roleId, string roleDescription)
+        {
+            RolesDescriptions.TryAdd(roleId, roleDescription);
+        }
+        public Dictionary<ulong, SocketRole> GetSwitchColorDictionary()
+        {
+            return SwitchColorRoles;
         }
         #endregion
 

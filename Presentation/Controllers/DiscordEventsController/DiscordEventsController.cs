@@ -10,6 +10,7 @@ using Discord_Bot.Core.Notifications.SelectMenuExecuted;
 using Discord_Bot.Core.Notifications.UserVoiceStateUpdated;
 using Discord_Bot.Core.Notifications.Log;
 using Discord_Bot.Core.Notifications.Ready;
+using Discord_Bot.Core.Notifications.MessageReceived;
 
 namespace Discord_Bot.Presentation.Controllers.DiscordEventsController
 {
@@ -33,12 +34,17 @@ namespace Discord_Bot.Presentation.Controllers.DiscordEventsController
             client.UserVoiceStateUpdated += OnUserVoiceStateUpdated;
             client.SelectMenuExecuted += OnSelectMenuExecuted;
             client.Ready += OnReady;
+            client.MessageReceived += OnMessageReceived;
         }
         private async Task OnUserJoined(SocketGuildUser socketGuildUser)
         {
             await mediator.Publish(new UserJoinedNotification(socketGuildUser));
         }
 
+        private async Task OnMessageReceived(SocketMessage socketMessage)
+        {
+            await mediator.Publish(new MessageReceivedNotification(socketMessage));
+        }
         private async Task OnUserLeft(SocketGuild socketGuild, SocketUser socketUser)
         {
             await mediator.Publish(new UserLeftNotification(socketGuild, socketUser));
