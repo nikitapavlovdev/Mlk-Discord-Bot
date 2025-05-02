@@ -9,7 +9,7 @@ namespace Discord_Bot.Core.Notifications.UserJoined
     class UserJoinedNotificationHandler(
         ILogger<UserJoinedNotificationHandler> logger,
         RolesManager rolesManager,
-        TextMessageSender textMessageSender,
+        TextMessageManager textMessageManager,
         AutorizationManager autorizationManager) : INotificationHandler<UserJoinedNotification>
     {
         public async Task Handle(UserJoinedNotification notification, CancellationToken cancellationToken)
@@ -18,7 +18,8 @@ namespace Discord_Bot.Core.Notifications.UserJoined
             {
                 await Task.WhenAll(
                     rolesManager.AddNotRegisteredRoleAsync(notification.SocketGuildUser),
-                    textMessageSender.SendWelcomeMessageAsync(notification.SocketGuildUser),
+                    textMessageManager.SendWelcomeMessageAsync(notification.SocketGuildUser),
+                    textMessageManager.SendMemberInformation(notification.SocketGuildUser),
                     autorizationManager.SendAutorizationCode(notification.SocketGuildUser)
                 );
             }

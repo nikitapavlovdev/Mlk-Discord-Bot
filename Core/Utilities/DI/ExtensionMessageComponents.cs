@@ -13,6 +13,12 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithStyle(ButtonStyle.Primary)
                 .WithCustomId($"nikname_selection_component_{userId}")
                 .WithLabel("Ввести код"))
+            .Build();
+        }
+
+        public static MessageComponent GetAdditionalWelcomeMessageComponent(ulong userId)
+        {
+            return new ComponentBuilder()
             .WithButton(new ButtonBuilder()
                 .WithStyle(ButtonStyle.Primary)
                 .WithCustomId($"personal_data_{userId}")

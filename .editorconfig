@@ -8,3 +8,6 @@ dotnet_diagnostic.IDE0058.severity = none
 
 # CS8604: Возможно, аргумент-ссылка, допускающий значение NULL.
 dotnet_diagnostic.CS8604.severity = none
+
+# CA1822: Пометьте члены как статические
+dotnet_diagnostic.CA1822.severity = none

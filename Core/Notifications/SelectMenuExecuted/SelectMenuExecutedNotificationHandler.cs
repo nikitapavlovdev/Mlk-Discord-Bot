@@ -1,11 +1,11 @@
-﻿using Discord.WebSocket;
-using MediatR;
+﻿using MediatR;
 using Discord_Bot.Core.Utilities.General;
-using Discord_Bot.Infrastructure.Cache;
+using Discord_Bot.Core.Managers.RolesManagers;
 
 namespace Discord_Bot.Core.Notifications.SelectMenuExecuted
 {
-    class SelectMenuExecutedNotificationHandler(RolesCache rolesCache) : INotificationHandler<SelectMenuExecutedNotification>
+    class SelectMenuExecutedNotificationHandler(
+        RolesManager rolesManager) : INotificationHandler<SelectMenuExecutedNotification>
     {
         public async Task Handle (SelectMenuExecutedNotification notification, CancellationToken cancellationToken)
         {
@@ -13,44 +13,18 @@ namespace Discord_Bot.Core.Notifications.SelectMenuExecuted
 			{
                 await notification.SocketMessageComponent.DeferAsync();
 
-                if (notification.SocketMessageComponent.User is not SocketGuildUser socketGuildUser)
-                {
-                    return;
-                }
-
-                IReadOnlyCollection<string> values = notification.SocketMessageComponent.Data.Values;
-
                 if (notification.SocketMessageComponent.Data.CustomId == "choice_role_select")
                 {
-                    string value = values.ElementAt(0);
-
-                    if (value == "delete_all_roles")
-                    {
-                        await rolesCache.DeleteAllRolesFromUser(socketGuildUser);
-                        return;
-                    }
-
-                    if (!socketGuildUser.Roles.Any(role => role.Id == ExtensionMethods.ConvertId(values.ElementAt(0))))
-                    {
-                        await socketGuildUser.AddRoleAsync(rolesCache.GetRole(ExtensionMethods.ConvertId(values.ElementAt(0))));
-                    }
+                    
                 }
                 if (notification.SocketMessageComponent.Data.CustomId == "choice_color_name")
                 {
-                    List<SocketRole> ColorNameList = rolesCache.ReturnColorNameListForCheck();
+                    await rolesManager.RemoveHavingSwitchColorRole(notification.SocketMessageComponent.User);
 
-                    foreach(SocketRole roleInCycle in ColorNameList)
+                    if (notification.SocketMessageComponent.Data.Values.ElementAt(0) != "remove_color")
                     {
-                        if(socketGuildUser.Roles.Any(role => role.Id == roleInCycle.Id))
-                        {
-                            await socketGuildUser.RemoveRoleAsync(roleInCycle.Id);
-                        }
-                    }
+                        await rolesManager.SetColorNameRole(notification.SocketMessageComponent.User, ExtensionMethods.ConvertId(notification.SocketMessageComponent.Data.Values.ElementAt(0)));
 
-                    foreach(var role in notification.SocketMessageComponent.Data.Values)
-                    {
-                        await socketGuildUser.AddRoleAsync(rolesCache.GetRole(ExtensionMethods.ConvertId(role)));
-                        break;
                     }
                 }
 			}

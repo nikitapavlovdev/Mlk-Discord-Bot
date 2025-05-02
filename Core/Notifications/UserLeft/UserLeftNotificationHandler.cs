@@ -1,22 +1,23 @@
-﻿using Discord;
+﻿using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
 using MediatR;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 
 namespace Discord_Bot.Core.Notifications.UserLeft
 {
-    class UserLeftNotificationHandler() : INotificationHandler<UserLeftNotification>
+    class UserLeftNotificationHandler(
+        ILogger<UserLeftNotificationHandler> logger,
+        TextMessageManager textMessageManager) : INotificationHandler<UserLeftNotification>
     {
         public async Task Handle(UserLeftNotification notification, CancellationToken cancellationToken)
         {
             try
             {
-                await Task.CompletedTask;
+                await textMessageManager.SendFarewellMessageAsync(notification.SocketGuild, notification.SocketUser);
             }
             catch (Exception ex)
             {
-
-                Console.WriteLine($"Error in UserLeftNotificationHandler: { ex.Message}");
+                logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
     }

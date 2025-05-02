@@ -11,7 +11,7 @@ namespace Discord_Bot.Core.Managers.UserManagers;
 public class AutorizationManager(ILogger<AutorizationManager> logger, 
     AutorizationCache auCache, 
     RolesManager rolesManagers,
-    TextMessageSender channelMessageManagers)
+    TextMessageManager channelMessageManagers)
 {
     public async Task SendAutorizationCode(SocketGuildUser socketGuildUser)
     {
@@ -20,7 +20,7 @@ public class AutorizationManager(ILogger<AutorizationManager> logger,
             string auCode = GetAutorizationCode();
             auCache.SetTemporaryCodes(socketGuildUser, auCode);
 
-            await socketGuildUser.SendMessageAsync($"Твой код авторизации: `{auCode}`");
+            await socketGuildUser.SendMessageAsync($"Твой код авторизации: ```{auCode}```");
         }
         catch (Exception ex)
         {

@@ -1,70 +1,26 @@
-﻿using Discord.WebSocket;
+﻿using Discord;
+using Discord.WebSocket;
 using Discord_Bot.Core.Providers.JsonProvider;
-using Microsoft.Extensions.Logging;
 
 namespace Discord_Bot.Infrastructure.Cache
 {
     public class RolesCache(
-        EmotesCache emotesCash, 
-        ILogger<RolesCache> _logger,
         JsonDiscordRolesProvider jsonDiscordRolesProvider,
-        JsonDiscordEmotesProvider jsonDiscordEmotesProvider)
+        EmotesCache emotesCache)
     {
-        private readonly Dictionary<ulong, SocketRole> MainServerRoles = [];
-        private readonly Dictionary<ulong, string> BaseRolesDescriptions = [];
-        private readonly Dictionary<ulong, string> GamesRolesDescriptions = [];
-        private readonly Dictionary<ulong, string> AnotherRolesDescriptions = [];
-        private readonly Dictionary<ulong, string> ServerBoosterRolesDescriptions = [];
-        private readonly Dictionary<ulong, SocketRole> RolesAvailableForSelection = [];
-        private readonly List<SocketRole> ColorNameList = [];  
+        const string invisSumbol = "ㅤ";
 
-        public async Task RolesInitialization(SocketGuild socketGuild)
-        {
-            try
-            {
-                await Task.WhenAll(
-                    SetRoles(socketGuild),
-                    FillRolesDescriptionsDict()
-                    );
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Error: {Message}", ex.Message);
-            }
-        }
-        private async Task SetRoles(SocketGuild socketGuild)
-        {
-            try
-            {
-                IReadOnlyCollection<SocketRole> roles = socketGuild.Roles;
+        private readonly Dictionary<ulong, SocketRole> GuildRoles = [];
+        private readonly Dictionary<ulong, SocketRole> HierarchyRoles = [];
+        private readonly Dictionary<ulong, SocketRole> CategoryRoles = [];
+        private readonly Dictionary<ulong, SocketRole> UniqieRoles = [];
+        private readonly Dictionary<ulong, SocketRole> SwitchColorRoles = [];
+        private readonly Dictionary<ulong, string> RolesDescriptions = [];
 
-                foreach (SocketRole role in roles)
-                {
-                    MainServerRoles.Add(role.Id, role);
-
-                    if(role.Id == jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.NotBooster.Lime.Id ||
-                       role.Id == jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.Booster.Khaki.Id ||
-                       role.Id == jsonDiscordRolesProvider .RootDiscordRoles.ColorSwitch.Booster.Violet.Id ||
-                       role.Id == jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.NotBooster.Crimson.Id ||
-                       role.Id == jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.NotBooster.Slateblue.Id ||
-                       role.Id == jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.Booster.Coral.Id)
-                    {
-                        ColorNameList.Add(role);
-                    }
-                }
-
-                _logger.LogInformation("Roles has been uploaded");
-                
-                await Task.CompletedTask;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
+        #region Action
         public SocketRole GetRole(ulong roleId)
         {
-            SocketRole role = MainServerRoles[roleId];
+            SocketRole role = GuildRoles[roleId];
 
             if (role != null)
             {
@@ -73,145 +29,171 @@ namespace Discord_Bot.Infrastructure.Cache
 
             throw new KeyNotFoundException($"Role with ID {roleId} not found.");
         }
-        private async Task FillRolesDescriptionsDict()
+        public string GetDescriptionForMainRoles()
         {
-            BaseRolesDescriptions.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Autorization.MalenkiyMember.Id,
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Autorization.MalenkiyMember.Description);
+            string textDescription = $"В данном блоке представлены все основные роли нашего сервера. " +
+                $"Что-то можно выбрать самостоятельно, " +
+                $"а что-то получить лично по желанию/на усмотрение администрации!\n";
 
-            BaseRolesDescriptions.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Hierarchy.Moderator.Id,
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Hierarchy.Moderator.Description);
+            GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
 
-            GamesRolesDescriptions.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.DestinyEnjoyer.Id,
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.DestinyEnjoyer.Description);
+            textDescription += "### иᴇᴩᴀᴩхия ᴄᴇᴩʙᴇᴩᴀ\n";
 
-            GamesRolesDescriptions.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.Valoranter.Id,
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.Valoranter.Description);
+            foreach (var role in HierarchyRoles)
+            {
+                textDescription += $"{pointEmote} {role.Value.Mention} 🠒 {RolesDescriptions[role.Key]}\n";
+            }
 
-            AnotherRolesDescriptions.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.IKIT.Id,
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.IKIT.Description);
+            textDescription += "### ᴋᴀᴛᴇᴦоᴩии\n";
 
-            AnotherRolesDescriptions.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.International.Id,
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.International.Description);
+            foreach (var role in CategoryRoles)
+            {
+                textDescription += $"{pointEmote} {role.Value.Mention} 🠒 {RolesDescriptions[role.Key]}\n";
+            }
 
-            AnotherRolesDescriptions.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.InformationHunter.Id,
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.InformationHunter.Description);
+            textDescription += "### униᴋᴀᴧьныᴇ ᴩоᴧи\n";
 
-            AnotherRolesDescriptions.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.DeadInside.Id,
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.DeadInside.Description);
+            foreach (var role in UniqieRoles)
+            {
+                textDescription += $"{pointEmote} {role.Value.Mention} 🠒 {RolesDescriptions[role.Key]}\n";
+            }
 
-            ServerBoosterRolesDescriptions.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.Booster.Coral.Id,
-                jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.Booster.Coral.Description);
 
-            ServerBoosterRolesDescriptions.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.Booster.Khaki.Id,
-                jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.Booster.Khaki.Description);
-
-            ServerBoosterRolesDescriptions.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.Booster.Violet.Id,
-                jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.Booster.Violet.Description);
-
-            ServerBoosterRolesDescriptions.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.NotBooster.Crimson.Id,
-                jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.NotBooster.Crimson.Description);
-
-            ServerBoosterRolesDescriptions.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.NotBooster.Slateblue.Id,
-                jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.NotBooster.Slateblue.Description);
-
-            ServerBoosterRolesDescriptions.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.NotBooster.Lime.Id,
-                jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.NotBooster.Lime.Description);
-
-            RolesAvailableForSelection.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.DestinyEnjoyer.Id,
-                GetRole(jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.DestinyEnjoyer.Id));
-
-            RolesAvailableForSelection.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.InformationHunter.Id,
-                GetRole(jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.InformationHunter.Id));
-
-            RolesAvailableForSelection.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.Valoranter.Id,
-                GetRole(jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.Valoranter.Id));
-
-            RolesAvailableForSelection.TryAdd(
-                jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.IKIT.Id,
-                GetRole(jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.IKIT.Id));
-
-            await Task.CompletedTask;
+            return textDescription;
         }
-        public string GetDescriptionInfoAboutRoles()
+        public string GetDescriptionForSwitchColorRoles()
         {
-            string description = "В данном блоке находится общая информация об основных ролях нашего сервера, " +
-                "а так же блок с ролями, которые можно получить прямо сейчас\n";
+            string textDescription = $"В данном блоке содержатся роли, которые изменяют цвет вашего никнейма на сервере. Обратите внимание, что некоторые цвета доступны только для **Nitro-бустеров**!\n";
 
-            description += "## Главное\n\n";
-            
-            foreach (var role in BaseRolesDescriptions)
+            GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
+
+            textDescription += "### доᴄᴛуᴨныᴇ цʙᴇᴛᴀ\n\n";
+
+            foreach (var role in SwitchColorRoles)
             {
-                description += $"> {GetRole(role.Key).Mention} - {role.Value}\n";
+                textDescription += $"> {role.Value.Mention}\n";
             }
 
-            description += "## Игры\n\n";
-
-            foreach(var role in GamesRolesDescriptions)
-            {
-                description += $"> {GetRole(role.Key).Mention} - {role.Value}\n";
-            }
-
-            description += "## Прочее\n\n";
-
-            foreach( var role in AnotherRolesDescriptions)
-            {
-                description += $"> {GetRole(role.Key).Mention} - {role.Value}\n";
-            }
-
-            return description;
+            return textDescription;
         }
-        public string GetDescriptionForСhoiceRoles()
+        public string GetDescriptionForRules()
         {
-            string description = $"Доступные для выбора роли. " +
-                $"\nВ выпадающем списке просто выбери то, что тебе интересно {emotesCash.GetEmote(jsonDiscordEmotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Love.Id)}\n" +
-                $"### Открывающие категории/каналы\n\n";
+            GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
 
-            foreach(var role in RolesAvailableForSelection)
+            string textDescription =
+                $"{pointEmote} Внимательно прочтите правила ниже.\n" +
+                $"{pointEmote} Будьте искренними с самим собой и вашими собеседниками.\n" +
+                $"{pointEmote} Не засоряйте тематические каналы информационным мусором, который никак не связан с темой канала.\n" +
+                $"{pointEmote} Постарайтесь уважительно относиться к точке зрения собеседника - у всех нас разный опыт за плечами.\n" +
+                $"{pointEmote} Не осуждайте человека за его ошибки. Постарайтесь понять корень проблемы прежде чем делать выводы.\n" +
+                $"{pointEmote} Не обсуждайте мировую политику и не создавайте ситуационных споров на этой почве.\n" +
+                $"{pointEmote} Постарайтесь не выливать весь негатив на ваших собеседников. Либо делайте это, но с заранее выключеным микрофоном.\n" +
+                $"{pointEmote} Будьте самими собою\n" +
+                $"{pointEmote} Не стесняйтесь просить помощи у других.\n" +
+                $"{pointEmote} Не стоит быть чересчур навязчивым\n\n";
+
+            textDescription += "И самое главное - наслаждайтесь моментом!";
+
+            return textDescription;
+        }
+        public void AddRole(SocketRole role)
+        {
+            GuildRoles.TryAdd(role.Id, role);
+
+            if (IsHierarchyServerRole(role))
             {
-                description += $"> {role.Value.Mention}\n";
+                HierarchyRoles.TryAdd(role.Id, role);
             }
 
-            description += "### Изменение цвета имени\n\n";
-
-            foreach( var role in ServerBoosterRolesDescriptions)
+            if (IsCategoryRole(role))
             {
-                description += $"> {GetRole(role.Key).Mention}\n";
+                CategoryRoles.TryAdd(role.Id, role);
             }
 
-            return description;
-        }
-        public List<SocketRole> ReturnColorNameListForCheck()
-        {
-            List<SocketRole> socketRoles = ColorNameList;
-
-            return socketRoles;
-        }
-        public async Task DeleteAllRolesFromUser(SocketGuildUser socketGuildUser)
-        {
-            foreach(var role in RolesAvailableForSelection)
+            if (IsUniqueRole(role))
             {
-                if(socketGuildUser.Roles.Any(userRole => userRole.Id == role.Key))
-                {
-                    await socketGuildUser.RemoveRoleAsync(role.Key);
-                }
+                UniqieRoles.TryAdd(role.Id, role);
+            }
+
+            if (IsSwitchColorRole(role))
+            {
+                SwitchColorRoles.TryAdd(role.Id, role);
             }
         }
+        public void AddRoleDescription(ulong roleId, string roleDescription)
+        {
+            RolesDescriptions.TryAdd(roleId, roleDescription);
+        }
+        public Dictionary<ulong, SocketRole> GetSwitchColorDictionary()
+        {
+            return SwitchColorRoles;
+        }
+        #endregion
+
+        #region Condition
+        private bool IsHierarchyServerRole(SocketRole role)
+        {
+            if (role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Autorization.MalenkiyMember.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Hierarchy.Moderator.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Hierarchy.MalenkiyHead.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Autorization.NotRegistered.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Hierarchy.ServerBooster.Id)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private bool IsCategoryRole(SocketRole role)
+        {
+            if (role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.InformationHunter.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.Gamer.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.IKIT.Id)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private bool IsUniqueRole(SocketRole role)
+        {
+            if (role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.DeadInside.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.International.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.Amnyam.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.BlackBeer.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.Gacha.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.LadyFlora.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.Svin.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.Twitch.Id || 
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Unique.Gus.Id)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private bool IsSwitchColorRole(SocketRole role)
+        {
+            if (role.Id == jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.Booster.Coral.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.Booster.Khaki.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.Booster.Violet.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.NotBooster.Crimson.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.NotBooster.Lime.Id ||
+                role.Id == jsonDiscordRolesProvider.RootDiscordRoles.ColorSwitch.NotBooster.Slateblue.Id)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        #endregion
     }
 }

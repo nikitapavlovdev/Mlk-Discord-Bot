@@ -22,6 +22,9 @@ using Microsoft.Extensions.Logging;
 using Discord_Bot.Core.Notifications.Log;
 using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
 using Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers;
+using Discord_Bot.Core.Managers.EmotesManagers;
+using Discord_Bot.Core.Notifications.Ready;
+using Discord_Bot.Core.Notifications.MessageReceived;
 
 namespace Discord_Bot.Presentation.DiscordAPI
 {
@@ -32,7 +35,7 @@ namespace Discord_Bot.Presentation.DiscordAPI
             IHost host = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
-                    DiscordSocketConfig _discordSocketConfiguration = new()
+                    DiscordSocketConfig discordConfiguration= new()
                     {
                         GatewayIntents = GatewayIntents.All
                     };
@@ -46,26 +49,33 @@ namespace Discord_Bot.Presentation.DiscordAPI
                         typeof(ButtonExecutedNotificationHandler).Assembly,
                         typeof(GuildAvailableNotificationHandler).Assembly,
                         typeof(UserVoiceStateUpdatedNotificationHandler).Assembly,
-                        typeof(SelectMenuExecutedNotificationHandler).Assembly));
+                        typeof(SelectMenuExecutedNotificationHandler).Assembly,
+                        typeof(ReadyNotificationHandler).Assembly,
+                        typeof(MessageReceivedNotificationHandler).Assembly));
 
-                    services.AddSingleton(context.Configuration);
+                    services.AddSingleton(new DiscordSocketClient(discordConfiguration));
+
                     services.AddSingleton<DiscordEventsController>();
                     services.AddSingleton<DiscordCommandsController>();
+
                     services.AddSingleton<CommandService>();
                     services.AddSingleton<ExtensionEmbedMessage>();
                     services.AddSingleton<ExtensionSelectionMenu>();
+                    services.AddSingleton<ExtensionMessageComponents>();
                     services.AddSingleton<ExtensionModal>();
+
                     services.AddSingleton<ChannelsCache>();
                     services.AddSingleton<RolesCache>();
                     services.AddSingleton<EmotesCache>();
                     services.AddSingleton<AutorizationCache>();
+
                     services.AddSingleton<RolesManager>();
                     services.AddSingleton<AutorizationManager>();
-                    services.AddSingleton<VoiceChannelsCreator>();
+                    services.AddSingleton<VoiceChannelsManager>();
                     services.AddSingleton<PersonalDataManager>();
-                    services.AddSingleton<TextMessageSender>();
-                    services.AddSingleton<ExtensionMessageComponents>();
-                    services.AddSingleton(new DiscordSocketClient(_discordSocketConfiguration));
+                    services.AddSingleton<TextMessageManager>();
+                    services.AddSingleton<EmotesManager>();
+
                     services.AddSingleton<JsonChannelsMapProvider>(x =>
                     {
                         return new JsonChannelsMapProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, 
@@ -93,6 +103,18 @@ namespace Discord_Bot.Presentation.DiscordAPI
                             "..", "..", "..", "Infrastructure", "Configuration", "DiscordRoles.json")),
                             x.GetRequiredService<ILogger<JsonDiscordRolesProvider>>());
                     });
+                    services.AddSingleton<JsonDiscordCategoriesProvider>(x =>
+                    {
+                        return new JsonDiscordCategoriesProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory,
+                            "..", "..", "..", "Infrastructure", "Configuration", "DiscordCategoriesMap.json")),
+                                x.GetRequiredService<ILogger<JsonDiscordCategoriesProvider>>());
+                    });
+                    services.AddSingleton<JsonDiscordDynamicMessagesProvider>(x =>
+                    {
+                        return new JsonDiscordDynamicMessagesProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory,
+                            "..", "..", "..", "Infrastructure", "Configuration", "DiscordDynamicMessages.json")),
+                                x.GetRequiredService<ILogger<JsonDiscordDynamicMessagesProvider>>());
+                    });
                 })
                 .ConfigureLogging((context, logging) =>
                 {
@@ -106,11 +128,11 @@ namespace Discord_Bot.Presentation.DiscordAPI
             DiscordCommandsController commandsController = host.Services.GetRequiredService<DiscordCommandsController>();
             JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider = host.Services.GetRequiredService<JsonDiscordConfigurationProvider>();
 
-            string? _discordToker = jsonDiscordConfigurationProvider.RootDiscordConfiguration?.MalenkieAdminBot?.API_KEY;
+            string? discordToken = jsonDiscordConfigurationProvider.RootDiscordConfiguration?.MalenkieAdminBot?.API_KEY;
 
-            if (_discordToker != null)
+            if (discordToken != null)
             {
-                await botClient.LoginAsync(TokenType.Bot, _discordToker);
+                await botClient.LoginAsync(TokenType.Bot, discordToken);
             }
 
             await botClient.StartAsync();
