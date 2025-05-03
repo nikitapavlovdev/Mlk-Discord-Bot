@@ -1,6 +1,4 @@
 ﻿using Discord;
-using Discord_Bot.Core.Providers.JsonProvider;
-using Microsoft.Extensions.Configuration;
 
 namespace Discord_Bot.Core.Utilities.DI
 {
@@ -27,4 +25,3 @@ namespace Discord_Bot.Core.Utilities.DI
         }
     }
 }
-

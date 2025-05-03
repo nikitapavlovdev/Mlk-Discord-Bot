@@ -7,6 +7,7 @@ namespace Discord_Bot.Core.Providers.JsonProvider
     public class JsonDiscordDynamicMessagesProvider
     {
         public RootDynamicMessages? DynamicMessages { get; set; }
+
         public JsonDiscordDynamicMessagesProvider(string filePath, ILogger<JsonDiscordDynamicMessagesProvider> logger)
         {
             try

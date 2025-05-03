@@ -1,5 +1,4 @@
-﻿using Discord_Bot.Infrastructure.JsonModels.Channels;
-using Discord_Bot.Infrastructure.JsonModels.Roles;
+﻿using Discord_Bot.Infrastructure.JsonModels.Roles;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 

@@ -1,4 +1,4 @@
-﻿ using MediatR;
+﻿using MediatR;
 using Discord.WebSocket;
 using Discord_Bot.Infrastructure.Cache;
 using Discord.Rest;
