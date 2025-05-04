@@ -8,26 +8,11 @@ using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
 
 namespace Discord_Bot.Core.Managers.UserManagers;
 
-public class AutorizationManager(ILogger<AutorizationManager> logger, 
+public class AutorizationManager( 
     AutorizationCache auCache, 
     RolesManager rolesManagers,
     TextMessageManager channelMessageManagers)
 {
-    public async Task SendAutorizationCode(SocketGuildUser socketGuildUser)
-    {
-        try
-        {
-            string auCode = GetAutorizationCode();
-            auCache.SetTemporaryCodes(socketGuildUser, auCode);
-
-            await socketGuildUser.SendMessageAsync($"Твой код авторизации: ```{auCode}```");
-        }
-        catch (Exception ex)
-        {
-            logger.LogError("Error: {Messsage} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
-
-        }
-    }
     public async Task AuthorizeUser(SocketModal modal, SocketGuildUser socketGuildUser)
     {
         if (IsValidCode(modal, socketGuildUser))
@@ -45,7 +30,7 @@ public class AutorizationManager(ILogger<AutorizationManager> logger,
             await channelMessageManagers.SendFollowupMessageOnErrorAutorization(modal);
         }
     }
-    private static string GetAutorizationCode()
+    public static string GetAutorizationCode()
     {
         return ExtensionMethods.GetRandomCode(10);
     }

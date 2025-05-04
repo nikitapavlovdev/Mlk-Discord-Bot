@@ -4,6 +4,7 @@ using Discord;
 using Discord_Bot.Core.Utilities.DI;
 using Discord_Bot.Infrastructure.Cache;
 using Discord_Bot.Core.Providers.JsonProvider;
+using Discord_Bot.Core.Managers.UserManagers;
 
 namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
 {
@@ -17,7 +18,8 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
         JsonChannelsMapProvider jsonChannelsMapProvider,
         JsonDiscordDynamicMessagesProvider jsonDiscordDynamicMessagesProvider,
         ChannelsCache channelsCache,
-        ExtensionSelectionMenu extensionSelectionMenu)
+        ExtensionSelectionMenu extensionSelectionMenu,
+        AutorizationCache autorizationCache)
     {
         #region Conrollers
         public async Task GuildTextChannelsInitialization(SocketGuild socketGuild)
@@ -35,9 +37,9 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
         {
             await Task.WhenAll(
                 SendMainGuildRolesMessage(socketGuild),
-                SendSwitchColorRolesMessage(socketGuild));
+                SendSwitchColorRolesMessage(socketGuild),
+                SendRulesMessage(socketGuild));
         }
-
         #endregion
 
         #region Private
@@ -83,6 +85,22 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
                 await textRolesChannel.SendMessageAsync(embed: extensionEmbedMessage.GetSwitchColorEmbedMessage(), components: extensionSelectionMenu.GetColorSwitchSelectionMenu());
             }
         }
+        private async Task SendRulesMessage(SocketGuild socketGuild)
+        {
+            SocketTextChannel? textRulesChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Rules.Id);
+
+            if (await textRulesChannel.GetMessageAsync(jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.Roles.Rules.Id) is IUserMessage sentMessage)
+            {
+                await sentMessage.ModifyAsync(message =>
+                {
+                    message.Embed = extensionEmbedMessage.GetRulesEmbedMessage();
+                });
+            }
+            else
+            {
+                await textRulesChannel.SendMessageAsync(embed: extensionEmbedMessage.GetRulesEmbedMessage());
+            }
+        }
         #endregion
 
         #region Public
@@ -99,9 +117,12 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
         {
             try
             {
+                string auCode = AutorizationManager.GetAutorizationCode();
+                autorizationCache.SetTemporaryCodes(socketGuildUser, auCode);
+
                 SocketTextChannel? textChannel = socketGuildUser.Guild.TextChannels.FirstOrDefault(x => x.Id == channelsProvider.RootChannel?.Channels?.TextChannels?.ServerCategory?.Starting?.Id);
                 MessageComponent auMessageComponent = ExtensionMessageComponents.GetWelcomeMessageComponent(socketGuildUser.Id);
-                Embed embedMessage = extensionEmbedMessage.GetJoinedEmbedTemplate(socketGuildUser);
+                Embed embedMessage = extensionEmbedMessage.GetJoinedEmbedTemplate(socketGuildUser, auCode);
 
                 if (textChannel is null)
                 {
@@ -131,22 +152,6 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
             GuildEmote? emoteError = emotesCache.GetEmote(emotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Hmph.Id);
 
             await modal.FollowupAsync(embed: extensionEmbedMessage.GetErrorAuthorizationMessageEmbedTemplate(emoteError), ephemeral: true);
-        }
-        public async Task SendRulesMessage(SocketGuild socketGuild)
-        {
-            SocketTextChannel? textRulesChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Rules.Id);
-
-            if (await textRulesChannel.GetMessageAsync(jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.Roles.Rules.Id) is IUserMessage sentMessage)
-            {
-                await sentMessage.ModifyAsync(message =>
-                {
-                    message.Embed = extensionEmbedMessage.GetRulesEmbedMessage();
-                });
-            }
-            else
-            {
-                await textRulesChannel.SendMessageAsync(embed: extensionEmbedMessage.GetRulesEmbedMessage());
-            }
         }
         public async Task SendMemberInformation(SocketGuildUser socketGuildUser)
         {

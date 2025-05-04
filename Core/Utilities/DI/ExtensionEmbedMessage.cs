@@ -3,6 +3,8 @@ using Discord.WebSocket;
 using Discord_Bot.Infrastructure.Cache;
 using Discord_Bot.Core.Utilities.General;
 using Discord_Bot.Core.Providers.JsonProvider;
+using Microsoft.Identity.Client;
+using System.Runtime.InteropServices;
 
 namespace Discord_Bot.Core.Utilities.DI
 {
@@ -122,20 +124,21 @@ namespace Discord_Bot.Core.Utilities.DI
 
             return embed;
         }
-        public Embed GetJoinedEmbedTemplate(SocketGuildUser socketGuildUser)
+        public Embed GetJoinedEmbedTemplate(SocketGuildUser socketGuildUser, string auCode)
         {
             GuildEmote? welcomeMessageEmote = emotesCache.GetEmote(jsonDiscordEmotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Love.Id);
 
 
             string title = "Новый участник";
-            string description = $"Привет, **{socketGuildUser.Username}**! {welcomeMessageEmote}\nДобро пожаловать на сервер **{socketGuildUser.Guild.Name}**" +
-                                                                                                        $"\n\nДля продолжения введи код, отправленный тебе в личное сообщение, в форме по кнопочке **«‎Ввести код»‎**";
+            string description = $"Привет, **{socketGuildUser.Username}**! " +
+                $"{welcomeMessageEmote}\nДобро пожаловать на сервер **{socketGuildUser.Guild.Name}**" +
+                $"\n\nДля продолжения введите код: `{auCode}`";
+
             Embed embed = new EmbedBuilder()
                 .WithTitle(title)
                 .WithDescription(description)
                 .WithColor(new(30, 144, 255))
                 .WithAuthor(socketGuildUser.DisplayName, socketGuildUser.GetAvatarUrl(ImageFormat.Auto, 48))
-                .WithCurrentTimestamp()
                 .WithFooter(new EmbedFooterBuilder()
                 .WithText(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name)
                 .WithIconUrl(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
@@ -235,6 +238,15 @@ namespace Discord_Bot.Core.Utilities.DI
                 .Build();
 
             return embed;
+        }
+        public static Embed GetDefaultEmbedTemplate(string title, string descriptions) 
+        {
+            return new EmbedBuilder()
+                .WithTitle(title)
+                .WithDescription(descriptions)
+                .WithColor(0, 193, 255)
+                .WithCurrentTimestamp()
+                .Build();
         }
     }
 };
