@@ -106,7 +106,7 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
         #region Public
         public async Task SendFarewellMessageAsync(SocketGuild socketGuild, SocketUser socketUser)
         {
-            SocketTextChannel? socketTextChannel = socketGuild.GetTextChannel(jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Chat.Id);
+            SocketTextChannel? socketTextChannel = socketGuild.GetTextChannel(jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Logs.Id);
             Embed embedMessage = extensionEmbedMessage.GetFarewellEmbedTamplate(socketUser);
 
             if (socketTextChannel == null) { return; }
