@@ -9,7 +9,7 @@ namespace Discord_Bot.Core.Utilities.DI
             return new ComponentBuilder()
             .WithButton(new ButtonBuilder()
                 .WithStyle(ButtonStyle.Primary)
-                .WithCustomId($"nikname_selection_component_{userId}")
+                .WithCustomId($"au_{userId}")
                 .WithLabel("Ввести код"))
             .Build();
         }

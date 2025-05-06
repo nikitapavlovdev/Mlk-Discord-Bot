@@ -20,8 +20,8 @@ namespace Discord_Bot.Core.Utilities.DI
             return new EmbedBuilder()
                 .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ 🠒 ʀᴏʟᴇs")
                 .WithDescription(rolesCachhe.GetDescriptionForMainRoles())
-                .WithFooter(ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name),
-                            ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
+                .WithFooter(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name,
+                            jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink)
                 .WithTimestamp(DateTimeOffset.Now)
                 .WithColor(19, 20, 22)
                 .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.RolesBanner)
@@ -32,8 +32,8 @@ namespace Discord_Bot.Core.Utilities.DI
             return new EmbedBuilder()
                 .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ 🠒 ɴɪᴄᴋɴᴀᴍᴇ ᴄᴏʟᴏʀ")
                 .WithDescription(rolesCachhe.GetDescriptionForSwitchColorRoles())
-                .WithFooter(ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name),
-                            ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
+                .WithFooter(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name,
+                            jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink)
                 .WithTimestamp(DateTimeOffset.Now)
                 .WithColor(19, 20, 22)
                 .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.ColorNameBanner)
@@ -44,8 +44,8 @@ namespace Discord_Bot.Core.Utilities.DI
             return new EmbedBuilder()
                .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ 🠒 ʀᴜʟᴇs")
                .WithDescription(rolesCachhe.GetDescriptionForRules())
-               .WithFooter(ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name),
-                           ExtensionMethods.GetStringFromConfiguration(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
+               .WithFooter(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name,
+                           jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink)
                .WithTimestamp(DateTimeOffset.Now)
                .WithColor(19, 20, 22)
                .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.RulesBanner)
@@ -177,40 +177,39 @@ namespace Discord_Bot.Core.Utilities.DI
         }
         public Embed GetGuildUserInformationMessageTemplate(SocketGuildUser socketGuildUser)
         {
-            string blockOfName = $"### Общая информация\n\n" +
-                $"Имя пользователя: **{(string.IsNullOrWhiteSpace(socketGuildUser.Username) ? "Нет данных" : socketGuildUser.Username)}**\n" +
-                $"Имя на сервере: **{(string.IsNullOrWhiteSpace(socketGuildUser.DisplayName) ? "Нет данных" : socketGuildUser.DisplayName)}**\n" +
-                $"Глобальное имя: **{(string.IsNullOrWhiteSpace(socketGuildUser.GlobalName) ? "Нет данных" : socketGuildUser.GlobalName)}**\n" +
-                $"Дата вступления: **{socketGuildUser.JoinedAt.GetValueOrDefault():D}**\n" +
-                $"Бустер сервера с: {(string.IsNullOrEmpty(socketGuildUser.PremiumSince.GetValueOrDefault().ToString()) ? socketGuildUser.PremiumSince : "**Не является бустером**")}\n";
+            string blockOfName = $"### общᴀя инɸоᴩʍᴀция\n\n" +
+                $"> Имя пользователя: **{(string.IsNullOrWhiteSpace(socketGuildUser.Username) ? "Нет данных" : socketGuildUser.Username)}**\n" +
+                $"> Имя на сервере: **{(string.IsNullOrWhiteSpace(socketGuildUser.DisplayName) ? "Нет данных" : socketGuildUser.DisplayName)}**\n" +
+                $"> Глобальное имя: **{(string.IsNullOrWhiteSpace(socketGuildUser.GlobalName) ? "Нет данных" : socketGuildUser.GlobalName)}**\n" +
+                $"> Дата вступления: **{socketGuildUser.JoinedAt.GetValueOrDefault():D}**\n";
 
-            string blockOfAdditionInformation = $"### Дополнительная информация\n\n" +
-                $"ID пользователя: **{socketGuildUser.Id}**\n" +
-                $"ID аватара: **{socketGuildUser.AvatarId}**\n" +
-                $"Пользователь бот: **{(socketGuildUser .IsBot ? "Да" : "Нет")}**\n" +
-                $"Статус пользователя: **{socketGuildUser.Status}**\n" +
-                $"Позиция в иерархии ролей: **{socketGuildUser.Hierarchy}**\n";
+            string blockOfAdditionInformation = $"### доᴨоᴧниᴛᴇᴧьнᴀя инɸоᴩʍᴀция\n\n" +
+                $"> ID пользователя: **{socketGuildUser.Id}**\n" +
+                $"> ID аватара: **{socketGuildUser.AvatarId}**\n" +
+                $"> Пользователь бот: **{(socketGuildUser.IsBot ? "Да" : "Нет")}**\n" +
+                $"> Статус пользователя: **{socketGuildUser.Status}**\n";
 
             string blockOfClients = "### Активные клиенты\n\n" +
-                $"Пользователь **{socketGuildUser.DisplayName}** активен с **{socketGuildUser.ActiveClients.Count}** клиента (-ов)\n";
+                $"> Пользователь **{socketGuildUser.DisplayName}** активен с **{socketGuildUser.ActiveClients.Count}** клиента (-ов)\n";
 
             foreach(ClientType clientType in socketGuildUser.ActiveClients)
             {
                 blockOfClients += $"> {clientType}\n";
             }
 
-            string blockOfPublicFlags = "### Флаги\n\n" +
+            string blockOfPublicFlags = "### ɸᴧᴀᴦи\n\n" +
                 $"Флаги для пользователя **{socketGuildUser.DisplayName}**:\n>>> {socketGuildUser.Flags}\n";
 
-            string ALL_USER_INFO = ""
+            string general = ""
                 + blockOfName
                 + blockOfAdditionInformation
                 + blockOfClients 
                 + blockOfPublicFlags;
 
             Embed message = new EmbedBuilder()
-                .WithTitle($"Информация об участнике {socketGuildUser.DisplayName}")
-                .WithDescription(ALL_USER_INFO)
+                .WithTitle("ᴜsᴇʀ ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ")
+                .WithAuthor(socketGuildUser.DisplayName, socketGuildUser.GetAvatarUrl(ImageFormat.Auto, 48))
+                .WithDescription(general)
                 .WithColor(30, 144, 255)
                 .WithCurrentTimestamp()
                 .Build();

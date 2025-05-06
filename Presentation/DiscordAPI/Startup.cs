@@ -75,6 +75,7 @@ namespace Discord_Bot.Presentation.DiscordAPI
                     services.AddSingleton<PersonalDataManager>();
                     services.AddSingleton<TextMessageManager>();
                     services.AddSingleton<EmotesManager>();
+                    services.AddSingleton<ModeratorLogsSender>();
 
                     services.AddSingleton<JsonChannelsMapProvider>(x =>
                     {

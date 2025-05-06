@@ -4,13 +4,15 @@ using Discord_Bot.Infrastructure.Cache;
 using Discord.Rest;
 using Microsoft.Extensions.Logging;
 using Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers;
+using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
 
 namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
 {
     class UserVoiceStateUpdatedNotificationHandler(
         ChannelsCache channelsCache, 
         ILogger<UserVoiceStateUpdatedNotificationHandler> logger,
-        VoiceChannelsManager voiceChannelsCreator) : INotificationHandler<UserVoiceStateUpdatedNotification>
+        VoiceChannelsManager voiceChannelsCreator,
+        ModeratorLogsSender moderatorLogsSender) : INotificationHandler<UserVoiceStateUpdatedNotification>
     {
         public async Task Handle(UserVoiceStateUpdatedNotification notification, CancellationToken cancellationToken)
         {
@@ -26,6 +28,8 @@ namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
                     if (channelsCache.IsTemporaryChannel(notification.OldState.VoiceChannel) && notification.OldState.VoiceChannel.ConnectedUsers.Count == 0)
                     {
                         channelsCache.DeleteTemporaryChannel(notification.OldState.VoiceChannel);
+
+                        await moderatorLogsSender.SendRemovingVoiceChannelMessage(notification.OldState.VoiceChannel, guildUser.Guild, "UserVoiceStateUpdatedNotificationHandler", "Handle");
                         await notification.OldState.VoiceChannel.DeleteAsync();
                     }
                 }
@@ -48,6 +52,8 @@ namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
                     if (channelsCache.IsTemporaryChannel(notification.OldState.VoiceChannel) && notification.OldState.VoiceChannel.ConnectedUsers.Count == 0)
                     {
                         channelsCache.DeleteTemporaryChannel(notification.OldState.VoiceChannel);
+
+                        await moderatorLogsSender.SendRemovingVoiceChannelMessage(notification.OldState.VoiceChannel, guildUser.Guild, "UserVoiceStateUpdatedNotificationHandler", "Handle");
                         await notification.OldState.VoiceChannel.DeleteAsync();
                     }
 

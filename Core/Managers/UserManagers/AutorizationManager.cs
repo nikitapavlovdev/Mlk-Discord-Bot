@@ -1,27 +1,33 @@
 ﻿using Discord.WebSocket;
-using Discord;
 using Discord_Bot.Core.Utilities.General;
 using Discord_Bot.Infrastructure.Cache;
-using Microsoft.Extensions.Logging;
 using Discord_Bot.Core.Managers.RolesManagers;
 using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
+using Discord_Bot.Core.Providers.JsonProvider;
 
 namespace Discord_Bot.Core.Managers.UserManagers;
 
 public class AutorizationManager( 
     AutorizationCache auCache, 
     RolesManager rolesManagers,
-    TextMessageManager channelMessageManagers)
+    TextMessageManager channelMessageManagers,
+    JsonDiscordRolesProvider jsonDiscordRolesProvider)
 {
     public async Task AuthorizeUser(SocketModal modal, SocketGuildUser socketGuildUser)
     {
         if (IsValidCode(modal, socketGuildUser))
         {
-            await Task.WhenAll(
+            if(!socketGuildUser.Roles.Any(x => x.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Autorization.MalenkiyMember.Id))
+            {
+                await Task.WhenAll(
                 rolesManagers.DeleteNotRegisteredRoleAsync(socketGuildUser),
                 rolesManagers.AddBaseServerRoleAsync(socketGuildUser),
-                channelMessageManagers.SendFollowupMessageOnSuccessAutorization(modal)
-            );
+                channelMessageManagers.SendFollowupMessageOnSuccessAutorization(modal));
+            }
+            else
+            {
+                await channelMessageManagers.SendFollowupMessageOnSuccessAutorization(modal);
+            }
 
             auCache.RemoveCodeFromDict(socketGuildUser);
         }
@@ -32,7 +38,7 @@ public class AutorizationManager(
     }
     public static string GetAutorizationCode()
     {
-        return ExtensionMethods.GetRandomCode(10);
+        return ExtensionStaticMethods.GetRandomCode(10);
     }
     private bool IsValidCode(SocketModal modal, SocketGuildUser socketGuildUser)
     {

@@ -10,7 +10,7 @@ namespace Discord_Bot.Core.Notifications.ButtonExecuted
         {
             try
             {
-                if (notification.SocketMessageComponent.Data.CustomId == $"nikname_selection_component_{notification.SocketMessageComponent.User.Id}")
+                if (notification.SocketMessageComponent.Data.CustomId == $"au_{notification.SocketMessageComponent.User.Id}")
                 {
                     await notification.SocketMessageComponent.RespondWithModalAsync(ExtensionModal.GetAutorizationModal());
                     return;

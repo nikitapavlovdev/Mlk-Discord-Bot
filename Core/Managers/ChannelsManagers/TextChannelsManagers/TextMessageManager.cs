@@ -156,7 +156,7 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
         public async Task SendMemberInformation(SocketGuildUser socketGuildUser)
         {
             Embed memberInformationEmbed = extensionEmbedMessage.GetGuildUserInformationMessageTemplate(socketGuildUser);
-            SocketTextChannel adminTextChannel = socketGuildUser.Guild.GetTextChannel(jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Chat.Id);
+            SocketTextChannel adminTextChannel = socketGuildUser.Guild.GetTextChannel(jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Logs.Id);
 
             await adminTextChannel.SendMessageAsync(embed: memberInformationEmbed);
         }

@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
+using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
 using Discord_Bot.Core.Providers.JsonProvider;
 using Discord_Bot.Infrastructure.Cache;
 using Microsoft.Extensions.Logging;
@@ -10,8 +11,29 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
     public class VoiceChannelsManager(
         ChannelsCache channelsCache,
         ILogger<VoiceChannelsManager> logger,
-        JsonDiscordCategoriesProvider jsonDiscordCategoriesProvider)
+        JsonDiscordCategoriesProvider jsonDiscordCategoriesProvider,
+        JsonChannelsMapProvider jsonChannelsMapProvider, 
+        ModeratorLogsSender moderatorLogsSender)
     {
+        private readonly string[] memNames =
+            ["blackman hurtz", "anx negropodobniy", "kroshka mrpronin",
+            "lobachok", "lev esli i sosal..", "volosatiy yeban", "blackbeer party",
+            "anx sosal"];
+        private string GetLobbyName()
+        {
+            Random random = new();
+
+            return memNames[random.Next(memNames.Length)];
+        }
+        private string GetLobbyName(SocketGuildUser socketGuildUser)
+        {
+            if (socketGuildUser.DisplayName.Length < 15)
+            {
+                return socketGuildUser.DisplayName;
+            }
+
+            return GetLobbyName();
+        }
         public async Task GuildVoiceChannelsInitialization(SocketGuild socketGuild)
         {
             try
@@ -27,10 +49,12 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
         {
             foreach(SocketVoiceChannel socketVoiceChannel in socketGuild.VoiceChannels)
             {
-                if(socketVoiceChannel.Category.Id == jsonDiscordCategoriesProvider.RootDiscordCategories.Guild.Autolobby.Id && !channelsCache.IsGeneratingChannel(socketVoiceChannel))
+                if(socketVoiceChannel.Category.Id == jsonDiscordCategoriesProvider.RootDiscordCategories.Guild.Autolobby.Id 
+                    && socketVoiceChannel.Id != jsonChannelsMapProvider.RootChannel.Channels.VoiceChannels.AutoLobby.AutoGamesLobby.Id)
                 {
                     if(socketVoiceChannel.ConnectedUsers.Count == 0)
                     {
+                        await moderatorLogsSender.SendRemovingVoiceChannelMessage(socketVoiceChannel, socketGuild, "VoiceChannelsManager", "ClearTemporaryVoiceChannels");
                         await socketVoiceChannel.DeleteAsync();
                     }
                     else
@@ -40,10 +64,12 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
                 }
             }
         }
-        public async Task<RestVoiceChannel> CreateVoiceChannelAsync(SocketGuild socketGuild, SocketUser leader)
+        public async Task<RestVoiceChannel> CreateVoiceChannelAsync(SocketGuild socketGuild, SocketUser socketUser)
         {
+            SocketGuildUser? leader = socketUser as SocketGuildUser;
+
             return await socketGuild.CreateVoiceChannelAsync(
-                $"🔉 | ᴍʟᴋʟᴏʙʙʏ {channelsCache.GetLobbyNumber()}",
+                $"🔉 | {GetLobbyName(leader)}",
                 properties =>
                 {
                     properties.CategoryId = jsonDiscordCategoriesProvider.RootDiscordCategories.Guild.Autolobby.Id;
