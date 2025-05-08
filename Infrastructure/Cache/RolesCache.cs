@@ -58,7 +58,6 @@ namespace Discord_Bot.Infrastructure.Cache
                 textDescription += $"{pointEmote} {role.Value.Mention} 🠒 {RolesDescriptions[role.Key]}\n";
             }
 
-
             return textDescription;
         }
         public string GetDescriptionForSwitchColorRoles()

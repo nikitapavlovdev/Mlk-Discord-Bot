@@ -22,9 +22,7 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithDescription(rolesCachhe.GetDescriptionForMainRoles())
                 .WithFooter(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name,
                             jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink)
-                .WithTimestamp(DateTimeOffset.Now)
-                .WithColor(19, 20, 22)
-                .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.RolesBanner)
+                .WithColor(100, 100, 100)
                 .Build();
         }
         public Embed GetSwitchColorEmbedMessage()
@@ -34,9 +32,7 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithDescription(rolesCachhe.GetDescriptionForSwitchColorRoles())
                 .WithFooter(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name,
                             jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink)
-                .WithTimestamp(DateTimeOffset.Now)
-                .WithColor(19, 20, 22)
-                .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.ColorNameBanner)
+                .WithColor(100, 100, 100)
                 .Build();
         }
         public Embed GetRulesEmbedMessage()
@@ -46,7 +42,6 @@ namespace Discord_Bot.Core.Utilities.DI
                .WithDescription(rolesCachhe.GetDescriptionForRules())
                .WithFooter(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name,
                            jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink)
-               .WithTimestamp(DateTimeOffset.Now)
                .WithColor(19, 20, 22)
                .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.RulesBanner)
                .Build();

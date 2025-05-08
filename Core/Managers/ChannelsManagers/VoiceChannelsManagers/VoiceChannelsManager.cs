@@ -18,8 +18,8 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
         private readonly string[] memNames =
             ["blackman hurtz", "anx negropodobniy", "kroshka mrpronin",
             "lobachok", "lev esli i sosal..", "volosatiy yeban", "blackbeer party",
-            "anx sosal"];
-        private string GetLobbyName()
+            "anx sosal", "dodep na baze", "the chernozhep", "gey's channel", "sosatel"];
+        private string GetLobbyNameFromArray()
         {
             Random random = new();
 
@@ -27,12 +27,12 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
         }
         private string GetLobbyName(SocketGuildUser socketGuildUser)
         {
-            if (socketGuildUser.DisplayName.Length < 15)
+            if (socketGuildUser.DisplayName.Length < 10)
             {
                 return socketGuildUser.DisplayName;
             }
 
-            return GetLobbyName();
+            return GetLobbyNameFromArray(); 
         }
         public async Task GuildVoiceChannelsInitialization(SocketGuild socketGuild)
         {
