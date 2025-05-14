@@ -40,6 +40,23 @@ namespace Discord_Bot.Core.Managers.RolesManagers
                 logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
+        public async Task AddGamerRoleAsync(SocketGuildUser socketGuildUser)
+        {
+            try
+            {
+                await socketGuildUser.AddRoleAsync(rolesCache.GetRole(
+                    jsonDiscordRolesProvider
+                    .RootDiscordRoles
+                    .GeneralRole
+                    .Categories
+                    .Gamer
+                    .Id));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+            }
+        }
         public async Task DeleteNotRegisteredRoleAsync(SocketGuildUser socketGuildUser)
         {
             try

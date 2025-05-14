@@ -1,16 +1,23 @@
-﻿using Discord_Bot.Core.Utilities.DI;
+﻿using Discord.WebSocket;
+using Discord_Bot.Core.Utilities.DI;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Discord_Bot.Core.Notifications.ButtonExecuted
 {
-    public class ButtonExecutedNotificationHandler(ILogger<ButtonExecutedNotificationHandler> _logger) : INotificationHandler<ButtonExecutedNotification>
+    public class ButtonExecutedNotificationHandler(
+        ILogger<ButtonExecutedNotificationHandler> _logger) : INotificationHandler<ButtonExecutedNotification>
     {
         public async Task Handle(ButtonExecutedNotification notification, CancellationToken cancellationToken)
         {
             try
             {
-                if (notification.SocketMessageComponent.Data.CustomId == $"au_{notification.SocketMessageComponent.User.Id}")
+                if(notification.SocketMessageComponent.User is not SocketGuildUser socketGuildUser)
+                {
+                    return;
+                }
+
+                if(notification.SocketMessageComponent.Data.CustomId == $"au_{notification.SocketMessageComponent.User.Id}")
                 {
                     await notification.SocketMessageComponent.RespondWithModalAsync(ExtensionModal.GetAutorizationModal());
                     return;

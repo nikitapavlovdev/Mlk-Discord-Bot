@@ -16,7 +16,6 @@ namespace Discord_Bot.Core.Notifications.UserJoined
             {
                 await rolesManager.AddNotRegisteredRoleAsync(notification.SocketGuildUser);
                 await textMessageManager.SendWelcomeMessageAsync(notification.SocketGuildUser);
-                await textMessageManager.SendMemberInformation(notification.SocketGuildUser);
             }
             catch (Exception ex)
             {

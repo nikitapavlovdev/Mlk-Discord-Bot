@@ -22,6 +22,7 @@ public class AutorizationManager(
                 await Task.WhenAll(
                 rolesManagers.DeleteNotRegisteredRoleAsync(socketGuildUser),
                 rolesManagers.AddBaseServerRoleAsync(socketGuildUser),
+                rolesManagers.AddGamerRoleAsync(socketGuildUser),
                 channelMessageManagers.SendFollowupMessageOnSuccessAutorization(modal));
             }
             else

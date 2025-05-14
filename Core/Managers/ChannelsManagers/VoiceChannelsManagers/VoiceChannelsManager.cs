@@ -15,24 +15,26 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
         JsonChannelsMapProvider jsonChannelsMapProvider, 
         ModeratorLogsSender moderatorLogsSender)
     {
-        private readonly string[] memNames =
-            ["blackman hurtz", "anx negropodobniy", "kroshka mrpronin",
-            "lobachok", "lev esli i sosal..", "volosatiy yeban", "blackbeer party",
-            "anx sosal", "dodep na baze", "the chernozhep", "gey's channel", "sosatel"];
-        private string GetLobbyNameFromArray()
+        private string GetLobbyName()
         {
-            Random random = new();
+            Random rnd = new();
 
-            return memNames[random.Next(memNames.Length)];
-        }
-        private string GetLobbyName(SocketGuildUser socketGuildUser)
-        {
-            if (socketGuildUser.DisplayName.Length < 10)
+            if(rnd.Next(0, 1000000) == 0)
             {
-                return socketGuildUser.DisplayName;
+                return "🤍 Million Amnymchik Kid";
             }
 
-            return GetLobbyNameFromArray(); 
+            if (rnd.Next(0, 100000) == 0)
+            {
+                return "💖 One Hundred Thousand Kid";
+            }
+
+            if (rnd.Next(0, 1000) == 0)
+            {
+                return "💜 One Thousand Kid";
+            }
+
+            return "ᴍʟᴋ_ʟᴏʙʙʏ";
         }
         public async Task GuildVoiceChannelsInitialization(SocketGuild socketGuild)
         {
@@ -69,7 +71,7 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
             SocketGuildUser? leader = socketUser as SocketGuildUser;
 
             return await socketGuild.CreateVoiceChannelAsync(
-                $"🔉 | {GetLobbyName(leader)}",
+                $"🔉 | {GetLobbyName()}",
                 properties =>
                 {
                     properties.CategoryId = jsonDiscordCategoriesProvider.RootDiscordCategories.Guild.Autolobby.Id;

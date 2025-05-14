@@ -3,6 +3,7 @@ using Discord.WebSocket;
 using Discord.Commands;
 using Microsoft.Extensions.Logging;
 using Discord_Bot.Core.Utilities.DI;
+using Discord;
 
 namespace Discord_Bot.Core.Notifications.MessageReceived
 {
@@ -20,21 +21,25 @@ namespace Discord_Bot.Core.Notifications.MessageReceived
 
                 int argPos = 0;
 
-                if (socketGuildUser.Id == 628236760681545748 && socketUserMessage.HasStringPrefix("mlkbot:", ref argPos))
+                if (socketGuildUser.Id == 628236760681545748 && socketUserMessage.HasStringPrefix("$mlk:", ref argPos))
                 {
                     string command = notification.SocketMessage.Content[argPos..];
                     string title = "ᴍᴀʟᴇɴᴋɪᴇ 🠒 ᴄᴏᴍᴍᴀɴᴅ";
-                    
+
                     switch (command)
                     {
-                        case "udm":
+                        case "rm":
 
-                            await socketUserMessage.Channel.SendMessageAsync(
-                                embed: ExtensionEmbedMessage.GetDefaultEmbedTemplate(title, $"> Command **{command}** has been successful"));
+                            if (socketUserMessage.Channel is not ITextChannel textChannel)
+                            {
+                                return;
+                            }
 
-                            await socketUserMessage.DeleteAsync();
+                            IEnumerable<IMessage> messages = await textChannel.GetMessagesAsync(limit: 100).FlattenAsync();
+                            await textChannel.DeleteMessagesAsync(messages);
 
                             break;
+
 
                         default:
 

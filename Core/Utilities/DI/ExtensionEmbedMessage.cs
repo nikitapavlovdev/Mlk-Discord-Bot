@@ -1,10 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using Discord_Bot.Infrastructure.Cache;
-using Discord_Bot.Core.Utilities.General;
 using Discord_Bot.Core.Providers.JsonProvider;
-using Microsoft.Identity.Client;
-using System.Runtime.InteropServices;
 
 namespace Discord_Bot.Core.Utilities.DI
 {
@@ -13,7 +10,8 @@ namespace Discord_Bot.Core.Utilities.DI
         EmotesCache emotesCache,
         JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider,
         JsonDiscordEmotesProvider jsonDiscordEmotesProvider,
-        JsonDiscordPicturesProvider jsonDiscordPicturesProvider)
+        JsonDiscordPicturesProvider jsonDiscordPicturesProvider,
+        JsonDiscordRolesProvider jsonDiscordRolesProvider)
     {
         public Embed GetMainRolesEmbedMessage()
         {
@@ -22,7 +20,7 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithDescription(rolesCachhe.GetDescriptionForMainRoles())
                 .WithFooter(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name,
                             jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink)
-                .WithColor(100, 100, 100)
+                .WithColor(50, 50, 53)
                 .Build();
         }
         public Embed GetSwitchColorEmbedMessage()
@@ -32,7 +30,7 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithDescription(rolesCachhe.GetDescriptionForSwitchColorRoles())
                 .WithFooter(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name,
                             jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink)
-                .WithColor(100, 100, 100)
+                .WithColor(50, 50, 53)
                 .Build();
         }
         public Embed GetRulesEmbedMessage()
@@ -42,23 +40,17 @@ namespace Discord_Bot.Core.Utilities.DI
                .WithDescription(rolesCachhe.GetDescriptionForRules())
                .WithFooter(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name,
                            jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink)
-               .WithColor(19, 20, 22)
+               .WithColor(50, 50, 53)
                .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.RulesBanner)
                .Build();
         }
-        public Embed GetSuccesAuthorizationMessageEmbedTemplate(Emote? emoteSuccess, 
-            SocketRole baseServerRole, 
-            ulong roleChannelId, 
-            ulong botCommandChannelId, 
-            ulong newsChannelId)
+        public Embed GetSuccesAuthorizationMessageEmbedTemplate()
         {
             string title = $"Успех\n\n";
 
-            string description = $"**Верификация пройдена успешно!**{emoteSuccess}\n\n" +
-                            $"Добавлена базовая роль: {baseServerRole.Mention}\n\n" +
-                            $"<#{roleChannelId}>         - получить интересующие роли\n" +
-                            $"<#{botCommandChannelId}>   - канал для команд бота\n" +
-                            $"<#{newsChannelId}>         - общий новостной канал сервера\n";
+            string description = $"**Верификация пройдена успешно!**{emotesCache.GetEmote(jsonDiscordEmotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Love.Id)}\n\n" +
+                            $"Добавлена базовая роль: {rolesCachhe.GetRole(jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Autorization.MalenkiyMember.Id).Mention}\n" +
+                            $"Добавлена игровая роль: {rolesCachhe.GetRole(jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.Gamer.Id).Mention}";
 
             Color color = new(0, 255, 127);
 
@@ -123,8 +115,7 @@ namespace Discord_Bot.Core.Utilities.DI
         {
             GuildEmote? welcomeMessageEmote = emotesCache.GetEmote(jsonDiscordEmotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Love.Id);
 
-
-            string title = "Новый участник";
+            string title = "ᴍᴀʟᴇɴᴋɪᴇ 🠒 ɴᴇᴡ ᴍᴇᴍʙᴇʀ";
             string description = $"Привет, **{socketGuildUser.Username}**! " +
                 $"{welcomeMessageEmote}\nДобро пожаловать на сервер **{socketGuildUser.Guild.Name}**" +
                 $"\n\nДля продолжения введите код: `{auCode}`";
@@ -133,17 +124,16 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithTitle(title)
                 .WithDescription(description)
                 .WithColor(new(30, 144, 255))
-                .WithAuthor(socketGuildUser.DisplayName, socketGuildUser.GetAvatarUrl(ImageFormat.Auto, 48))
                 .WithFooter(new EmbedFooterBuilder()
-                .WithText(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name)
-                .WithIconUrl(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
+                    .WithText(socketGuildUser.DisplayName)
+                    .WithIconUrl(socketGuildUser.GetAvatarUrl(ImageFormat.Auto, 48)))
                 .Build();
 
             return embed;
         }
         public Embed GetFarewellEmbedTamplate(SocketUser socketUser)
         {
-            string title = "Покинувший сервер";
+            string title = "ᴍᴀʟᴇɴᴋɪᴇ 🠒 ᴍᴇᴍʙᴇʀ ʟᴇꜰᴛ";
             string description = $"Пользовтель {socketUser.Mention} покинул сервер.";
 
             return new EmbedBuilder()
@@ -242,5 +232,6 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithCurrentTimestamp()
                 .Build();
         }
+        
     }
 };

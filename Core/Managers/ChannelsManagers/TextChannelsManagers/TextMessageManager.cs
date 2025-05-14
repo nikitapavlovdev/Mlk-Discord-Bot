@@ -11,10 +11,8 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
     public class TextMessageManager(ILogger<TextMessageManager> logger, 
         ExtensionEmbedMessage extensionEmbedMessage,
         EmotesCache emotesCache,
-        RolesCache rolesCache, 
         JsonChannelsMapProvider channelsProvider,
         JsonDiscordEmotesProvider emotesProvider, 
-        JsonDiscordRolesProvider rolesProvider,
         JsonChannelsMapProvider jsonChannelsMapProvider,
         JsonDiscordDynamicMessagesProvider jsonDiscordDynamicMessagesProvider,
         ChannelsCache channelsCache,
@@ -138,12 +136,7 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
         }
         public async Task SendFollowupMessageOnSuccessAutorization(SocketModal modal)
         {
-            await modal.FollowupAsync(embed: extensionEmbedMessage.GetSuccesAuthorizationMessageEmbedTemplate(
-                emotesCache.GetEmote(emotesProvider.RootDiscordEmotes.AnimatedEmotes.AnimatedZero.Paceout.Id),
-                rolesCache.GetRole(rolesProvider.RootDiscordRoles.GeneralRole.Autorization.MalenkiyMember.Id),
-                channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Id,
-                channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.BotCommands.Id,
-                channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.News.Id),
+            await modal.FollowupAsync(embed: extensionEmbedMessage.GetSuccesAuthorizationMessageEmbedTemplate(),
                 components: ExtensionMessageComponents.GetAdditionalWelcomeMessageComponent(modal.User.Id),
                 ephemeral: true);
         }

@@ -62,7 +62,7 @@ namespace Discord_Bot.Infrastructure.Cache
         }
         public string GetDescriptionForSwitchColorRoles()
         {
-            string textDescription = $"В данном блоке содержатся роли, которые изменяют цвет вашего никнейма на сервере. Обратите внимание, что некоторые цвета доступны только для **Nitro-бустеров**!\n";
+            string textDescription = $"В выпадающем меню снизу вы можете выбрать понравившийся цвет для вашего **сервер-нейма**!\n";
 
             GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
 
