@@ -1,6 +1,4 @@
 ﻿using Discord;
-using Discord_Bot.Core.Providers.JsonProvider;
-using Microsoft.Extensions.Configuration;
 
 namespace Discord_Bot.Core.Utilities.DI
 {
@@ -11,7 +9,7 @@ namespace Discord_Bot.Core.Utilities.DI
             return new ComponentBuilder()
             .WithButton(new ButtonBuilder()
                 .WithStyle(ButtonStyle.Primary)
-                .WithCustomId($"nikname_selection_component_{userId}")
+                .WithCustomId($"au_{userId}")
                 .WithLabel("Ввести код"))
             .Build();
         }
@@ -27,4 +25,3 @@ namespace Discord_Bot.Core.Utilities.DI
         }
     }
 }
-

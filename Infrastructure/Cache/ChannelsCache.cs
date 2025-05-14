@@ -11,10 +11,6 @@ namespace Discord_Bot.Infrastructure.Cache
         private readonly List<SocketVoiceChannel> GenereatingChannels = [];
         private readonly List<ulong> TemporaryVoiceChannels = [];
 
-        public int GetLobbyNumber()
-        {
-            return TemporaryVoiceChannels.Count + 1;
-        }
         public bool IsGeneratingChannel(SocketVoiceChannel socketVoiceChannel)
         {
             return GenereatingChannels.Any(x => x == socketVoiceChannel);

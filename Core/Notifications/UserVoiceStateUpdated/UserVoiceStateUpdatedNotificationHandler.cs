@@ -1,4 +1,4 @@
-﻿ using MediatR;
+﻿using MediatR;
 using Discord.WebSocket;
 using Discord_Bot.Infrastructure.Cache;
 using Discord.Rest;
@@ -26,6 +26,7 @@ namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
                     if (channelsCache.IsTemporaryChannel(notification.OldState.VoiceChannel) && notification.OldState.VoiceChannel.ConnectedUsers.Count == 0)
                     {
                         channelsCache.DeleteTemporaryChannel(notification.OldState.VoiceChannel);
+
                         await notification.OldState.VoiceChannel.DeleteAsync();
                     }
                 }
@@ -48,6 +49,7 @@ namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
                     if (channelsCache.IsTemporaryChannel(notification.OldState.VoiceChannel) && notification.OldState.VoiceChannel.ConnectedUsers.Count == 0)
                     {
                         channelsCache.DeleteTemporaryChannel(notification.OldState.VoiceChannel);
+
                         await notification.OldState.VoiceChannel.DeleteAsync();
                     }
 

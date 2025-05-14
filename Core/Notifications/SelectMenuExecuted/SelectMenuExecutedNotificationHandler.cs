@@ -23,7 +23,7 @@ namespace Discord_Bot.Core.Notifications.SelectMenuExecuted
 
                     if (notification.SocketMessageComponent.Data.Values.ElementAt(0) != "remove_color")
                     {
-                        await rolesManager.SetColorNameRole(notification.SocketMessageComponent.User, ExtensionMethods.ConvertId(notification.SocketMessageComponent.Data.Values.ElementAt(0)));
+                        await rolesManager.SetColorNameRole(notification.SocketMessageComponent.User, ExtensionStaticMethods.ConvertId(notification.SocketMessageComponent.Data.Values.ElementAt(0)));
 
                     }
                 }
