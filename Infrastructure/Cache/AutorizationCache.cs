@@ -22,6 +22,7 @@ namespace Discord_Bot.Infrastructure.Cache
             }
 
             return "";
+            
         }
     }
 }
