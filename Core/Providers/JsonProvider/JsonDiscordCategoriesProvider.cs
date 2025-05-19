@@ -1,8 +1,8 @@
-﻿using Discord_Bot.Infrastructure.JsonModels.Categories;
+﻿using MlkAdmin.Infrastructure.JsonModels.Categories;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace Discord_Bot.Core.Providers.JsonProvider
+namespace MlkAdmin.Core.Providers.JsonProvider
 {
     public class JsonDiscordCategoriesProvider
     {

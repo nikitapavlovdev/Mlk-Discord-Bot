@@ -1,6 +1,6 @@
 ﻿using Discord;
 
-namespace Discord_Bot.Core.Utilities.DI
+namespace MlkAdmin.Core.Utilities.DI
 {
     class ExtensionMessageComponents
     {
@@ -17,11 +17,21 @@ namespace Discord_Bot.Core.Utilities.DI
         public static MessageComponent GetAdditionalWelcomeMessageComponent(ulong userId)
         {
             return new ComponentBuilder()
-            .WithButton(new ButtonBuilder()
-                .WithStyle(ButtonStyle.Primary)
-                .WithCustomId($"personal_data_{userId}")
-                .WithLabel("Персональные данные"))
-            .Build();
+                .WithButton(new ButtonBuilder()
+                    .WithStyle(ButtonStyle.Primary)
+                    .WithCustomId($"personal_data_{userId}")
+                    .WithLabel("Персональные данные"))
+                .Build();
+        }
+
+        public static MessageComponent GetAutoLobbyNamingButton()
+        {
+            return new ComponentBuilder()
+                .WithButton(new ButtonBuilder()
+                    .WithStyle(ButtonStyle.Primary)
+                    .WithCustomId("autolobby_naming_button")
+                    .WithLabel("Отправить уникальное имя"))
+                .Build();
         }
     }
 }

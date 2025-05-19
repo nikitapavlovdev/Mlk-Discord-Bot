@@ -1,6 +1,6 @@
 ﻿using Discord;
 
-namespace Discord_Bot.Infrastructure.Cache
+namespace MlkAdmin.Infrastructure.Cache
 {
     public class EmotesCache
     {

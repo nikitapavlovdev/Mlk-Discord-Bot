@@ -1,9 +1,9 @@
 ﻿using Discord.WebSocket;
-using Discord_Bot.Core.Utilities.DI;
+using MlkAdmin.Core.Utilities.DI;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Discord_Bot.Core.Notifications.ButtonExecuted
+namespace MlkAdmin.Core.Notifications.ButtonExecuted
 {
     public class ButtonExecutedNotificationHandler(
         ILogger<ButtonExecutedNotificationHandler> _logger) : INotificationHandler<ButtonExecutedNotification>
@@ -26,6 +26,12 @@ namespace Discord_Bot.Core.Notifications.ButtonExecuted
                 if(notification.SocketMessageComponent.Data.CustomId == $"personal_data_{notification.SocketMessageComponent.User.Id}")
                 {
                     await notification.SocketMessageComponent.RespondWithModalAsync(ExtensionModal.GetPersonalInformationModal());
+                    return;
+                }
+
+                if(notification.SocketMessageComponent.Data.CustomId == "autolobby_naming_button")
+                {
+                    await notification.SocketMessageComponent.RespondWithModalAsync(ExtensionModal.GetLobbyNamingModal());
                     return;
                 }
 

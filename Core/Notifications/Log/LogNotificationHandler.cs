@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Discord_Bot.Core.Notifications.Log
+namespace MlkAdmin.Core.Notifications.Log
 {
     class LogNotificationHandler(ILogger<LogNotificationHandler> _logger) : INotificationHandler<LogNotification>
     {

@@ -1,9 +1,9 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
-using Discord_Bot.Infrastructure.Cache;
+using MlkAdmin.Infrastructure.Cache;
 
-namespace Discord_Bot.Core.Managers.EmotesManagers
+namespace MlkAdmin.Core.Managers.EmotesManagers
 {
     public class EmotesManager(
         ILogger<EmotesManager> logger,

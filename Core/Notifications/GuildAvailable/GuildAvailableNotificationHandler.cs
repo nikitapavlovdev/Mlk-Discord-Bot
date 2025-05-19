@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
-using Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers;
-using Discord_Bot.Core.Managers.RolesManagers;
-using Discord_Bot.Core.Managers.EmotesManagers;
+using MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers;
+using MlkAdmin.Core.Managers.ChannelsManagers.VoiceChannelsManagers;
+using MlkAdmin.Core.Managers.RolesManagers;
+using MlkAdmin.Core.Managers.EmotesManagers;
 
-namespace Discord_Bot.Core.Notifications.GuildAvailable
+namespace MlkAdmin.Core.Notifications.GuildAvailable
 {   
     class GuildAvailableNotificationHandler(
         ILogger<GuildAvailableNotificationHandler> logger,

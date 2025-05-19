@@ -1,6 +1,6 @@
 ﻿using Discord;
 
-namespace Discord_Bot.Core.Utilities.DI
+namespace MlkAdmin.Core.Utilities.DI
 {
     class ExtensionChannelsManager
     {

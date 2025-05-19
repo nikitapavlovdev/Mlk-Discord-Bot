@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
-using Discord_Bot.Infrastructure.JsonModels.Configuration;
+using MlkAdmin.Infrastructure.JsonModels.Configuration;
 using Newtonsoft.Json;
 
-namespace Discord_Bot.Core.Providers.JsonProvider
+namespace MlkAdmin.Core.Providers.JsonProvider
 {
     public class JsonDiscordConfigurationProvider
     {

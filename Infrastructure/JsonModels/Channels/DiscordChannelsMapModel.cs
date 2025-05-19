@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Discord_Bot.Infrastructure.JsonModels.Channels
+namespace MlkAdmin.Infrastructure.JsonModels.Channels
 {
     public class RootChannel
     {
@@ -111,8 +111,25 @@ namespace Discord_Bot.Infrastructure.JsonModels.Channels
 
         [JsonProperty(nameof(Starting))]
         public Starting? Starting { get; set; }
+
+        [JsonProperty(nameof(Hub))]
+        public Hub? Hub { get; set; }
     }
     public class Rules
+    {
+        [JsonProperty(nameof(Name))]
+        public string? Name { get; set; }
+
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+
+        [JsonProperty(nameof(Https))]
+        public string? Https { get; set; }
+
+        [JsonProperty(nameof(Description))]
+        public string? Description { get; set; }
+    }
+    public class Hub
     {
         [JsonProperty(nameof(Name))]
         public string? Name { get; set; }

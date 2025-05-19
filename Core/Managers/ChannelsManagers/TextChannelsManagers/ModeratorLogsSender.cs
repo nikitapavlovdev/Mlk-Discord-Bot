@@ -1,8 +1,8 @@
-﻿using Discord_Bot.Core.Utilities.DI;
-using Discord_Bot.Core.Providers.JsonProvider;
+﻿using MlkAdmin.Core.Utilities.DI;
+using MlkAdmin.Core.Providers.JsonProvider;
 using Discord.WebSocket;
 
-namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
+namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
 {
     public class ModeratorLogsSender(
         JsonChannelsMapProvider jsonChannelsMapProvider)

@@ -1,7 +1,7 @@
 ﻿using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 
-namespace Discord_Bot.Core.Managers.UserManagers
+namespace MlkAdmin.Core.Managers.UserManagers
 {
     public class PersonalDataManager(ILogger<PersonalDataManager> _logger)
     {

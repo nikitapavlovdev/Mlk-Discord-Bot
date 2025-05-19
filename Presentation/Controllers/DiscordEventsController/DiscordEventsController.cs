@@ -1,18 +1,18 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using MediatR;
-using Discord_Bot.Core.Notifications.UserJoined;
-using Discord_Bot.Core.Notifications.UserLeft;
-using Discord_Bot.Core.Notifications.ModalSubmitted;
-using Discord_Bot.Core.Notifications.ButtonExecuted;
-using Discord_Bot.Core.Notifications.GuildAvailable;
-using Discord_Bot.Core.Notifications.SelectMenuExecuted;
-using Discord_Bot.Core.Notifications.UserVoiceStateUpdated;
-using Discord_Bot.Core.Notifications.Log;
-using Discord_Bot.Core.Notifications.Ready;
-using Discord_Bot.Core.Notifications.MessageReceived;
+using MlkAdmin.Core.Notifications.UserJoined;
+using MlkAdmin.Core.Notifications.UserLeft;
+using MlkAdmin.Core.Notifications.ModalSubmitted;
+using MlkAdmin.Core.Notifications.ButtonExecuted;
+using MlkAdmin.Core.Notifications.GuildAvailable;
+using MlkAdmin.Core.Notifications.SelectMenuExecuted;
+using MlkAdmin.Core.Notifications.UserVoiceStateUpdated;
+using MlkAdmin.Core.Notifications.Log;
+using MlkAdmin.Core.Notifications.Ready;
+using MlkAdmin.Core.Notifications.MessageReceived;
 
-namespace Discord_Bot.Presentation.Controllers.DiscordEventsController
+namespace MlkAdmin.Presentation.Controllers.DiscordEventsController
 {
     class DiscordEventsController
     {

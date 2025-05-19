@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Discord.WebSocket;
 
-namespace Discord_Bot.Core.Notifications.ModalSubmitted
+namespace MlkAdmin.Core.Notifications.ModalSubmitted
 {
     class ModalSubmittedNotification(SocketModal modal) : INotification
     {

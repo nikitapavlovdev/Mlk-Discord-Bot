@@ -1,9 +1,9 @@
 ﻿using Discord.WebSocket;
-using Discord_Bot.Infrastructure.Cache;
+using MlkAdmin.Infrastructure.Cache;
 using Microsoft.Extensions.Logging;
-using Discord_Bot.Core.Providers.JsonProvider;
+using MlkAdmin.Core.Providers.JsonProvider;
 
-namespace Discord_Bot.Core.Managers.RolesManagers
+namespace MlkAdmin.Core.Managers.RolesManagers
 {
     public class RolesManager(ILogger<RolesManager> logger, 
         RolesCache rolesCache,

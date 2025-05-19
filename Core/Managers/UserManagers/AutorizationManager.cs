@@ -1,11 +1,11 @@
 ﻿using Discord.WebSocket;
-using Discord_Bot.Core.Utilities.General;
-using Discord_Bot.Infrastructure.Cache;
-using Discord_Bot.Core.Managers.RolesManagers;
-using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
-using Discord_Bot.Core.Providers.JsonProvider;
+using MlkAdmin.Core.Utilities.General;
+using MlkAdmin.Infrastructure.Cache;
+using MlkAdmin.Core.Managers.RolesManagers;
+using MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers;
+using MlkAdmin.Core.Providers.JsonProvider;
 
-namespace Discord_Bot.Core.Managers.UserManagers;
+namespace MlkAdmin.Core.Managers.UserManagers;
 
 public class AutorizationManager( 
     AutorizationCache auCache, 

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Discord_Bot.Infrastructure.JsonModels.Emotes
+namespace MlkAdmin.Infrastructure.JsonModels.Emotes
 {
     public class RootDiscordEmotes
     {

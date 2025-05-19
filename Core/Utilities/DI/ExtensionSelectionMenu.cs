@@ -1,7 +1,7 @@
 ﻿using Discord;
-using Discord_Bot.Core.Providers.JsonProvider;
+using MlkAdmin.Core.Providers.JsonProvider;
 
-namespace Discord_Bot.Core.Utilities.DI
+namespace MlkAdmin.Core.Utilities.DI
 {
     public class ExtensionSelectionMenu(JsonDiscordRolesProvider jsonDiscordRolesProvider)
     {

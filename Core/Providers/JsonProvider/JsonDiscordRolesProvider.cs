@@ -1,8 +1,8 @@
-﻿using Discord_Bot.Infrastructure.JsonModels.Roles;
+﻿using MlkAdmin.Infrastructure.JsonModels.Roles;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace Discord_Bot.Core.Providers.JsonProvider
+namespace MlkAdmin.Core.Providers.JsonProvider
 {
     public class JsonDiscordRolesProvider
     {

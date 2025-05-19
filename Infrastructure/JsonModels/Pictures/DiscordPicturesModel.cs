@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Discord_Bot.Infrastructure.JsonModels.Pictures
+namespace MlkAdmin.Infrastructure.JsonModels.Pictures
 {
     public class RootDiscordPictures
     {
