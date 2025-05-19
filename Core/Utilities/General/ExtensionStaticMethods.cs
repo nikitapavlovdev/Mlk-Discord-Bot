@@ -2,7 +2,7 @@
 using System.Text;
 using Discord.WebSocket;
 
-namespace Discord_Bot.Core.Utilities.General
+namespace MlkAdmin.Core.Utilities.General
 {
     public static class ExtensionStaticMethods
     {

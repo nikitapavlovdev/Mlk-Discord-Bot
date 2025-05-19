@@ -1,11 +1,12 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using Discord_Bot.Core.Providers.JsonProvider;
+using MlkAdmin.Core.Providers.JsonProvider;
 
-namespace Discord_Bot.Infrastructure.Cache
+namespace MlkAdmin.Infrastructure.Cache
 {
     public class RolesCache(
         JsonDiscordRolesProvider jsonDiscordRolesProvider,
+        JsonChannelsMapProvider jsonChannelsMapProvider,
         EmotesCache emotesCache)
     {
         const string invisSumbol = "ㅤ";
@@ -95,6 +96,16 @@ namespace Discord_Bot.Infrastructure.Cache
             textDescription += "И самое главное - наслаждайтесь моментом!";
 
             return textDescription;
+        }
+        public string GetDescriptionForGuide()
+        {
+            GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
+
+            return "" +
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Rules.Https} - канал, где ты можешь узнать о правилах сервера.\n" +
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.News.Https} - канал, где ты можешь узнать о новостях сервера.\n " +
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Https} - канал, где ты можешь узнать о ролях на сервере.\n" +
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Https}\n - канал, где будут описаны уникальные события на сервере.";
         }
         public void AddRole(SocketRole role)
         {

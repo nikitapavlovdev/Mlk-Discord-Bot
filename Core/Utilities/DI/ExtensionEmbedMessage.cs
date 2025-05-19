@@ -1,9 +1,10 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using Discord_Bot.Infrastructure.Cache;
-using Discord_Bot.Core.Providers.JsonProvider;
+using MlkAdmin.Infrastructure.Cache;
+using MlkAdmin.Core.Providers.JsonProvider;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
-namespace Discord_Bot.Core.Utilities.DI
+namespace MlkAdmin.Core.Utilities.DI
 {
     public class ExtensionEmbedMessage(
         RolesCache rolesCachhe, 
@@ -11,15 +12,18 @@ namespace Discord_Bot.Core.Utilities.DI
         JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider,
         JsonDiscordEmotesProvider jsonDiscordEmotesProvider,
         JsonDiscordPicturesProvider jsonDiscordPicturesProvider,
-        JsonDiscordRolesProvider jsonDiscordRolesProvider)
+        JsonDiscordRolesProvider jsonDiscordRolesProvider,
+        JsonChannelsMapProvider jsonChannelsMapProvider)
     {
+        private readonly string? developer = jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name;
+        private readonly string? avatarUrl = jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink;
+
         public Embed GetMainRolesEmbedMessage()
         {
             return new EmbedBuilder()
                 .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ 🠒 ʀᴏʟᴇs")
                 .WithDescription(rolesCachhe.GetDescriptionForMainRoles())
-                .WithFooter(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name,
-                            jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink)
+                .WithFooter(developer, avatarUrl)
                 .WithColor(50, 50, 53)
                 .Build();
         }
@@ -28,8 +32,7 @@ namespace Discord_Bot.Core.Utilities.DI
             return new EmbedBuilder()
                 .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ 🠒 ɴɪᴄᴋɴᴀᴍᴇ ᴄᴏʟᴏʀ")
                 .WithDescription(rolesCachhe.GetDescriptionForSwitchColorRoles())
-                .WithFooter(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name,
-                            jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink)
+                .WithFooter(developer, avatarUrl)
                 .WithColor(50, 50, 53)
                 .Build();
         }
@@ -38,8 +41,7 @@ namespace Discord_Bot.Core.Utilities.DI
             return new EmbedBuilder()
                .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ 🠒 ʀᴜʟᴇs")
                .WithDescription(rolesCachhe.GetDescriptionForRules())
-               .WithFooter(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name,
-                           jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink)
+               .WithFooter(developer, avatarUrl)
                .WithColor(50, 50, 53)
                .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.RulesBanner)
                .Build();
@@ -59,14 +61,11 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithDescription(description)
                 .WithColor(color)
                 .WithTimestamp(DateTime.UtcNow)
-                .WithFooter(new EmbedFooterBuilder()
-                .WithText(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name)
-                .WithIconUrl(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
+                .WithFooter(developer, avatarUrl)
                 .Build();
 
             return message;
         }
-
         public Embed GetErrorAuthorizationMessageEmbedTemplate(Emote? emoteError)
         {
             string title = $"Ошибка\n\n";
@@ -77,9 +76,7 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithTitle(title)
                 .WithDescription(description)
                 .WithColor(color)
-                .WithFooter(new EmbedFooterBuilder()
-                .WithText(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name)
-                .WithIconUrl(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
+                .WithFooter(developer, avatarUrl)
                 .Build();
 
             return embed;
@@ -141,9 +138,7 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithDescription(description)
                 .WithColor(new(240, 128, 128))
                 .WithCurrentTimestamp()
-                .WithFooter(new EmbedFooterBuilder()
-                    .WithText(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name)
-                    .WithIconUrl(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
+                .WithFooter(developer, avatarUrl)
                 .Build();
         }
         public Embed GetNewsTamplate(string description)
@@ -152,9 +147,7 @@ namespace Discord_Bot.Core.Utilities.DI
                 .WithTitle("Новости сервера")
                 .WithDescription(description)
                 .WithColor(135, 206, 250)
-                .WithFooter(new EmbedFooterBuilder()
-                .WithText(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name)
-                .WithIconUrl(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
+                .WithFooter(developer, avatarUrl)
                 .WithTimestamp(DateTime.UtcNow)
                 .Build();
 
@@ -200,6 +193,37 @@ namespace Discord_Bot.Core.Utilities.DI
                 .Build();
 
             return message;
+        }
+        public Embed GetAutoLobbyNamingMessage()
+        {
+            return new EmbedBuilder()
+                .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ 🠒 ʟᴏʙʙʏ ɴᴀᴍɪɴɢ")
+                .WithDescription("Долго время я пытался что-то придумать с именованием авто-лобби.\n" +
+                "> **Авто-лобби** - это голосовой канал, который бот создает автоматически, " +
+                "когда вы заходите в войс-канал **➕ | ᴄоздᴀᴛь ᴧобби**.\n\n Прикольная и удобная фишка, которую позволяет проворачивать Discord. Делать банальную нумерацию для этих каналов хотелось не сильно, " +
+                "и я просто решил оставить выбор за каждым из вас!\n\n" +
+                "В чем прикол, по желанию вы можете отправить заявку на имя лобби, и это имя будет автоматически вставляться при создании голосового канала. Да, я знаю, что можно просто поменять название в настройках, " +
+                "но посмотрите, это *ведь псевдогениальная фича ниразу не высосанная из пальца*!\n\n" +
+                "**Кому интересно, отправляйте мемные нейминги ниже по кнопке!**")
+                .WithFooter(developer, avatarUrl)
+                .Build();
+        }
+        public Embed GetServerGuideMessage()
+        {
+            GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
+
+            string description = $"### ᴨуᴛᴇʙодиᴛᴇᴧь ᴨо ᴄᴇᴩʙᴇᴩу\n" +
+                "Данный блок содержит общую информацию об общих каналах сервера! Кликнув по каналу, вы будете перенаправлены непосредственно в кликнутый канал.\n\n" +
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Rules.Https} - канал, где ты можешь узнать о правилах сервера.\n" +
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.News.Https} - канал, где ты можешь узнать о новостях сервера.\n " +
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Https} - канал, где ты можешь узнать о ролях на сервере.\n" +
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Https} - канал, где будут описаны уникальные события.";
+
+            return new EmbedBuilder()
+                .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ 🠒 ɢᴜɪᴅᴇ")
+                .WithDescription(description)
+                .WithFooter(developer, avatarUrl)
+                .Build();
         }
         public static Embed GetNoAccessTemplate()
         {

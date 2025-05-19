@@ -1,7 +1,7 @@
 ﻿using Discord.WebSocket;
 using MediatR;
 
-namespace Discord_Bot.Core.Notifications.SelectMenuExecuted
+namespace MlkAdmin.Core.Notifications.SelectMenuExecuted
 {
     class SelectMenuExecutedNotification(SocketMessageComponent socketMessageComponent) : INotification
     {

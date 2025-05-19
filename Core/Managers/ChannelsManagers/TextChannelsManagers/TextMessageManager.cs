@@ -1,12 +1,12 @@
 ﻿using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using Discord;
-using Discord_Bot.Core.Utilities.DI;
-using Discord_Bot.Infrastructure.Cache;
-using Discord_Bot.Core.Providers.JsonProvider;
-using Discord_Bot.Core.Managers.UserManagers;
+using MlkAdmin.Core.Utilities.DI;
+using MlkAdmin.Infrastructure.Cache;
+using MlkAdmin.Core.Providers.JsonProvider;
+using MlkAdmin.Core.Managers.UserManagers;
 
-namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
+namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
 {
     public class TextMessageManager(ILogger<TextMessageManager> logger, 
         ExtensionEmbedMessage extensionEmbedMessage,
@@ -31,12 +31,14 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
                 logger.LogError("Error: {Message}", ex.Message);
             }
         }
-        public async Task SendMessageWithGuildRoles(SocketGuild socketGuild)
+        public async Task SendDynamicMessages(SocketGuild socketGuild)
         {
             await Task.WhenAll(
                 SendMainGuildRolesMessage(socketGuild),
                 SendSwitchColorRolesMessage(socketGuild),
-                SendRulesMessage(socketGuild));
+                SendRulesMessage(socketGuild),
+                SendGuideMessage(socketGuild),
+                SendRequestForLobbyNameMessage(socketGuild));
         }
         #endregion
 
@@ -97,6 +99,39 @@ namespace Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers
             else
             {
                 await textRulesChannel.SendMessageAsync(embed: extensionEmbedMessage.GetRulesEmbedMessage());
+            }
+        }
+        private async Task SendRequestForLobbyNameMessage(SocketGuild socketGuild)
+        {
+            SocketTextChannel? serverHubTextChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Id);
+
+            if (await serverHubTextChannel.GetMessageAsync(jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.ServerHub.AutoLobbyName.Id) is IUserMessage sentMessage)
+            {
+                await sentMessage.ModifyAsync(message =>
+                {
+                    message.Embed = extensionEmbedMessage.GetAutoLobbyNamingMessage();
+                    message.Components = ExtensionMessageComponents.GetAutoLobbyNamingButton();
+                });
+            }
+            else
+            {
+                await serverHubTextChannel.SendMessageAsync(embed: extensionEmbedMessage.GetAutoLobbyNamingMessage(), components: ExtensionMessageComponents.GetAutoLobbyNamingButton());
+            }
+        }
+        private async Task SendGuideMessage(SocketGuild socketGuild)
+        {
+            SocketTextChannel? serverHubTextChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Id);
+
+            if (await serverHubTextChannel.GetMessageAsync(jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.ServerHub.Guide.Id) is IUserMessage sentMessage)
+            {
+                await sentMessage.ModifyAsync(message =>
+                {
+                    message.Embed = extensionEmbedMessage.GetServerGuideMessage();
+                });
+            }
+            else
+            {
+                await serverHubTextChannel.SendMessageAsync(embed: extensionEmbedMessage.GetServerGuideMessage());
             }
         }
         #endregion

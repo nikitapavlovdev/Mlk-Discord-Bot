@@ -1,7 +1,7 @@
-﻿using Discord_Bot.Infrastructure.JsonModels.Channels;
+﻿using MlkAdmin.Infrastructure.JsonModels.Channels;
 using Newtonsoft.Json;
 
-namespace Discord_Bot.Infrastructure.JsonModels.DynamicMessages
+namespace MlkAdmin.Infrastructure.JsonModels.DynamicMessages
 {
     public class RootDynamicMessages
     {
@@ -13,6 +13,18 @@ namespace Discord_Bot.Infrastructure.JsonModels.DynamicMessages
     {
         [JsonProperty(nameof(Roles))]
         public Roles? Roles { get; set; }
+
+        [JsonProperty(nameof(ServerHub))]
+        public ServerHub? ServerHub { get; set; }
+    }
+
+    public class ServerHub
+    {
+        [JsonProperty(nameof(AutoLobbyName))]
+        public AutoLobbyName? AutoLobbyName { get; set; }
+
+        [JsonProperty(nameof(Guide))]
+        public Guide? Guide { get; set; }
     }
 
     public class Roles
@@ -24,7 +36,18 @@ namespace Discord_Bot.Infrastructure.JsonModels.DynamicMessages
         public SwitchColor? SwitchColor { get; set; }
 
         [JsonProperty(nameof(Rules))]
-        public Rules? Rules { get; set; }
+        public Rules? Rules { get; set; }    
+    }
+
+    public class Guide
+    {
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+    }
+    public class AutoLobbyName
+    {
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
     }
 
     public class MainRoles
@@ -40,6 +63,12 @@ namespace Discord_Bot.Infrastructure.JsonModels.DynamicMessages
     }
 
     public class Rules
+    {
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+    }
+
+    public class Hub
     {
         [JsonProperty(nameof(Id))]
         public ulong Id { get; set; }

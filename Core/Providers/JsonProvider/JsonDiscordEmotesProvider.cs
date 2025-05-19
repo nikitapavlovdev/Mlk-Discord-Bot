@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
-using Discord_Bot.Infrastructure.JsonModels.Emotes;
+using MlkAdmin.Infrastructure.JsonModels.Emotes;
 using Microsoft.Extensions.Logging;
 
-namespace Discord_Bot.Core.Providers.JsonProvider
+namespace MlkAdmin.Core.Providers.JsonProvider
 {
     public class JsonDiscordEmotesProvider
     {

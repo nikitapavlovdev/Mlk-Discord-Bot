@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
-using Discord_Bot.Core.Managers.UserManagers;
+using MlkAdmin.Core.Managers.UserManagers;
 
-namespace Discord_Bot.Core.Notifications.ModalSubmitted
+namespace MlkAdmin.Core.Notifications.ModalSubmitted
 {
     class ModalSubmittedNotificationHandler(
         ILogger<ModalSubmittedNotificationHandler> logger,

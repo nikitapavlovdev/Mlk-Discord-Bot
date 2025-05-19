@@ -2,10 +2,10 @@
 using Discord.WebSocket;
 using Discord.Commands;
 using Microsoft.Extensions.Logging;
-using Discord_Bot.Core.Utilities.DI;
+using MlkAdmin.Core.Utilities.DI;
 using Discord;
 
-namespace Discord_Bot.Core.Notifications.MessageReceived
+namespace MlkAdmin.Core.Notifications.MessageReceived
 {
     public class MessageReceivedNotificationHandler(
         ILogger<MessageReceivedNotificationHandler> logger) : INotificationHandler<MessageReceivedNotification>

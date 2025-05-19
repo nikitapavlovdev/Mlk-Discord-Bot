@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Discord_Bot.Infrastructure.JsonModels.Categories
+namespace MlkAdmin.Infrastructure.JsonModels.Categories
 {
     public class RootDiscordCategories 
     {

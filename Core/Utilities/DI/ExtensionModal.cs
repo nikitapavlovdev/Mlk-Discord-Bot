@@ -1,6 +1,6 @@
 ﻿using Discord;
 
-namespace Discord_Bot.Core.Utilities.DI
+namespace MlkAdmin.Core.Utilities.DI
 {
     class ExtensionModal
     {
@@ -48,6 +48,19 @@ namespace Discord_Bot.Core.Utilities.DI
                     .WithStyle(TextInputStyle.Short))
                 .Build();
 
+        }
+        public static Modal GetLobbyNamingModal()
+        {
+            return new ModalBuilder()
+               .WithTitle("Запрос на имя создаваемого войс-лобби")
+               .WithCustomId("lobby_naming")
+               .AddTextInput(new TextInputBuilder()
+                   .WithLabel("Именование")
+                   .WithCustomId("lobby_naming_input_name")
+                   .WithMaxLength(15)
+                   .WithPlaceholder("Например: Ронинская пятка")
+                   .WithStyle(TextInputStyle.Short))
+               .Build();
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using Discord_Bot.Core.Managers.RolesManagers;
+using MlkAdmin.Core.Managers.RolesManagers;
 using Microsoft.Extensions.Logging;
-using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
+using MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers;
 
-namespace Discord_Bot.Core.Notifications.UserJoined
+namespace MlkAdmin.Core.Notifications.UserJoined
 {
     class UserJoinedNotificationHandler(
         ILogger<UserJoinedNotificationHandler> logger,

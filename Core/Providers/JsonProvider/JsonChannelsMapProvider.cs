@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
-using Discord_Bot.Infrastructure.JsonModels.Channels;
+using MlkAdmin.Infrastructure.JsonModels.Channels;
 using Microsoft.Extensions.Logging;
 
-namespace Discord_Bot.Core.Providers.JsonProvider
+namespace MlkAdmin.Core.Providers.JsonProvider
 {
     public class JsonChannelsMapProvider
     {

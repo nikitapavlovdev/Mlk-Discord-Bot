@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using Discord_Bot.Core.Utilities.General;
-using Discord_Bot.Core.Managers.RolesManagers;
+using MlkAdmin.Core.Utilities.General;
+using MlkAdmin.Core.Managers.RolesManagers;
 
-namespace Discord_Bot.Core.Notifications.SelectMenuExecuted
+namespace MlkAdmin.Core.Notifications.SelectMenuExecuted
 {
     class SelectMenuExecutedNotificationHandler(
         RolesManager rolesManager) : INotificationHandler<SelectMenuExecutedNotification>

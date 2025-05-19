@@ -1,7 +1,7 @@
 ﻿using Discord.WebSocket;
 using MediatR;
 
-namespace Discord_Bot.Core.Notifications.MessageReceived
+namespace MlkAdmin.Core.Notifications.MessageReceived
 {
     public class MessageReceivedNotification(SocketMessage socketMessage) : INotification
     {

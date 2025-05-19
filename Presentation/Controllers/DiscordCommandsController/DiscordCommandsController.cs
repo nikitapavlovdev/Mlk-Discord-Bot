@@ -3,9 +3,9 @@ using Discord.WebSocket;
 using MediatR;
 using System.Reflection;
 using Discord;
-using Discord_Bot.Core.Providers.JsonProvider;
+using MlkAdmin.Core.Providers.JsonProvider;
 
-namespace Discord_Bot.Presentation.Controllers.DiscordCommandsController
+namespace MlkAdmin.Presentation.Controllers.DiscordCommandsController
 {
     public class DiscordCommandsController
     {

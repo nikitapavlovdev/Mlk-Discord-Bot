@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Discord.WebSocket;
-using Discord_Bot.Infrastructure.Cache;
+using MlkAdmin.Infrastructure.Cache;
 using Discord.Rest;
 using Microsoft.Extensions.Logging;
-using Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers;
+using MlkAdmin.Core.Managers.ChannelsManagers.VoiceChannelsManagers;
 
-namespace Discord_Bot.Core.Notifications.UserVoiceStateUpdated
+namespace MlkAdmin.Core.Notifications.UserVoiceStateUpdated
 {
     class UserVoiceStateUpdatedNotificationHandler(
         ChannelsCache channelsCache, 

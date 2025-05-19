@@ -1,9 +1,9 @@
-﻿using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
+﻿using MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 
-namespace Discord_Bot.Core.Notifications.UserLeft
+namespace MlkAdmin.Core.Notifications.UserLeft
 {
     class UserLeftNotificationHandler(
         ILogger<UserLeftNotificationHandler> logger,

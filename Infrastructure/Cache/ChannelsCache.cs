@@ -1,8 +1,8 @@
 ﻿using Discord.Rest;
 using Discord.WebSocket;
-using Discord_Bot.Core.Providers.JsonProvider;
+using MlkAdmin.Core.Providers.JsonProvider;
 
-namespace Discord_Bot.Infrastructure.Cache
+namespace MlkAdmin.Infrastructure.Cache
 {
     public class ChannelsCache(JsonChannelsMapProvider jsonChannelsMapProvider)
     {

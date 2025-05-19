@@ -1,12 +1,12 @@
 ﻿using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
-using Discord_Bot.Core.Managers.ChannelsManagers.TextChannelsManagers;
-using Discord_Bot.Core.Providers.JsonProvider;
-using Discord_Bot.Infrastructure.Cache;
+using MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers;
+using MlkAdmin.Core.Providers.JsonProvider;
+using MlkAdmin.Infrastructure.Cache;
 using Microsoft.Extensions.Logging;
 
-namespace Discord_Bot.Core.Managers.ChannelsManagers.VoiceChannelsManagers
+namespace MlkAdmin.Core.Managers.ChannelsManagers.VoiceChannelsManagers
 {
     public class VoiceChannelsManager(
         ChannelsCache channelsCache,

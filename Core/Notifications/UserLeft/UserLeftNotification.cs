@@ -2,7 +2,7 @@
 using MediatR;
 
 
-namespace Discord_Bot.Core.Notifications.UserLeft
+namespace MlkAdmin.Core.Notifications.UserLeft
 {
     class UserLeftNotification(SocketGuild socketGuild, SocketUser socketUser) : INotification
     {
