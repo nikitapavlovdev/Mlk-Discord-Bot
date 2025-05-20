@@ -36,5 +36,8 @@ namespace MlkAdmin.Infrastructure.JsonModels.Pictures
 
         [JsonProperty(nameof(RulesBanner))]
         public string? RulesBanner { get; set; }
+
+        [JsonProperty(nameof(WelcomeMessage))]
+        public string? WelcomeMessage { get; set; }
     }
 }

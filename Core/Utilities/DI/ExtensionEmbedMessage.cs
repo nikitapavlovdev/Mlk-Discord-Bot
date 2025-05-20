@@ -2,7 +2,6 @@
 using Discord.WebSocket;
 using MlkAdmin.Infrastructure.Cache;
 using MlkAdmin.Core.Providers.JsonProvider;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace MlkAdmin.Core.Utilities.DI
 {
@@ -121,6 +120,7 @@ namespace MlkAdmin.Core.Utilities.DI
                 .WithTitle(title)
                 .WithDescription(description)
                 .WithColor(new(30, 144, 255))
+                //.WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.WelcomeMessage)
                 .WithFooter(new EmbedFooterBuilder()
                     .WithText(socketGuildUser.DisplayName)
                     .WithIconUrl(socketGuildUser.GetAvatarUrl(ImageFormat.Auto, 48)))
@@ -197,9 +197,9 @@ namespace MlkAdmin.Core.Utilities.DI
         public Embed GetAutoLobbyNamingMessage()
         {
             return new EmbedBuilder()
-                .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ ➜ ʟᴏʙʙʏ ɴᴀᴍɪɴɢ")
+                .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ ʟᴏʙʙʏ ɴᴀᴍɪɴɢ")
                 .WithDescription("Вы можете придумать имя, которое хотите видеть при создании личной комнаты, и отправить его по кнопочки ниже!\n\n" +
-                "*Создать личную комнату можно прыгнув в канал* ➜ `➕ | ᴄоздᴀᴛь ᴧобби`")
+                "`➕ | ᴄоздᴀᴛь ᴧобби` - *запрыгнув сюда, вы можете создать личную комнату!*")
                 .WithColor(88, 101, 242)
                 .WithFooter(developer, avatarUrl)
                 .Build();
@@ -208,15 +208,27 @@ namespace MlkAdmin.Core.Utilities.DI
         {
             GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
 
-            string description = $"### ᴨуᴛᴇʙодиᴛᴇᴧь ᴨо ᴄᴇᴩʙᴇᴩу\n" +
-                "Данный блок содержит общую информацию об общих каналах сервера! Кликнув по каналу, вы будете перенаправлены непосредственно в кликнутый канал.\n\n" +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Rules.Https} - тут описаны правила сервера!\n" +
+            string description = $"Данный блок содержит общую информацию о каналах сервера! Рекомендовано к ознкомлению после прохождения верификации.\n" +
+                "### Сервер\n" +
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Rules.Https} - правила грандиозного сервера!\n" +
                 $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.News.Https} - величайшие новости!\n " +
                 $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Https} - любители фармить роли оценят!\n" +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Https} - сверхшибательные фичи!";
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Https} - сверхшибательные фичи и не только!\n" +
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.BotCommands.Https} - команды ботов непосредственно тут!\n" +
+                "### Полезная информация\n" +
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.UsefulInformationCategory.D2Forum.Https} - энджоеринг **Destiny 2**!\n" +
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.UsefulInformationCategory.WuWaForum.Https} - энджоеринг **Wuthering Waves**!\n" +
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.UsefulInformationCategory.GenshinForum.Https} - энджоеринг **Genshin Impact**!\n" +
+                "### База\n" +
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.BaseCategory.Chat.Https} - чатик всего сервера!\n" +
+                "### Игровая\n" +
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.GameCategory.Highlight.Https} - кидайте свои смешные моменты из игр!\n" +
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.GameCategory.ValChat.Https} - чатик по игре **Valorant**!\n" +
+                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.GameCategory.D2Chat.Https} - чатик по игре **Destiny 2**!\n";
+
 
             return new EmbedBuilder()
-                .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ ➜ ɢᴜɪᴅᴇ")
+                .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ ɢᴜɪᴅᴇ")
                 .WithDescription(description)
                 .WithFooter(developer, avatarUrl)
                 .WithColor(88, 101, 242)
@@ -253,6 +265,5 @@ namespace MlkAdmin.Core.Utilities.DI
                 .WithCurrentTimestamp()
                 .Build();
         }
-        
     }
 };

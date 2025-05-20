@@ -94,6 +94,10 @@ namespace MlkAdmin.Infrastructure.JsonModels.Channels
 
         [JsonProperty(nameof(ProgrammingCategory))]
         public ProgrammingCategory? ProgrammingCategory { get; set; }
+
+        [JsonProperty(nameof(UsefulInformationCategory))]
+        public UsefulInformationCategory? UsefulInformationCategory { get; set; }
+
     }
     public class ServerCategory
     {
@@ -235,6 +239,59 @@ namespace MlkAdmin.Infrastructure.JsonModels.Channels
         [JsonProperty(nameof(Description))]
         public string? Description { get; set; }
     }
+    public class UsefulInformationCategory
+    {
+        [JsonProperty(nameof(D2Forum))]
+        public D2Forum? D2Forum { get; set; }
+
+        [JsonProperty(nameof(WuWaForum))]
+        public WuWaForum? WuWaForum { get; set; }
+
+        [JsonProperty(nameof(GenshinForum))]
+        public GenshinForum? GenshinForum { get; set; }
+    }
+    public class D2Forum
+    {
+        [JsonProperty(nameof(Name))]
+        public string? Name { get; set; }
+
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+
+        [JsonProperty(nameof(Https))]
+        public string? Https { get; set; }
+
+        [JsonProperty(nameof(Description))]
+        public string? Description { get; set; }
+    }
+    public class WuWaForum
+    {
+        [JsonProperty(nameof(Name))]
+        public string? Name { get; set; }
+
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+
+        [JsonProperty(nameof(Https))]
+        public string? Https { get; set; }
+
+        [JsonProperty(nameof(Description))]
+        public string? Description { get; set; }
+    }
+    public class GenshinForum
+    {
+        [JsonProperty(nameof(Name))]
+        public string? Name { get; set; }
+
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+
+        [JsonProperty(nameof(Https))]
+        public string? Https { get; set; }
+
+        [JsonProperty(nameof(Description))]
+        public string? Description { get; set; }
+    }
     public class BaseCategory
     {
         [JsonProperty(nameof(Chat))]
@@ -247,6 +304,9 @@ namespace MlkAdmin.Infrastructure.JsonModels.Channels
 
         [JsonProperty(nameof(ValChat))]
         public ValChat? ValChat { get; set; }
+
+        [JsonProperty(nameof(D2Chat))]
+        public D2Chat? D2Chat { get; set; }
     }
     public class Highlight
     {
@@ -263,6 +323,20 @@ namespace MlkAdmin.Infrastructure.JsonModels.Channels
         public string? Description { get; set; }
     }
     public class ValChat
+    {
+        [JsonProperty(nameof(Name))]
+        public string? Name { get; set; }
+
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+
+        [JsonProperty(nameof(Https))]
+        public string? Https { get; set; }
+
+        [JsonProperty(nameof(Description))]
+        public string? Description { get; set; }
+    }
+    public class D2Chat
     {
         [JsonProperty(nameof(Name))]
         public string? Name { get; set; }
