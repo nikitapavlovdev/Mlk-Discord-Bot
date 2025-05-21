@@ -20,7 +20,7 @@ namespace MlkAdmin.Core.Utilities.DI
         public Embed GetMainRolesEmbedMessage()
         {
             return new EmbedBuilder()
-                .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ 🠒 ʀᴏʟᴇs")
+                .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ ʀᴏʟᴇs")
                 .WithDescription(rolesCachhe.GetDescriptionForMainRoles())
                 .WithFooter(developer, avatarUrl)
                 .WithColor(50, 50, 53)
@@ -29,7 +29,7 @@ namespace MlkAdmin.Core.Utilities.DI
         public Embed GetSwitchColorEmbedMessage()
         {
             return new EmbedBuilder()
-                .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ 🠒 ɴɪᴄᴋɴᴀᴍᴇ ᴄᴏʟᴏʀ")
+                .WithTitle("ɴɪᴄᴋɴᴀᴍᴇ ᴄᴏʟᴏʀ")
                 .WithDescription(rolesCachhe.GetDescriptionForSwitchColorRoles())
                 .WithFooter(developer, avatarUrl)
                 .WithColor(50, 50, 53)
@@ -38,7 +38,7 @@ namespace MlkAdmin.Core.Utilities.DI
         public Embed GetRulesEmbedMessage()
         {
             return new EmbedBuilder()
-               .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ 🠒 ʀᴜʟᴇs")
+               .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ ʀᴜʟᴇs")
                .WithDescription(rolesCachhe.GetDescriptionForRules())
                .WithFooter(developer, avatarUrl)
                .WithColor(50, 50, 53)
@@ -111,7 +111,7 @@ namespace MlkAdmin.Core.Utilities.DI
         {
             GuildEmote? welcomeMessageEmote = emotesCache.GetEmote(jsonDiscordEmotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Love.Id);
 
-            string title = "ᴍᴀʟᴇɴᴋɪᴇ 🠒 ɴᴇᴡ ᴍᴇᴍʙᴇʀ";
+            string title = "ᴍᴀʟᴇɴᴋɪᴇ ɴᴇᴡ ᴍᴇᴍʙᴇʀ";
             string description = $"Привет, **{socketGuildUser.Username}**! " +
                 $"{welcomeMessageEmote}\nДобро пожаловать на сервер **{socketGuildUser.Guild.Name}**" +
                 $"\n\nДля продолжения введите код: `{auCode}`";
@@ -197,7 +197,7 @@ namespace MlkAdmin.Core.Utilities.DI
         public Embed GetAutoLobbyNamingMessage()
         {
             return new EmbedBuilder()
-                .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ ʟᴏʙʙʏ ɴᴀᴍɪɴɢ")
+                .WithTitle("ʟᴏʙʙʏ ɴᴀᴍɪɴɢ")
                 .WithDescription("Вы можете придумать имя, которое хотите видеть при создании личной комнаты, и отправить его по кнопочки ниже!\n\n" +
                 "`➕ | ᴄоздᴀᴛь ᴧобби` - *запрыгнув сюда, вы можете создать личную комнату!*")
                 .WithColor(88, 101, 242)
@@ -228,10 +228,18 @@ namespace MlkAdmin.Core.Utilities.DI
 
 
             return new EmbedBuilder()
-                .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ ɢᴜɪᴅᴇ")
+                .WithTitle("ɢᴜɪᴅᴇ")
                 .WithDescription(description)
                 .WithFooter(developer, avatarUrl)
                 .WithColor(88, 101, 242)
+                .Build();
+        }
+        public Embed GetAutorizationReactionMessage()
+        {
+            return new EmbedBuilder()
+                .WithTitle("ᴀᴜᴛᴏʀɪᴢᴛɪᴏɴ")
+                .WithDescription("Чтобы завершить верификацию прожмити эмоцию на этом сообщение!")
+                .WithFooter(developer, avatarUrl)
                 .Build();
         }
         public static Embed GetNoAccessTemplate()

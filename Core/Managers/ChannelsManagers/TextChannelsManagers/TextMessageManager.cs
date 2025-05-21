@@ -5,6 +5,7 @@ using MlkAdmin.Core.Utilities.DI;
 using MlkAdmin.Infrastructure.Cache;
 using MlkAdmin.Core.Providers.JsonProvider;
 using MlkAdmin.Core.Managers.UserManagers;
+using Discord.Rest;
 
 namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
 {
@@ -14,6 +15,7 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
         JsonChannelsMapProvider channelsProvider,
         JsonDiscordEmotesProvider emotesProvider, 
         JsonChannelsMapProvider jsonChannelsMapProvider,
+        JsonDiscordEmotesProvider jsonDiscordEmotesProvider,
         JsonDiscordDynamicMessagesProvider jsonDiscordDynamicMessagesProvider,
         ChannelsCache channelsCache,
         ExtensionSelectionMenu extensionSelectionMenu,
@@ -37,6 +39,7 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
                 SendMainGuildRolesMessage(socketGuild),
                 SendSwitchColorRolesMessage(socketGuild),
                 SendRulesMessage(socketGuild),
+                SendAutorizationCheckMessage(socketGuild),
                 SendGuideMessage(socketGuild),
                 SendRequestForLobbyNameMessage(socketGuild));
         }
@@ -132,6 +135,23 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
             else
             {
                 await serverHubTextChannel.SendMessageAsync(embed: extensionEmbedMessage.GetServerGuideMessage());
+            }
+        }
+        private async Task SendAutorizationCheckMessage(SocketGuild socketGuild)
+        {
+            SocketTextChannel? serverHubTextChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Id);
+
+            if(await serverHubTextChannel.GetMessageAsync(jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.ServerHub.Autorization.Id) is IUserMessage sentMessage)
+            {
+                await sentMessage.ModifyAsync(message =>
+                {
+                    message.Embed = extensionEmbedMessage.GetAutorizationReactionMessage();
+                });
+            }
+            else
+            {
+                RestUserMessage message = await serverHubTextChannel.SendMessageAsync(embed: extensionEmbedMessage.GetAutorizationReactionMessage());
+                await message.AddReactionAsync(emotesCache.GetEmote(jsonDiscordEmotesProvider.RootDiscordEmotes.AnimatedEmotes.AnimatedZero.Paceout.Id));
             }
         }
         #endregion

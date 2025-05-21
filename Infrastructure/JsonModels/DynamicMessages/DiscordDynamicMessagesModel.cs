@@ -25,6 +25,9 @@ namespace MlkAdmin.Infrastructure.JsonModels.DynamicMessages
 
         [JsonProperty(nameof(Guide))]
         public Guide? Guide { get; set; }
+
+        [JsonProperty(nameof(Autorization))]
+        public Autorization? Autorization { get; set; }
     }
 
     public class Roles
@@ -45,6 +48,11 @@ namespace MlkAdmin.Infrastructure.JsonModels.DynamicMessages
         public ulong Id { get; set; }
     }
     public class AutoLobbyName
+    {
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+    }
+    public class Autorization
     {
         [JsonProperty(nameof(Id))]
         public ulong Id { get; set; }
