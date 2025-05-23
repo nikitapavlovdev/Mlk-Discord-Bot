@@ -11,6 +11,7 @@ using MlkAdmin.Core.Notifications.UserVoiceStateUpdated;
 using MlkAdmin.Core.Notifications.Log;
 using MlkAdmin.Core.Notifications.Ready;
 using MlkAdmin.Core.Notifications.MessageReceived;
+using MlkAdmin.Core.Notifications.ReactionAdded;
 
 namespace MlkAdmin.Presentation.Controllers.DiscordEventsController
 {
@@ -35,6 +36,7 @@ namespace MlkAdmin.Presentation.Controllers.DiscordEventsController
             client.SelectMenuExecuted += OnSelectMenuExecuted;
             client.Ready += OnReady;
             client.MessageReceived += OnMessageReceived;
+            client.ReactionAdded += OnReactionAdded;
         }
         private async Task OnUserJoined(SocketGuildUser socketGuildUser)
         {
@@ -83,6 +85,11 @@ namespace MlkAdmin.Presentation.Controllers.DiscordEventsController
         private async Task OnReady()
         {
             await mediator.Publish(new ReadyNotification());
+        }
+
+        private async Task OnReactionAdded(Cacheable<IUserMessage, ulong> message, Cacheable<IMessageChannel, ulong> channel, SocketReaction reaction)
+        {
+            await mediator.Publish(new ReactionAddedNotification(message, channel, reaction));
         }
     }
 }

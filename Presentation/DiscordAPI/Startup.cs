@@ -25,6 +25,7 @@ using MlkAdmin.Core.Managers.ChannelsManagers.VoiceChannelsManagers;
 using MlkAdmin.Core.Managers.EmotesManagers;
 using MlkAdmin.Core.Notifications.Ready;
 using MlkAdmin.Core.Notifications.MessageReceived;
+using MlkAdmin.Core.Notifications.ReactionAdded;
 
 namespace MlkAdmin.Presentation.DiscordAPI
 {
@@ -51,7 +52,8 @@ namespace MlkAdmin.Presentation.DiscordAPI
                         typeof(UserVoiceStateUpdatedNotificationHandler).Assembly,
                         typeof(SelectMenuExecutedNotificationHandler).Assembly,
                         typeof(ReadyNotificationHandler).Assembly,
-                        typeof(MessageReceivedNotificationHandler).Assembly));
+                        typeof(MessageReceivedNotificationHandler).Assembly,
+                        typeof(ReactionAddedNotificationHandler).Assembly));
 
                     services.AddSingleton(new DiscordSocketClient(discordConfiguration));
 

@@ -1,51 +1,36 @@
 ﻿using Discord.WebSocket;
-using MlkAdmin.Core.Utilities.General;
-using MlkAdmin.Infrastructure.Cache;
 using MlkAdmin.Core.Managers.RolesManagers;
-using MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers;
 using MlkAdmin.Core.Providers.JsonProvider;
+using Microsoft.Extensions.Logging;
 
 namespace MlkAdmin.Core.Managers.UserManagers;
 
 public class AutorizationManager( 
-    AutorizationCache auCache, 
     RolesManager rolesManagers,
-    TextMessageManager channelMessageManagers,
-    JsonDiscordRolesProvider jsonDiscordRolesProvider)
+    JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider,
+    ILogger<AutorizationManager> logger,
+    DiscordSocketClient client)
 {
-    public async Task AuthorizeUser(SocketModal modal, SocketGuildUser socketGuildUser)
+    public async Task AuthorizeUser(ulong socketGuildUserId)
     {
-        if (IsValidCode(modal, socketGuildUser))
+        try
         {
-            if(!socketGuildUser.Roles.Any(x => x.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Autorization.MalenkiyMember.Id))
+            SocketGuild socketGuild = client.GetGuild(jsonDiscordConfigurationProvider.RootDiscordConfiguration.Guild.Id);
+            SocketGuildUser socketGuildUser = socketGuild.GetUser(socketGuildUserId);
+
+            if(socketGuildUser == null)
             {
-                await Task.WhenAll(
+                return;
+            }
+
+            await Task.WhenAll(
                 rolesManagers.DeleteNotRegisteredRoleAsync(socketGuildUser),
                 rolesManagers.AddBaseServerRoleAsync(socketGuildUser),
-                rolesManagers.AddGamerRoleAsync(socketGuildUser),
-                channelMessageManagers.SendFollowupMessageOnSuccessAutorization(modal));
-            }
-            else
-            {
-                await channelMessageManagers.SendFollowupMessageOnSuccessAutorization(modal);
-            }
-
-            auCache.RemoveCodeFromDict(socketGuildUser);
+                rolesManagers.AddGamerRoleAsync(socketGuildUser));
         }
-        else
+        catch (Exception ex)
         {
-            await channelMessageManagers.SendFollowupMessageOnErrorAutorization(modal);
+            logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
         }
-    }
-    public static string GetAutorizationCode()
-    {
-        return ExtensionStaticMethods.GetRandomCode(10);
-    }
-    private bool IsValidCode(SocketModal modal, SocketGuildUser socketGuildUser)
-    {
-        string fromModalCode = modal.Data.Components.First(x => x.CustomId == "au_selection_input").Value;
-        string fromDictrCode = auCache.GetCodeForUser(socketGuildUser, out string? def);
-
-        return fromModalCode == fromDictrCode;
     }
 }

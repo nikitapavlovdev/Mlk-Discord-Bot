@@ -17,8 +17,7 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
         JsonChannelsMapProvider jsonChannelsMapProvider,
         JsonDiscordDynamicMessagesProvider jsonDiscordDynamicMessagesProvider,
         ChannelsCache channelsCache,
-        ExtensionSelectionMenu extensionSelectionMenu,
-        AutorizationCache autorizationCache)
+        ExtensionSelectionMenu extensionSelectionMenu)
     {
         #region Conrollers
         public async Task GuildTextChannelsInitialization(SocketGuild socketGuild)
@@ -155,11 +154,8 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
         {
             try
             {
-                string auCode = AutorizationManager.GetAutorizationCode();
-                autorizationCache.SetTemporaryCodes(socketGuildUser, auCode);
-
                 SocketTextChannel? textChannel = socketGuildUser.Guild.TextChannels.FirstOrDefault(x => x.Id == channelsProvider.RootChannel?.Channels?.TextChannels?.ServerCategory?.Starting?.Id);
-                Embed embedMessage = extensionEmbedMessage.GetJoinedEmbedTemplate(socketGuildUser, auCode);
+                Embed embedMessage = extensionEmbedMessage.GetJoinedEmbedTemplate(socketGuildUser);
 
                 if (textChannel is null)
                 {

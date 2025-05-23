@@ -107,14 +107,13 @@ namespace MlkAdmin.Core.Utilities.DI
 
             return embed;
         }
-        public Embed GetJoinedEmbedTemplate(SocketGuildUser socketGuildUser, string auCode)
+        public Embed GetJoinedEmbedTemplate(SocketGuildUser socketGuildUser)
         {
             GuildEmote? welcomeMessageEmote = emotesCache.GetEmote(jsonDiscordEmotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Love.Id);
 
             string title = "ᴍᴀʟᴇɴᴋɪᴇ ɴᴇᴡ ᴍᴇᴍʙᴇʀ";
             string description = $"Привет, **{socketGuildUser.Username}**! " +
-                $"{welcomeMessageEmote}\nДобро пожаловать на сервер **{socketGuildUser.Guild.Name}**" +
-                $"\n\nДля продолжения введите код: `{auCode}`";
+                $"{welcomeMessageEmote}\nДобро пожаловать на сервер **{socketGuildUser.Guild.Name}**";
 
             Embed embed = new EmbedBuilder()
                 .WithTitle(title)

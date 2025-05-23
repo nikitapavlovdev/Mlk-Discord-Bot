@@ -7,7 +7,6 @@ namespace MlkAdmin.Core.Notifications.ModalSubmitted
 {
     class ModalSubmittedNotificationHandler(
         ILogger<ModalSubmittedNotificationHandler> logger,
-        AutorizationManager autorizationManager,
         PersonalDataManager personalDataManager) : INotificationHandler<ModalSubmittedNotification>
     {
         public async Task Handle(ModalSubmittedNotification notification, CancellationToken cancellationToken)
@@ -23,10 +22,6 @@ namespace MlkAdmin.Core.Notifications.ModalSubmitted
 
                 switch(notification.Modal.Data.CustomId)
                 {
-                    case "au_selection":
-                        await autorizationManager.AuthorizeUser(notification.Modal, socketGuildUser);
-                        break;
-
                     case "personal_data":
                         await personalDataManager.GetUserPersonalData(notification.Modal);
                         break;
