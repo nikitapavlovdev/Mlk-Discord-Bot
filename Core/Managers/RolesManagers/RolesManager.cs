@@ -44,13 +44,12 @@ namespace MlkAdmin.Core.Managers.RolesManagers
         {
             try
             {
-                await socketGuildUser.AddRoleAsync(rolesCache.GetRole(
-                    jsonDiscordRolesProvider
-                    .RootDiscordRoles
-                    .GeneralRole
-                    .Categories
-                    .Gamer
-                    .Id));
+                if(socketGuildUser.Roles.Any(x => x.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.Gamer.Id))
+                {
+                    return;
+                }
+
+                await socketGuildUser.AddRoleAsync(rolesCache.GetRole(jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.Gamer.Id));
             }
             catch (Exception ex)
             {
@@ -61,13 +60,12 @@ namespace MlkAdmin.Core.Managers.RolesManagers
         {
             try
             {
-                await socketGuildUser.RemoveRoleAsync(rolesCache.GetRole(
-                    jsonDiscordRolesProvider
-                    .RootDiscordRoles
-                    .GeneralRole
-                    .Autorization
-                    .NotRegistered
-                    .Id));
+                if(!socketGuildUser.Roles.Any(x => x.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Autorization.NotRegistered.Id))
+                {
+                    return;
+                }
+
+                await socketGuildUser.RemoveRoleAsync(rolesCache.GetRole(jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Autorization.NotRegistered.Id));
             }
             catch (Exception ex)
             {
@@ -78,13 +76,12 @@ namespace MlkAdmin.Core.Managers.RolesManagers
         {
             try
             {
-                await socketGuildUser.AddRoleAsync(rolesCache.GetRole(
-                    jsonDiscordRolesProvider
-                    .RootDiscordRoles
-                    .GeneralRole
-                    .Autorization
-                    .MalenkiyMember
-                    .Id));
+                if(socketGuildUser.Roles.Any(x => x.Id == jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Autorization.MalenkiyMember.Id))
+                {
+                    return;
+                }
+
+                await socketGuildUser.AddRoleAsync(rolesCache.GetRole(jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Autorization.MalenkiyMember.Id));
             }
             catch (Exception ex)
             {
