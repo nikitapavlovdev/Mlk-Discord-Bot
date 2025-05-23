@@ -52,4 +52,8 @@
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Core\Notifications\ReactionAdded\" />
+  </ItemGroup>
+
 </Project>

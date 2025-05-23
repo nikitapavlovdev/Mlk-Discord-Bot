@@ -39,5 +39,11 @@ namespace MlkAdmin.Infrastructure.JsonModels.Pictures
 
         [JsonProperty(nameof(WelcomeMessage))]
         public string? WelcomeMessage { get; set; }
+
+        [JsonProperty(nameof(AuMessage))]
+        public string? AuMessage { get; set;}
+
+        [JsonProperty(nameof(AutoLobbyNamingMessage))]
+        public string? AutoLobbyNamingMessage { get; set ; }
     }
 }

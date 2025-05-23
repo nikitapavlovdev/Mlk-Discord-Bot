@@ -4,33 +4,21 @@ namespace MlkAdmin.Core.Utilities.DI
 {
     class ExtensionMessageComponents
     {
-        public static MessageComponent GetWelcomeMessageComponent(ulong userId)
+        public static MessageComponent GetServerHubFeatuesButtons()
         {
             return new ComponentBuilder()
-            .WithButton(new ButtonBuilder()
+                .WithButton(new ButtonBuilder()
                 .WithStyle(ButtonStyle.Primary)
-                .WithCustomId($"au_{userId}")
-                .WithLabel("Ввести код"))
-            .Build();
-        }
-
-        public static MessageComponent GetAdditionalWelcomeMessageComponent(ulong userId)
-        {
-            return new ComponentBuilder()
-                .WithButton(new ButtonBuilder()
-                    .WithStyle(ButtonStyle.Primary)
-                    .WithCustomId($"personal_data_{userId}")
-                    .WithLabel("Персональные данные"))
-                .Build();
-        }
-
-        public static MessageComponent GetAutoLobbyNamingButton()
-        {
-            return new ComponentBuilder()
-                .WithButton(new ButtonBuilder()
-                    .WithStyle(ButtonStyle.Primary)
                     .WithCustomId("autolobby_naming_button")
-                    .WithLabel("Отправить уникальное имя"))
+                    .WithLabel("Моя комната"))
+                .WithButton(new ButtonBuilder()
+                    .WithStyle(ButtonStyle.Primary)
+                    .WithCustomId($"personal_data_button")
+                    .WithLabel("Обо мне"))
+                .WithButton(new ButtonBuilder()
+                 .WithStyle(ButtonStyle.Primary)
+                    .WithCustomId("feedback_button")
+                    .WithLabel("Разраб делай"))
                 .Build();
         }
     }

@@ -15,7 +15,6 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
         JsonChannelsMapProvider channelsProvider,
         JsonDiscordEmotesProvider emotesProvider, 
         JsonChannelsMapProvider jsonChannelsMapProvider,
-        JsonDiscordEmotesProvider jsonDiscordEmotesProvider,
         JsonDiscordDynamicMessagesProvider jsonDiscordDynamicMessagesProvider,
         ChannelsCache channelsCache,
         ExtensionSelectionMenu extensionSelectionMenu,
@@ -40,7 +39,6 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
                 SendSwitchColorRolesMessage(socketGuild),
                 SendRulesMessage(socketGuild),
                 SendAutorizationCheckMessage(socketGuild),
-                SendGuideMessage(socketGuild),
                 SendRequestForLobbyNameMessage(socketGuild));
         }
         #endregion
@@ -113,33 +111,18 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
                 await sentMessage.ModifyAsync(message =>
                 {
                     message.Embed = extensionEmbedMessage.GetAutoLobbyNamingMessage();
-                    message.Components = ExtensionMessageComponents.GetAutoLobbyNamingButton();
+                    message.Components = ExtensionMessageComponents.GetServerHubFeatuesButtons();
                 });
             }
             else
             {
-                await serverHubTextChannel.SendMessageAsync(embed: extensionEmbedMessage.GetAutoLobbyNamingMessage(), components: ExtensionMessageComponents.GetAutoLobbyNamingButton());
-            }
-        }
-        private async Task SendGuideMessage(SocketGuild socketGuild)
-        {
-            SocketTextChannel? serverHubTextChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Id);
-
-            if (await serverHubTextChannel.GetMessageAsync(jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.ServerHub.Guide.Id) is IUserMessage sentMessage)
-            {
-                await sentMessage.ModifyAsync(message =>
-                {
-                    message.Embed = extensionEmbedMessage.GetServerGuideMessage();
-                });
-            }
-            else
-            {
-                await serverHubTextChannel.SendMessageAsync(embed: extensionEmbedMessage.GetServerGuideMessage());
+                await serverHubTextChannel.SendMessageAsync(embed: extensionEmbedMessage.GetAutoLobbyNamingMessage(), components: ExtensionMessageComponents.GetServerHubFeatuesButtons());
             }
         }
         private async Task SendAutorizationCheckMessage(SocketGuild socketGuild)
         {
             SocketTextChannel? serverHubTextChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Id);
+            Emote? emote = socketGuild.Emotes.FirstOrDefault(x => x.Name == "mlkstaticevent");
 
             if(await serverHubTextChannel.GetMessageAsync(jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.ServerHub.Autorization.Id) is IUserMessage sentMessage)
             {
@@ -147,11 +130,13 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
                 {
                     message.Embed = extensionEmbedMessage.GetAutorizationReactionMessage();
                 });
+
+                await sentMessage.AddReactionAsync(emote);
             }
             else
             {
                 RestUserMessage message = await serverHubTextChannel.SendMessageAsync(embed: extensionEmbedMessage.GetAutorizationReactionMessage());
-                await message.AddReactionAsync(emotesCache.GetEmote(jsonDiscordEmotesProvider.RootDiscordEmotes.AnimatedEmotes.AnimatedZero.Paceout.Id));
+                await message.AddReactionAsync(emote);
             }
         }
         #endregion
@@ -174,7 +159,6 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
                 autorizationCache.SetTemporaryCodes(socketGuildUser, auCode);
 
                 SocketTextChannel? textChannel = socketGuildUser.Guild.TextChannels.FirstOrDefault(x => x.Id == channelsProvider.RootChannel?.Channels?.TextChannels?.ServerCategory?.Starting?.Id);
-                MessageComponent auMessageComponent = ExtensionMessageComponents.GetWelcomeMessageComponent(socketGuildUser.Id);
                 Embed embedMessage = extensionEmbedMessage.GetJoinedEmbedTemplate(socketGuildUser, auCode);
 
                 if (textChannel is null)
@@ -182,7 +166,7 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
                     return;
                 }
 
-                await textChannel.SendMessageAsync($"{socketGuildUser.Mention}", embed: embedMessage, components: auMessageComponent);
+                await textChannel.SendMessageAsync($"{socketGuildUser.Mention}", embed: embedMessage);
             }
             catch (Exception ex)
             {
@@ -192,7 +176,6 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
         public async Task SendFollowupMessageOnSuccessAutorization(SocketModal modal)
         {
             await modal.FollowupAsync(embed: extensionEmbedMessage.GetSuccesAuthorizationMessageEmbedTemplate(),
-                components: ExtensionMessageComponents.GetAdditionalWelcomeMessageComponent(modal.User.Id),
                 ephemeral: true);
         }
         public async Task SendFollowupMessageOnErrorAutorization(SocketModal modal)

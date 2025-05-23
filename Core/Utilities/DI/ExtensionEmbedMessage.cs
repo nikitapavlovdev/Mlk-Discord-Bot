@@ -196,50 +196,34 @@ namespace MlkAdmin.Core.Utilities.DI
         }
         public Embed GetAutoLobbyNamingMessage()
         {
-            return new EmbedBuilder()
-                .WithTitle("ʟᴏʙʙʏ ɴᴀᴍɪɴɢ")
-                .WithDescription("Вы можете придумать имя, которое хотите видеть при создании личной комнаты, и отправить его по кнопочки ниже!\n\n" +
-                "`➕ | ᴄоздᴀᴛь ᴧобби` - *запрыгнув сюда, вы можете создать личную комнату!*")
-                .WithColor(88, 101, 242)
-                .WithFooter(developer, avatarUrl)
-                .Build();
-        }
-        public Embed GetServerGuideMessage()
-        {
             GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
 
-            string description = $"Данный блок содержит общую информацию о каналах сервера! Рекомендовано к ознкомлению после прохождения верификации.\n" +
-                "### Сервер\n" +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Rules.Https} - правила грандиозного сервера!\n" +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.News.Https} - величайшие новости!\n " +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Https} - любители фармить роли оценят!\n" +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Https} - сверхшибательные фичи и не только!\n" +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.BotCommands.Https} - команды ботов непосредственно тут!\n" +
-                "### Полезная информация\n" +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.UsefulInformationCategory.D2Forum.Https} - энджоеринг **Destiny 2**!\n" +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.UsefulInformationCategory.WuWaForum.Https} - энджоеринг **Wuthering Waves**!\n" +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.UsefulInformationCategory.GenshinForum.Https} - энджоеринг **Genshin Impact**!\n" +
-                "### База\n" +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.BaseCategory.Chat.Https} - чатик всего сервера!\n" +
-                "### Игровая\n" +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.GameCategory.Highlight.Https} - кидайте свои смешные моменты из игр!\n" +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.GameCategory.ValChat.Https} - чатик по игре **Valorant**!\n" +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.GameCategory.D2Chat.Https} - чатик по игре **Destiny 2**!\n";
-
-
             return new EmbedBuilder()
-                .WithTitle("ɢᴜɪᴅᴇ")
-                .WithDescription(description)
-                .WithFooter(developer, avatarUrl)
-                .WithColor(88, 101, 242)
+                .WithTitle("ᴍʟᴋ - ɸунᴋции")
+                .WithDescription($"### ᴋноᴨᴋи\n" +
+                    $"**`Моя комната`** - по этой кнопочке Вы можете предложить имя создаваемой вами личной комнаты!" +
+                    "\n > Когда вы заходите в канал **➕ | ᴄоздᴀᴛь ᴧобби**, бот автоматически создает вашу личную комнату.\n\n" +
+                    $"**`Обо мне`** - по это кнопочке Вы можете отправить свои данные, но только если доверяете Никитке! " +
+                    "\n > **Дата рождения** нужна, чтобы я знал, когда Вас поздравлять, а **Имя** - более комфортный формат обращение для меня!\n\n" +
+                    $"**`Разраб делай`** - по этой кнопочке вы можете предложить свои квалити оф лайф фичи для сервера!" +
+                    "\n > Хочется **обратной связи** от сообщества и послушать Ваши гениальные идеи, а ну.. и попрогать тоже!" +
+                    $"\n\n {pointEmote} В будущем, при появление новых функций, они будут появляться именно тут.")
+                .WithColor(232, 228, 225)
+                .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.AutoLobbyNamingMessage)
                 .Build();
         }
         public Embed GetAutorizationReactionMessage()
         {
+            GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
+
             return new EmbedBuilder()
-                .WithTitle("ᴀᴜᴛᴏʀɪᴢᴛɪᴏɴ")
-                .WithDescription("Чтобы завершить верификацию прожмити эмоцию на этом сообщение!")
-                .WithFooter(developer, avatarUrl)
+                .WithTitle("ᴍʟᴋ - ʙᴇᴩиɸиᴋᴀция")
+                .WithDescription("Обязательно к ознакомлению:\n" +
+                $"> {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Rules.Https} - правила сервера.\n" +
+                $"> {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Https} - роли сервера.\n\n" +
+                $"{pointEmote} **Чтобы завершить верификацию добавьте любую реакцию на этом сообщение!**")
+                .WithColor(232, 228, 225)
+                .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.AuMessage)
                 .Build();
         }
         public static Embed GetNoAccessTemplate()
