@@ -22,7 +22,7 @@ namespace MlkAdmin.Core.Utilities.DI
                     .WithPlaceholder("Формат: 01.01.2001")
                     .WithStyle(TextInputStyle.Short))
                 .Build();
-        }
+        }   
         public static Modal GetLobbyNamingModal()
         {
             return new ModalBuilder()
