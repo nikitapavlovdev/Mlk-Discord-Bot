@@ -17,13 +17,7 @@ namespace MlkAdmin.Core.Notifications.ButtonExecuted
                     return;
                 }
 
-                if(notification.SocketMessageComponent.Data.CustomId == $"au_{notification.SocketMessageComponent.User.Id}")
-                {
-                    await notification.SocketMessageComponent.RespondWithModalAsync(ExtensionModal.GetAutorizationModal());
-                    return;
-                }
-
-                if(notification.SocketMessageComponent.Data.CustomId == $"personal_data_{notification.SocketMessageComponent.User.Id}")
+                if(notification.SocketMessageComponent.Data.CustomId == $"personal_data_button")
                 {
                     await notification.SocketMessageComponent.RespondWithModalAsync(ExtensionModal.GetPersonalInformationModal());
                     return;
@@ -35,7 +29,11 @@ namespace MlkAdmin.Core.Notifications.ButtonExecuted
                     return;
                 }
 
-                await notification.SocketMessageComponent.RespondAsync($"Эта кнопочка для другого пользователя!",ephemeral: true);
+                if(notification.SocketMessageComponent.Data.CustomId == "feedback_button")
+                {
+                    await notification.SocketMessageComponent.RespondWithModalAsync(ExtensionModal.GetFeedBackModal());
+                    return;
+                }
             }
             catch (Exception ex)
             {

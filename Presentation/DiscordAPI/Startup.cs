@@ -74,7 +74,6 @@ namespace MlkAdmin.Presentation.DiscordAPI
                     services.AddSingleton<RolesManager>();
                     services.AddSingleton<AutorizationManager>();
                     services.AddSingleton<VoiceChannelsManager>();
-                    services.AddSingleton<PersonalDataManager>();
                     services.AddSingleton<TextMessageManager>();
                     services.AddSingleton<EmotesManager>();
                     services.AddSingleton<ModeratorLogsSender>();

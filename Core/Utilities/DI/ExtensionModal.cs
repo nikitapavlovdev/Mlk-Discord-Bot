@@ -4,29 +4,16 @@ namespace MlkAdmin.Core.Utilities.DI
 {
     class ExtensionModal
     {
-        public static Modal GetAutorizationModal()
-        {
-            return new ModalBuilder()
-                    .WithTitle($"Имя на сервере")
-                    .WithCustomId("au_selection")
-                    .AddTextInput(new TextInputBuilder()
-                        .WithLabel("Код")
-                        .WithCustomId("au_selection_input")
-                        .WithMaxLength(10)
-                        .WithPlaceholder("Например: WjRokI8xXC")
-                        .WithStyle(TextInputStyle.Short))
-                    .Build();
-        }
         public static Modal GetPersonalInformationModal()
         {
             return new ModalBuilder()
-                .WithTitle("Личная информация (Необязательно)")
-                .WithCustomId("personal_data")
+                .WithTitle("Обо мне")
+                .WithCustomId("personal_data_modal")
                 .AddTextInput(new TextInputBuilder()
-                    .WithLabel("Имя")
+                    .WithLabel("Ваше имя")
                     .WithCustomId("personal_data_input_name")
                     .WithMaxLength(15)
-                    .WithPlaceholder("Например: Никита")
+                    .WithPlaceholder("Например: Никитка")
                     .WithStyle(TextInputStyle.Short))
                 .AddTextInput(new TextInputBuilder()
                     .WithLabel("Дата рождения")
@@ -34,33 +21,33 @@ namespace MlkAdmin.Core.Utilities.DI
                     .WithMaxLength(10)
                     .WithPlaceholder("Формат: 01.01.2001")
                     .WithStyle(TextInputStyle.Short))
-                .AddTextInput(new TextInputBuilder()
-                    .WithLabel("Страна")
-                    .WithCustomId("personal_data_input_country")
-                    .WithMaxLength(30)
-                    .WithPlaceholder("Например: Россия")
-                    .WithStyle(TextInputStyle.Short))
-                .AddTextInput(new TextInputBuilder()
-                    .WithLabel("Телеграм")
-                    .WithCustomId("personal_data_input_telegram")
-                    .WithMaxLength(99)
-                    .WithPlaceholder("Например: @notnikname")
-                    .WithStyle(TextInputStyle.Short))
                 .Build();
-
         }
         public static Modal GetLobbyNamingModal()
         {
             return new ModalBuilder()
-               .WithTitle("Запрос на имя создаваемого войс-лобби")
-               .WithCustomId("lobby_naming")
-               .AddTextInput(new TextInputBuilder()
-                   .WithLabel("Именование")
-                   .WithCustomId("lobby_naming_input_name")
-                   .WithMaxLength(15)
-                   .WithPlaceholder("Например: Ронинская пятка")
-                   .WithStyle(TextInputStyle.Short))
-               .Build();
+                .WithTitle("Моя комната")
+                .WithCustomId("lobby_naming_modal")
+                .AddTextInput(new TextInputBuilder()
+                    .WithLabel("Имя комнаты")
+                    .WithCustomId("lobby_naming_input_name")
+                    .WithMaxLength(20)
+                    .WithPlaceholder("Например: Ронинская пятка")
+                    .WithStyle(TextInputStyle.Short))
+                .Build();
+        }
+        public static Modal GetFeedBackModal()
+        {
+            return new ModalBuilder()
+                .WithTitle("Разраб делай")
+                .WithCustomId("feedback_modal")
+                .AddTextInput(new TextInputBuilder()
+                    .WithLabel("Идеи / предложения")
+                    .WithCustomId("feedback_input_feedback")
+                    .WithMaxLength(4000)
+                    .WithPlaceholder("Хочу, чтобы бот Ронина тегал и писал, что он лошара!")
+                    .WithStyle(TextInputStyle.Paragraph))
+                .Build();
         }
     }
 }

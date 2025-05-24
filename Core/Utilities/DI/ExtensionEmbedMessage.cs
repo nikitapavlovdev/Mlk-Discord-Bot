@@ -119,7 +119,6 @@ namespace MlkAdmin.Core.Utilities.DI
                 .WithTitle(title)
                 .WithDescription(description)
                 .WithColor(new(30, 144, 255))
-                //.WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.WelcomeMessage)
                 .WithFooter(new EmbedFooterBuilder()
                     .WithText(socketGuildUser.DisplayName)
                     .WithIconUrl(socketGuildUser.GetAvatarUrl(ImageFormat.Auto, 48)))
@@ -224,6 +223,20 @@ namespace MlkAdmin.Core.Utilities.DI
                 .WithColor(232, 228, 225)
                 .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.AuMessage)
                 .Build();
+        }
+        public Embed GetUserChoiceEmbedTamplate(SocketUser user, string title, string description)
+        {
+            if(user is SocketGuildUser socketGuildUser)
+            {
+                return new EmbedBuilder()
+                .WithTitle(title)
+                .WithDescription(description)
+                .WithColor(Color.Default)
+                .WithAuthor(socketGuildUser.DisplayName, socketGuildUser.GetAvatarUrl(ImageFormat.Auto, 48))
+                .Build();
+            }
+
+            return new EmbedBuilder().Build();
         }
         public static Embed GetNoAccessTemplate()
         {

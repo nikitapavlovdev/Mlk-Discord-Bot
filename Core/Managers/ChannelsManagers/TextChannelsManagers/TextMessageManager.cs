@@ -4,8 +4,8 @@ using Discord;
 using MlkAdmin.Core.Utilities.DI;
 using MlkAdmin.Infrastructure.Cache;
 using MlkAdmin.Core.Providers.JsonProvider;
-using MlkAdmin.Core.Managers.UserManagers;
 using Discord.Rest;
+using MlkAdmin.Core.Managers.UserManagers;
 
 namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
 {
@@ -16,8 +16,10 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
         JsonDiscordEmotesProvider emotesProvider, 
         JsonChannelsMapProvider jsonChannelsMapProvider,
         JsonDiscordDynamicMessagesProvider jsonDiscordDynamicMessagesProvider,
-        ChannelsCache channelsCache,
-        ExtensionSelectionMenu extensionSelectionMenu)
+        ChannelsCache channelsCache,       
+        ExtensionSelectionMenu extensionSelectionMenu,
+        JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider,
+        DiscordSocketClient client)
     {
         #region Conrollers
         public async Task GuildTextChannelsInitialization(SocketGuild socketGuild)
@@ -186,6 +188,40 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
             SocketTextChannel adminTextChannel = socketGuildUser.Guild.GetTextChannel(jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Logs.Id);
 
             await adminTextChannel.SendMessageAsync(embed: memberInformationEmbed);
+        }
+        public async Task SendUserInputToDeveloper(SocketModal modal, string title, string input_text1)
+        {
+            try
+            {
+                SocketGuild guild = client.GetGuild(jsonDiscordConfigurationProvider.RootDiscordConfiguration.Guild.Id);
+                SocketTextChannel channel = guild.GetTextChannel(jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Logs.Id);
+
+                string descriptions = "**Данные, которые ввел пользователь**: \n\n" + input_text1; 
+
+                await channel.SendMessageAsync(embed: extensionEmbedMessage.GetUserChoiceEmbedTamplate(modal.User, title, descriptions));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+            }
+
+        }
+        public async Task SendUserInputToDeveloper(SocketModal modal, string title, string input_text1, string input_text2)
+        {
+            try
+            {
+                SocketGuild guild = client.GetGuild(jsonDiscordConfigurationProvider.RootDiscordConfiguration.Guild.Id);
+                SocketTextChannel channel = guild.GetTextChannel(jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Logs.Id);
+
+                string descriptions = "**Данные, которые ввел пользователь**: \n\n" + input_text1 + "\n" + input_text2;
+
+                await channel.SendMessageAsync(embed: extensionEmbedMessage.GetUserChoiceEmbedTamplate(modal.User, title, descriptions));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+            }
+
         }
         #endregion
     }
