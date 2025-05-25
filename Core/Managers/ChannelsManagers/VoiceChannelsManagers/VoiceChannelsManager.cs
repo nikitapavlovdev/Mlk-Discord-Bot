@@ -5,6 +5,7 @@ using MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers;
 using MlkAdmin.Core.Providers.JsonProvider;
 using MlkAdmin.Infrastructure.Cache;
 using Microsoft.Extensions.Logging;
+using MlkAdmin.Core.Managers.UserManagers;
 
 namespace MlkAdmin.Core.Managers.ChannelsManagers.VoiceChannelsManagers
 {
@@ -13,11 +14,14 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.VoiceChannelsManagers
         ILogger<VoiceChannelsManager> logger,
         JsonDiscordCategoriesProvider jsonDiscordCategoriesProvider,
         JsonChannelsMapProvider jsonChannelsMapProvider, 
-        ModeratorLogsSender moderatorLogsSender)
+        ModeratorLogsSender moderatorLogsSender,
+        StaticDataServices staticDataServices)
     {
-        private string GetLobbyName()
+
+        private string GetLobbyName(ulong userId)
         {
             Random rnd = new();
+            string uniqueName = staticDataServices.GetUniqueLobbyName(userId);
 
             if(rnd.Next(0, 1000000) == 0)
             {
@@ -32,6 +36,11 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.VoiceChannelsManagers
             if (rnd.Next(0, 1000) == 0)
             {
                 return "💜 One Thousand Kid";
+            }
+
+            if(uniqueName != string.Empty)
+            {
+                return uniqueName;
             }
 
             return "ᴍʟᴋ_ʟᴏʙʙʏ";
@@ -71,7 +80,7 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.VoiceChannelsManagers
             SocketGuildUser? leader = socketUser as SocketGuildUser;
 
             return await socketGuild.CreateVoiceChannelAsync(
-                $"🔉 | {GetLobbyName()}",
+                $"🔉 | {GetLobbyName(socketUser.Id)}",
                 properties =>
                 {
                     properties.CategoryId = jsonDiscordCategoriesProvider.RootDiscordCategories.Guild.Autolobby.Id;

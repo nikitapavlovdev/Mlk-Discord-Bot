@@ -61,6 +61,7 @@ namespace MlkAdmin.Presentation.DiscordAPI
                     services.AddSingleton<DiscordCommandsController>();
 
                     services.AddSingleton<CommandService>();
+                    services.AddSingleton<StaticDataServices>();
                     services.AddSingleton<ExtensionEmbedMessage>();
                     services.AddSingleton<ExtensionSelectionMenu>();
                     services.AddSingleton<ExtensionMessageComponents>();
@@ -116,6 +117,12 @@ namespace MlkAdmin.Presentation.DiscordAPI
                         return new JsonDiscordDynamicMessagesProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory,
                             "..", "..", "..", "Infrastructure", "Configuration", "DiscordDynamicMessages.json")),
                                 x.GetRequiredService<ILogger<JsonDiscordDynamicMessagesProvider>>());
+                    });
+                    services.AddSingleton<JsonDiscordUsersLobbyProvider>(x =>
+                    {
+                        return new JsonDiscordUsersLobbyProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory,
+                            "..", "..", "..", "Infrastructure", "Configuration", "DiscordUsersLobby.json")),
+                            x.GetRequiredService<ILogger<JsonDiscordUsersLobbyProvider>>());
                     });
                 })
                 .ConfigureLogging((context, logging) =>

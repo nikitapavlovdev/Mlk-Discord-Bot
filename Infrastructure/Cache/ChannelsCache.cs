@@ -11,6 +11,7 @@ namespace MlkAdmin.Infrastructure.Cache
         private readonly List<SocketVoiceChannel> GenereatingChannels = [];
         private readonly List<ulong> TemporaryVoiceChannels = [];
 
+
         public bool IsGeneratingChannel(SocketVoiceChannel socketVoiceChannel)
         {
             return GenereatingChannels.Any(x => x == socketVoiceChannel);
@@ -60,5 +61,7 @@ namespace MlkAdmin.Infrastructure.Cache
                 }
             }
         }
+
+       
     }
 }
