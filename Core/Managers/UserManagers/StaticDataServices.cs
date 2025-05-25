@@ -19,6 +19,11 @@ namespace MlkAdmin.Core.Managers.UserManagers
                 jsonDiscordUsersLobbyProvider.RootDiscordUsersLobby.User.GuzMan.Id,
                 jsonDiscordUsersLobbyProvider.RootDiscordUsersLobby.User.GuzMan.LobbyName);
 
+            AddUniqueLobbyNameFromJson(
+                jsonDiscordUsersLobbyProvider.RootDiscordUsersLobby.User.Ronin.Id,
+                jsonDiscordUsersLobbyProvider.RootDiscordUsersLobby.User.Ronin.LobbyName);
+
+
             await Task.CompletedTask;
         }
 
