@@ -5,7 +5,6 @@ using MlkAdmin.Core.Utilities.DI;
 using MlkAdmin.Infrastructure.Cache;
 using MlkAdmin.Core.Providers.JsonProvider;
 using Discord.Rest;
-using MlkAdmin.Core.Managers.UserManagers;
 
 namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
 {
@@ -189,14 +188,16 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
 
             await adminTextChannel.SendMessageAsync(embed: memberInformationEmbed);
         }
-        public async Task SendUserInputToDeveloper(SocketModal modal, string title, string input_text1)
+        public async Task SendUserInputToDeveloper(SocketModal modal, string title, string buttonName, string input_text1)
         {
             try
             {
                 SocketGuild guild = client.GetGuild(jsonDiscordConfigurationProvider.RootDiscordConfiguration.Guild.Id);
                 SocketTextChannel channel = guild.GetTextChannel(jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Logs.Id);
 
-                string descriptions = "**Данные, которые ввел пользователь**: \n\n" + input_text1; 
+                string descriptions = $"**Данные из формы**: {buttonName}\n" +
+                    $"**Введенные данные**: \n\n" +
+                    "text_input 1: " + "```" + input_text1 + "```" + "\n";
 
                 await channel.SendMessageAsync(embed: extensionEmbedMessage.GetUserChoiceEmbedTamplate(modal.User, title, descriptions));
             }
@@ -206,14 +207,17 @@ namespace MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers
             }
 
         }
-        public async Task SendUserInputToDeveloper(SocketModal modal, string title, string input_text1, string input_text2)
+        public async Task SendUserInputToDeveloper(SocketModal modal, string title, string buttonName, string input_text1, string input_text2)
         {
             try
             {
                 SocketGuild guild = client.GetGuild(jsonDiscordConfigurationProvider.RootDiscordConfiguration.Guild.Id);
                 SocketTextChannel channel = guild.GetTextChannel(jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Logs.Id);
 
-                string descriptions = "**Данные, которые ввел пользователь**: \n\n" + input_text1 + "\n" + input_text2;
+                string descriptions = $"**Данные из формы**: {buttonName}\n" +
+                    $"**Введенные данные**: \n\n" +
+                    "text_input 1: " + input_text1 + "\n" +
+                    "text_input 2: " + input_text2;
 
                 await channel.SendMessageAsync(embed: extensionEmbedMessage.GetUserChoiceEmbedTamplate(modal.User, title, descriptions));
             }

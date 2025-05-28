@@ -107,18 +107,19 @@ namespace MlkAdmin.Core.Utilities.DI
 
             return embed;
         }
-        public Embed GetJoinedEmbedTemplate(SocketGuildUser socketGuildUser)
+        public Embed GetJoinedEmbedTemplate(SocketGuildUser socketGuildUser)    
         {
             GuildEmote? welcomeMessageEmote = emotesCache.GetEmote(jsonDiscordEmotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Love.Id);
 
             string title = "ᴍᴀʟᴇɴᴋɪᴇ ɴᴇᴡ ᴍᴇᴍʙᴇʀ";
             string description = $"Привет, **{socketGuildUser.Username}**! " +
-                $"{welcomeMessageEmote}\nДобро пожаловать на сервер **{socketGuildUser.Guild.Name}**";
+                $"{welcomeMessageEmote}\nДобро пожаловать на сервер **{socketGuildUser.Guild.Name}**\n\n" +
+                $"Для продолжения проследуйте в {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Https}";
 
             Embed embed = new EmbedBuilder()
                 .WithTitle(title)
                 .WithDescription(description)
-                .WithColor(new(30, 144, 255))
+                .WithColor(30, 144, 255)
                 .WithFooter(new EmbedFooterBuilder()
                     .WithText(socketGuildUser.DisplayName)
                     .WithIconUrl(socketGuildUser.GetAvatarUrl(ImageFormat.Auto, 48)))
@@ -231,7 +232,7 @@ namespace MlkAdmin.Core.Utilities.DI
                 return new EmbedBuilder()
                 .WithTitle(title)
                 .WithDescription(description)
-                .WithColor(Color.Default)
+                .WithColor(218, 247, 166)
                 .WithAuthor(socketGuildUser.DisplayName, socketGuildUser.GetAvatarUrl(ImageFormat.Auto, 48))
                 .Build();
             }

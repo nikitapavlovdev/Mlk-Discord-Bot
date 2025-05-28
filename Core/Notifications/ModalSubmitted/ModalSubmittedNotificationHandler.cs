@@ -28,6 +28,7 @@ namespace MlkAdmin.Core.Notifications.ModalSubmitted
                         await textMessageManager.SendUserInputToDeveloper(
                             notification.Modal, 
                             "Персональные данные", 
+                            "Обо мне",
                             notification.Modal.Data.Components.FirstOrDefault(x => x.CustomId == "personal_data_input_name").Value, 
                             notification.Modal.Data.Components.FirstOrDefault(x => x.CustomId == "personal_data_input_dateofbirthday").Value);
                         break;
@@ -35,13 +36,15 @@ namespace MlkAdmin.Core.Notifications.ModalSubmitted
                     case "lobby_naming_modal":
                         await textMessageManager.SendUserInputToDeveloper(
                             notification.Modal, 
-                            "Личное имя комнаты", 
+                            "Запрос на имя комнаты",
+                            "Моя комната",
                             notification.Modal.Data.Components.FirstOrDefault(x => x.CustomId == "lobby_naming_input_name").Value);
                         break;
 
                     case "feedback_modal":
                         await textMessageManager.SendUserInputToDeveloper(
                             notification.Modal,
+                            "Обратная связь",
                             "Разраб делай",
                             notification.Modal.Data.Components.FirstOrDefault(x => x.CustomId == "feedback_input_feedback").Value);
                         break;

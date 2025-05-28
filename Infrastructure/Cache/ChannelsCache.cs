@@ -61,7 +61,5 @@ namespace MlkAdmin.Infrastructure.Cache
                 }
             }
         }
-
-       
     }
 }
