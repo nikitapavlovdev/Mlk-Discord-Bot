@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MlkAdmin.Core.Managers.ChannelsManagers.TextChannelsManagers;
 using MlkAdmin.Core.Managers.ChannelsManagers.VoiceChannelsManagers;
@@ -32,18 +27,18 @@ namespace MlkAdmin.Core.DependencyInjection
         public static IServiceCollection AddCoreServices(this IServiceCollection services)
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(
-                        typeof(DiscordStartup).Assembly,
-                        typeof(UserJoinedNotificationHandler).Assembly,
-                        typeof(UserLeftNotificationHandler).Assembly,
-                        typeof(LogNotificationHandler).Assembly,
-                        typeof(ModalSubmittedNotificationHandler).Assembly,
-                        typeof(ButtonExecutedNotificationHandler).Assembly,
-                        typeof(GuildAvailableNotificationHandler).Assembly,
-                        typeof(UserVoiceStateUpdatedNotificationHandler).Assembly,
-                        typeof(SelectMenuExecutedNotificationHandler).Assembly,
-                        typeof(ReadyNotificationHandler).Assembly,
-                        typeof(MessageReceivedNotificationHandler).Assembly,
-                        typeof(ReactionAddedNotificationHandler).Assembly));
+                typeof(DiscordStartup).Assembly,
+                typeof(UserJoinedNotificationHandler).Assembly,
+                typeof(UserLeftNotificationHandler).Assembly,
+                typeof(LogNotificationHandler).Assembly,
+                typeof(ModalSubmittedNotificationHandler).Assembly,
+                typeof(ButtonExecutedNotificationHandler).Assembly,
+                typeof(GuildAvailableNotificationHandler).Assembly,
+                typeof(UserVoiceStateUpdatedNotificationHandler).Assembly,
+                typeof(SelectMenuExecutedNotificationHandler).Assembly,
+                typeof(ReadyNotificationHandler).Assembly,
+                typeof(MessageReceivedNotificationHandler).Assembly,
+                typeof(ReactionAddedNotificationHandler).Assembly));
 
             services.AddSingleton<JsonChannelsMapProvider>(x =>
             {
@@ -90,7 +85,6 @@ namespace MlkAdmin.Core.DependencyInjection
                     "..", "..", "..", "Infrastructure", "Configuration", "DiscordUsersLobby.json")),
                     x.GetRequiredService<ILogger<JsonDiscordUsersLobbyProvider>>());
             });
-
             services.AddSingleton<RolesManager>();
             services.AddSingleton<AutorizationManager>();
             services.AddSingleton<VoiceChannelsManager>();

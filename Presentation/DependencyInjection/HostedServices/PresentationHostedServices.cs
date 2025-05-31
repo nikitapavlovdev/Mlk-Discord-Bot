@@ -5,10 +5,10 @@ using MlkAdmin.Core.Providers.JsonProvider;
 using Microsoft.Extensions.Logging;
 using MlkAdmin.Presentation.Controllers;
 
-namespace MlkAdmin.Presentation.HostedServices
+namespace MlkAdmin.Presentation.DependencyInjection.HostedServices
 {
-    public class MlkAdminHostedServices(
-        ILogger <MlkAdminHostedServices> logger,
+    public class PresentationHostedServices(
+        ILogger <PresentationHostedServices> logger,
         DiscordSocketClient discordClient,
         DiscordEventsController discordEventsController,
         JsonDiscordConfigurationProvider discordBotConfig) : IHostedService
@@ -23,7 +23,7 @@ namespace MlkAdmin.Presentation.HostedServices
 
             if (string.IsNullOrWhiteSpace(MlkAdminBotApiKey))
             {
-                logger.LogError("API key not found");
+                logger.LogWarning("API key not found");
                 return;
             }
 

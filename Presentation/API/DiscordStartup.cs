@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using MlkAdmin.Core.DependencyInjection;
 using MlkAdmin.Infrastructure.DependencyInjection;
-using MlkAdmin.Presentation.DependencyInjection;
+using MlkAdmin.Presentation.DependencyInjection.GeneralServices;
 
 namespace MlkAdmin.Presentation.API
 {

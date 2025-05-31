@@ -12,11 +12,13 @@ using MlkAdmin.Core.Notifications.Log;
 using MlkAdmin.Core.Notifications.Ready;
 using MlkAdmin.Core.Notifications.MessageReceived;
 using MlkAdmin.Core.Notifications.ReactionAdded;
+using Microsoft.Extensions.Logging;
 
 namespace MlkAdmin.Presentation.Controllers
 {
     public class DiscordEventsController(
-        IMediator mediator)
+        IMediator mediator,
+        ILogger<DiscordEventsController> logger)
     {
         public void SubscribeOnEvents(DiscordSocketClient client)
         {
@@ -34,56 +36,130 @@ namespace MlkAdmin.Presentation.Controllers
         }
         private async Task OnUserJoined(SocketGuildUser socketGuildUser)
         {
-            await mediator.Publish(new UserJoinedNotification(socketGuildUser));
+            try
+            {
+                await mediator.Publish(new UserJoinedNotification(socketGuildUser));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnUserJoined] Error - {Message}", ex.Message);
+            }
         }
-
         private async Task OnMessageReceived(SocketMessage socketMessage)
         {
-            await mediator.Publish(new MessageReceivedNotification(socketMessage));
+            try
+            {
+                await mediator.Publish(new MessageReceivedNotification(socketMessage));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnMessageReceived] Error - {Message}", ex.Message);
+            }
+
         }
         private async Task OnUserLeft(SocketGuild socketGuild, SocketUser socketUser)
         {
-            await mediator.Publish(new UserLeftNotification(socketGuild, socketUser));
+            try
+            {
+                await mediator.Publish(new UserLeftNotification(socketGuild, socketUser));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnUserLeft] Error - {Message}", ex.Message);
+            }
         }
-
         private async Task OnModalSubmitted(SocketModal socketModal)
         {
-            await mediator.Publish(new ModalSubmittedNotification(socketModal));
+            try
+            {
+                await mediator.Publish(new ModalSubmittedNotification(socketModal));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnModalSubmitted] Error - {Message}", ex.Message);
+            }
         }
-
         private async Task OnButtonExecuted(SocketMessageComponent socketMessageComponent)
         {
-            await mediator.Publish(new ButtonExecutedNotification(socketMessageComponent));
-        }
+            try
+            {
+                await mediator.Publish(new ButtonExecutedNotification(socketMessageComponent));
 
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnButtonExecuted] Error - {Message}", ex.Message);
+            }
+        }
         private async Task OnGuildAvailable(SocketGuild socketGuild)
         {
-            await mediator.Publish(new GuildAvailableNotification(socketGuild));
-        }
+            try
+            {
+                await mediator.Publish(new GuildAvailableNotification(socketGuild));
 
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnGuildAvailable] Error - {Message}", ex.Message);
+            }
+        }
         private async Task OnUserVoiceStateUpdated(SocketUser socketUser, SocketVoiceState oldState, SocketVoiceState newState)
         {
-            await mediator.Publish(new UserVoiceStateUpdatedNotification(socketUser, oldState, newState));
-        }
+            try
+            {
+                await mediator.Publish(new UserVoiceStateUpdatedNotification(socketUser, oldState, newState));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnUserVoiceStateUpdated] Error - {Message}", ex.Message);
 
+            }
+        }
         private async Task OnLog(LogMessage logMessage)
         {
-            await mediator.Publish(new LogNotification(logMessage));
-        }
+            try
+            {
+                await mediator.Publish(new LogNotification(logMessage));
 
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnLog] Error - {Message}", ex.Message);
+            }
+        }
         private async Task OnSelectMenuExecuted(SocketMessageComponent socketMessageComponent)
         {
-            await mediator.Publish(new SelectMenuExecutedNotification(socketMessageComponent));
-        }
+            try
+            {
+                await mediator.Publish(new SelectMenuExecutedNotification(socketMessageComponent));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnSelectMenuExecuted] Error - {Message}", ex.Message);
+            }
 
+        }
         private async Task OnReady()
         {
-            await mediator.Publish(new ReadyNotification());
+            try
+            {
+                await mediator.Publish(new ReadyNotification());
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnReady] Error - {Message}", ex.Message);
+            }
         }
-
         private async Task OnReactionAdded(Cacheable<IUserMessage, ulong> message, Cacheable<IMessageChannel, ulong> channel, SocketReaction reaction)
         {
-            await mediator.Publish(new ReactionAddedNotification(message, channel, reaction));
+            try
+            {
+                await mediator.Publish(new ReactionAddedNotification(message, channel, reaction));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnReactionAdded] Error - {Message}", ex.Message);
+            }
         }
     }
 }
