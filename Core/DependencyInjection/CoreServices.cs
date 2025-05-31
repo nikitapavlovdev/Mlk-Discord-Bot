@@ -23,7 +23,7 @@ using MlkAdmin.Core.Notifications.UserLeft;
 using MlkAdmin.Core.Notifications.UserVoiceStateUpdated;
 using MlkAdmin.Core.Providers.JsonProvider;
 using MlkAdmin.Core.Utilities.DI;
-using MlkAdmin.Presentation.DiscordAPI;
+using MlkAdmin.Presentation.API;
 
 namespace MlkAdmin.Core.DependencyInjection
 {
@@ -32,7 +32,7 @@ namespace MlkAdmin.Core.DependencyInjection
         public static IServiceCollection AddCoreServices(this IServiceCollection services)
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(
-                        typeof(Startup).Assembly,
+                        typeof(DiscordStartup).Assembly,
                         typeof(UserJoinedNotificationHandler).Assembly,
                         typeof(UserLeftNotificationHandler).Assembly,
                         typeof(LogNotificationHandler).Assembly,

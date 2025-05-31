@@ -14,11 +14,11 @@
 ---
 
 ## Startup.cs
-- [ ] Разбить регистрацию сервисов на модули (Core, Infrastructure, Presentation)
+- [x] Разбить регистрацию сервисов на модули (Core, Infrastructure, Presentation)
 
 - [ ] Вынести конфигурации JSON файлов в `IConfiguration` (appsettings.json)
 
-- [ ] Перевести запуск бота в `IHostedService` (чистый lifecycle)
+- [x] Перевести запуск бота в `IHostedService` (чистый lifecycle)
 
 - [ ] Зарегистрировать бота и контроллеры через расширения (например, `AddDiscordBot()`)
 

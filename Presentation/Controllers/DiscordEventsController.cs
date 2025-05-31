@@ -13,18 +13,12 @@ using MlkAdmin.Core.Notifications.Ready;
 using MlkAdmin.Core.Notifications.MessageReceived;
 using MlkAdmin.Core.Notifications.ReactionAdded;
 
-namespace MlkAdmin.Presentation.Controllers.DiscordEventsController
+namespace MlkAdmin.Presentation.Controllers
 {
-    class DiscordEventsController
+    public class DiscordEventsController(
+        IMediator mediator)
     {
-        private readonly IMediator mediator;
-        public DiscordEventsController(DiscordSocketClient client, IMediator mediator)
-        {
-            this.mediator = mediator;   
-            SubscribeOnEvents(client);
-        }
-
-        private void SubscribeOnEvents(DiscordSocketClient client)
+        public void SubscribeOnEvents(DiscordSocketClient client)
         {
             client.Log += OnLog;
             client.UserJoined += OnUserJoined;
