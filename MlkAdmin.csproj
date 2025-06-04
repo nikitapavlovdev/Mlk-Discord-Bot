@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Infrastructure\Services\**" />
+    <Compile Remove="3_Infrastructure\Services\**" />
     <Compile Remove="static\**" />
-    <EmbeddedResource Remove="Infrastructure\Services\**" />
+    <EmbeddedResource Remove="3_Infrastructure\Services\**" />
     <EmbeddedResource Remove="static\**" />
-    <None Remove="Infrastructure\Services\**" />
+    <None Remove="3_Infrastructure\Services\**" />
     <None Remove="static\**" />
   </ItemGroup>
 
@@ -50,10 +50,6 @@
     <PackageReference Include="System.Reactive" Version="6.0.1" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ProjectTasks\" />
   </ItemGroup>
 
 </Project>
