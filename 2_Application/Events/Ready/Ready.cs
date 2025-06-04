@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace MlkAdmin.Application.Notifications.Ready
+namespace MlkAdmin._2_Application.Notifications.Ready
 {
     public class Ready : INotification
     {

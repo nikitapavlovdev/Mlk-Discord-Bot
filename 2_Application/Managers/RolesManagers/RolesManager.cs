@@ -3,7 +3,7 @@ using MlkAdmin.Infrastructure.Cache;
 using Microsoft.Extensions.Logging;
 using MlkAdmin.Infrastructure.Providers.JsonProvider;
 
-namespace MlkAdmin.Application.Managers.RolesManagers
+namespace MlkAdmin._2_Application.Managers.RolesManagers
 {
     public class RolesManager(ILogger<RolesManager> logger, 
         RolesCache rolesCache,

@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using MlkAdmin.Core.Utilities.General;
-using MlkAdmin.Application.Managers.RolesManagers;
+using MlkAdmin._2_Application.Managers.RolesManagers;
 
-namespace MlkAdmin.Application.Notifications.SelectMenuExecuted
+namespace MlkAdmin._2_Application.Notifications.SelectMenuExecuted
 {
     class SelectMenuExecutedHandler(
         RolesManager rolesManager) : INotificationHandler<SelectMenuExecuted>

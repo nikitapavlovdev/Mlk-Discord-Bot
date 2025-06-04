@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using MlkAdmin.Application.Managers.RolesManagers;
-using MlkAdmin.Application.Managers.ChannelsManagers.TextChannelsManagers;
+using MlkAdmin._2_Application.Managers.RolesManagers;
+using MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers;
 
-namespace MlkAdmin.Application.Notifications.UserJoined
+namespace MlkAdmin._2_Application.Notifications.UserJoined
 {
     class UserJoinedHandler(
         ILogger<UserJoinedHandler> logger,

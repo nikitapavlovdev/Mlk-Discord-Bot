@@ -3,16 +3,16 @@ using Discord.WebSocket;
 using MlkAdmin.Infrastructure.Cache;
 using Discord.Rest;
 using Microsoft.Extensions.Logging;
-using MlkAdmin.Application.Managers.ChannelsManagers.VoiceChannelsManagers;
+using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
 
-namespace MlkAdmin.Application.Notifications.UserVoiceStateUpdated
+namespace MlkAdmin._2_Application.Notifications.UserVoiceStateUpdated
 {
     class UserVoiceStateUpdatedHandler(
         ChannelsCache channelsCache, 
         ILogger<UserVoiceStateUpdatedHandler> logger,
         VoiceChannelsManager voiceChannelsCreator) : INotificationHandler<UserVoiceStateUpdated>
     {
-        public async Task Handle(UserVoiceStateUpdated notification, CancellationToken cancellationToken)
+        public async Task Handle(UserVoiceStateUpdated notification, CancellationToken cancellaChannelsManagerstionToken)
         {
             try
             {

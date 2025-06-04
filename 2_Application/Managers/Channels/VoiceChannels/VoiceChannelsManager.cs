@@ -4,11 +4,11 @@ using Discord.WebSocket;
 using MlkAdmin.Infrastructure.Providers.JsonProvider;
 using MlkAdmin.Infrastructure.Cache;
 using Microsoft.Extensions.Logging;
-using MlkAdmin.Application.Managers.UserManagers;
+using MlkAdmin._2_Application.Managers.UserManagers;
 using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
 using MlkAdmin._2_Application.DTOs;
 
-namespace MlkAdmin.Application.Managers.ChannelsManagers.VoiceChannelsManagers
+namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers
 {
     public class VoiceChannelsManager(
         ChannelsCache channelsCache,
@@ -70,7 +70,7 @@ namespace MlkAdmin.Application.Managers.ChannelsManagers.VoiceChannelsManagers
                         {
                             Description = "> Метод: ClearTemporaryVoiceChannels\n" +
                             $"> Удален канал: {socketVoiceChannel.Name}",
-                            ChannelId = socketVoiceChannel.Id,
+                            ChannelId = jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Logs.Id,
                             UserId = 0,
                             GuildId = socketVoiceChannel.Guild.Id,
                             Title = "Удаление канала"

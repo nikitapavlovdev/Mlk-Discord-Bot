@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using MlkAdmin.Application.Managers.UserManagers;
+using MlkAdmin._2_Application.Managers.UserManagers;
 using MlkAdmin.Infrastructure.Providers.JsonProvider;
 
-namespace MlkAdmin.Application.Notifications.ReactionAdded
+namespace MlkAdmin._2_Application.Notifications.ReactionAdded
 {
     public class ReactionAddedHandler(
         ILogger<ReactionAddedHandler> logger,

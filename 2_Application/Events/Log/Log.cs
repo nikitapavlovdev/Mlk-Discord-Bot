@@ -1,7 +1,7 @@
 ﻿using Discord;
 using MediatR;
 
-namespace MlkAdmin.Application.Notifications.Log
+namespace MlkAdmin._2_Application.Notifications.Log
 {
     class Log(LogMessage logMessage) : INotification
     {

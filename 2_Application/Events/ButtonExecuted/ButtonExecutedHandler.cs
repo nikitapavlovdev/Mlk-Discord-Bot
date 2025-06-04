@@ -3,7 +3,7 @@ using MlkAdmin.Core.Utilities.DI;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace MlkAdmin.Application.Notifications.ButtonExecuted
+namespace MlkAdmin._2_Application.Notifications.ButtonExecuted
 {
     public class ButtonExecutedHandler(
         ILogger<ButtonExecutedHandler> _logger) : INotificationHandler<ButtonExecuted>

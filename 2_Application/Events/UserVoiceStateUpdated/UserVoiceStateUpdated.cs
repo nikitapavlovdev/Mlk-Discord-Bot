@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Discord.WebSocket;
 
-namespace MlkAdmin.Application.Notifications.UserVoiceStateUpdated
+namespace MlkAdmin._2_Application.Notifications.UserVoiceStateUpdated
 {
     class UserVoiceStateUpdated(SocketUser socketUser, SocketVoiceState oldState, SocketVoiceState newState) : INotification
     {

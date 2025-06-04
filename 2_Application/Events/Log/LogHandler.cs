@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace MlkAdmin.Application.Notifications.Log
+namespace MlkAdmin._2_Application.Notifications.Log
 {
     class LogHandler(ILogger<LogHandler> _logger) : INotificationHandler<Log>
     {

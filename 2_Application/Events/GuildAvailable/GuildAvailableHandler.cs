@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using MlkAdmin.Application.Managers.UserManagers;
-using MlkAdmin.Application.Managers.RolesManagers;
-using MlkAdmin.Application.Managers.EmotesManagers;
-using MlkAdmin.Application.Managers.ChannelsManagers.TextChannelsManagers;
-using MlkAdmin.Application.Managers.ChannelsManagers.VoiceChannelsManagers;
+using MlkAdmin._2_Application.Managers.UserManagers;
+using MlkAdmin._2_Application.Managers.RolesManagers;
+using MlkAdmin._2_Application.Managers.EmotesManagers;
+using MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers;
+using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
 
-namespace MlkAdmin.Application.Notifications.GuildAvailable
+namespace MlkAdmin._2_Application.Notifications.GuildAvailable
 {   
     class GuildAvailableHandler(
         ILogger<GuildAvailableHandler> logger,

@@ -2,7 +2,7 @@
 using Discord.WebSocket;
 using MediatR;
 
-namespace MlkAdmin.Application.Notifications.ReactionAdded
+namespace MlkAdmin._2_Application.Notifications.ReactionAdded
 {
     public class ReactionAdded(
         Cacheable<IUserMessage, ulong> message, 

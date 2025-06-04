@@ -6,7 +6,7 @@ using MlkAdmin.Infrastructure.Cache;
 using MlkAdmin.Infrastructure.Providers.JsonProvider;
 using Discord.Rest;
 
-namespace MlkAdmin.Application.Managers.ChannelsManagers.TextChannelsManagers
+namespace MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers
 {
     public class TextMessageManager(ILogger<TextMessageManager> logger, 
         EmbedMessageExtension extensionEmbedMessage,

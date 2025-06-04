@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using MlkAdmin.Infrastructure.Providers.JsonProvider;
 
-namespace MlkAdmin.Application.Managers.UserManagers
+namespace MlkAdmin._2_Application.Managers.UserManagers
 {
     public class StaticDataServices(
         ILogger<StaticDataServices> logger,

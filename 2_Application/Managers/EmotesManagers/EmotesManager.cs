@@ -3,7 +3,7 @@ using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using MlkAdmin.Infrastructure.Cache;
 
-namespace MlkAdmin.Application.Managers.EmotesManagers
+namespace MlkAdmin._2_Application.Managers.EmotesManagers
 {
     public class EmotesManager(
         ILogger<EmotesManager> logger,

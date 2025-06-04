@@ -1,19 +1,29 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using MlkAdmin.Application.Managers.ChannelsManagers.TextChannelsManagers;
+using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
+using MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers;
+using MlkAdmin._2_Application.DTOs;
+using MlkAdmin.Infrastructure.Providers.JsonProvider;
 
-
-namespace MlkAdmin.Application.Notifications.UserLeft
+namespace MlkAdmin._2_Application.Notifications.UserLeft
 {
     class UserLeftHandler(
         ILogger<UserLeftHandler> logger,
-        TextMessageManager textMessageManager) : INotificationHandler<UserLeft>
+        IModeratorLogsSender moderatorLogsSender,
+        JsonChannelsMapProvider jsonChannelsMapProvider) : INotificationHandler<UserLeft>
     {
         public async Task Handle(UserLeft notification, CancellationToken cancellationToken)
         {
             try
             {
-                await textMessageManager.SendFarewellMessageAsync(notification.SocketGuild, notification.SocketUser);
+                await moderatorLogsSender.SendLogMessageAsync(new LogMessageDto()
+                {
+                    Description = $"Пользователь {notification.SocketUser.Mention} покинул сервер",
+                    ChannelId = jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Logs.Id,
+                    GuildId = notification.SocketGuild.Id,
+                    Title = "User left",
+                    UserId = notification.SocketGuild.Id
+                });
             }
             catch (Exception ex)
             {

@@ -3,7 +3,7 @@ using Discord.WebSocket;
 using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
 using MlkAdmin._2_Application.DTOs;
 
-namespace MlkAdmin.Application.Managers.ChannelsManagers.TextChannelsManagers
+namespace MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers
 {
     public class ModeratorLogsManager(DiscordSocketClient discordSocketClient) : IModeratorLogsSender
     {

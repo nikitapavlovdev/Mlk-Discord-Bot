@@ -1,7 +1,7 @@
 ﻿using Discord.WebSocket;
 using MediatR;
 
-namespace MlkAdmin.Application.Notifications.UserJoined
+namespace MlkAdmin._2_Application.Notifications.UserJoined
 {
     class UserJoined(SocketGuildUser socketGuildUser) : INotification
     {
