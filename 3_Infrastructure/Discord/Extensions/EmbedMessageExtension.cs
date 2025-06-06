@@ -23,8 +23,7 @@ namespace MlkAdmin.Core.Utilities.DI
                 .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ ʀᴏʟᴇs")
                 .WithDescription(rolesCachhe.GetDescriptionForMainRoles())
                 .WithFooter(developer, avatarUrl)
-                .WithColor(50, 50, 53)
-                .Build();
+                .WithColor(50, 50, 53)                .Build();
         }
         public Embed GetSwitchColorEmbedMessage()
         {
