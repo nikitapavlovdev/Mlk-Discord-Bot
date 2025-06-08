@@ -3,8 +3,8 @@ using MlkAdmin._2_Application.DTOs;
 
 namespace MlkAdmin._1_Domain.Interfaces.TextMessages
 {
-    public interface IEmbedCreator
+    public interface IEmbedDtoCreator
     {
-        Task<EmbedDto> CreateEmbed(DynamicMessageType type);
+        Task<EmbedDto> GetEmbedDto(DynamicMessageType type);
     }
 }

@@ -6,7 +6,7 @@ namespace MlkAdmin._1_Domain.Enums
         Roles,
         NameColor,
         Rules,
-        AuthorizationCheck,
+        Authorization,
         Features
     }
 }

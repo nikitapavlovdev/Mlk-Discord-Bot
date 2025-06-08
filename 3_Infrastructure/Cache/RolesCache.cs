@@ -1,13 +1,13 @@
-﻿using Discord;
-using Discord.WebSocket;
+﻿using Discord.WebSocket;
+using Microsoft.Extensions.Logging;
+using MlkAdmin._1_Domain.Enums;
 using MlkAdmin.Infrastructure.Providers.JsonProvider;
 
 namespace MlkAdmin.Infrastructure.Cache
 {
     public class RolesCache(
-        JsonDiscordRolesProvider jsonDiscordRolesProvider,
-        JsonChannelsMapProvider jsonChannelsMapProvider,
-        EmotesCache emotesCache)
+        ILogger<RolesCache> logger,
+        JsonDiscordRolesProvider jsonDiscordRolesProvider)
     {
         const string invisSumbol = "ㅤ";
 
@@ -19,6 +19,12 @@ namespace MlkAdmin.Infrastructure.Cache
         private readonly Dictionary<ulong, string> RolesDescriptions = [];
 
         #region Action
+
+        public Dictionary<ulong, SocketRole> GetSwitchColorDictionary()
+        {
+            return SwitchColorRoles;
+        }
+
         public SocketRole GetRole(ulong roleId)
         {
             SocketRole role = GuildRoles[roleId];
@@ -30,82 +36,30 @@ namespace MlkAdmin.Infrastructure.Cache
 
             throw new KeyNotFoundException($"Role with ID {roleId} not found.");
         }
-        public string GetDescriptionForMainRoles()
+
+        public Dictionary<ulong, SocketRole> GetDictonaryWithRoles(RolesDictionaryType type)
         {
-            string textDescription = $"В данном блоке представлены все основные роли нашего сервера. " +
-                $"Что-то можно выбрать самостоятельно, " +
-                $"а что-то получить лично по желанию/на усмотрение администрации!\n";
-
-            GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
-
-            textDescription += "### иᴇᴩᴀᴩхия ᴄᴇᴩʙᴇᴩᴀ\n";
-
-            foreach (var role in HierarchyRoles)
+            try
             {
-                textDescription += $"{pointEmote} {role.Value.Mention} 🠒 {RolesDescriptions[role.Key]}\n";
+                return type switch
+                {
+                    RolesDictionaryType.Guild => GuildRoles,
+                    RolesDictionaryType.Hierarchy => HierarchyRoles,
+                    RolesDictionaryType.Category => CategoryRoles,
+                    RolesDictionaryType.Unique => UniqieRoles,
+                    RolesDictionaryType.SwitchColor => SwitchColorRoles,
+                    _ => throw new ArgumentOutOfRangeException(nameof(type), $"Unknown type: {type}"),
+                };
             }
-
-            textDescription += "### ᴋᴀᴛᴇᴦоᴩии\n";
-
-            foreach (var role in CategoryRoles)
+            catch (Exception ex)
             {
-                textDescription += $"{pointEmote} {role.Value.Mention} 🠒 {RolesDescriptions[role.Key]}\n";
+                logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                return [];
             }
-
-            textDescription += "### униᴋᴀᴧьныᴇ ᴩоᴧи\n";
-
-            foreach (var role in UniqieRoles)
-            {
-                textDescription += $"{pointEmote} {role.Value.Mention} 🠒 {RolesDescriptions[role.Key]}\n";
-            }
-
-            return textDescription;
         }
-        public string GetDescriptionForSwitchColorRoles()
+        public Dictionary<ulong, string> GetDescriptionsForRoles()
         {
-            string textDescription = $"В выпадающем меню снизу вы можете выбрать понравившийся цвет для вашего **сервер-нейма**!\n";
-
-            GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
-
-            textDescription += "### доᴄᴛуᴨныᴇ цʙᴇᴛᴀ\n\n";
-
-            foreach (var role in SwitchColorRoles)
-            {
-                textDescription += $"> {role.Value.Mention}\n";
-            }
-
-            return textDescription;
-        }
-        public string GetDescriptionForRules()
-        {
-            GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
-
-            string textDescription =
-                $"{pointEmote} Внимательно прочтите правила ниже.\n" +
-                $"{pointEmote} Будьте искренними с самим собой и вашими собеседниками.\n" +
-                $"{pointEmote} Не засоряйте тематические каналы информационным мусором, который никак не связан с темой канала.\n" +
-                $"{pointEmote} Постарайтесь уважительно относиться к точке зрения собеседника - у всех нас разный опыт за плечами.\n" +
-                $"{pointEmote} Не осуждайте человека за его ошибки. Постарайтесь понять корень проблемы прежде чем делать выводы.\n" +
-                $"{pointEmote} Не обсуждайте мировую политику и не создавайте ситуационных споров на этой почве.\n" +
-                $"{pointEmote} Постарайтесь не выливать весь негатив на ваших собеседников. Либо делайте это, но с заранее выключеным микрофоном.\n" +
-                $"{pointEmote} Будьте самими собою\n" +
-                $"{pointEmote} Не стесняйтесь просить помощи у других.\n" +
-                $"{pointEmote} Не стоит быть чересчур навязчивым\n" +
-                $"{pointEmote} А это правило существует, чисто чтобы проверить команду!\n\n";
-
-            textDescription += "И самое главное - наслаждайтесь моментом!";
-
-            return textDescription;
-        }
-        public string GetDescriptionForGuide()
-        {
-            GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
-
-            return "" +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Rules.Https} - канал, где ты можешь узнать о правилах сервера.\n" +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.News.Https} - канал, где ты можешь узнать о новостях сервера.\n " +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Https} - канал, где ты можешь узнать о ролях на сервере.\n" +
-                $"{pointEmote} {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Https}\n - канал, где будут описаны уникальные события на сервере.";
+            return RolesDescriptions;
         }
         public void AddRole(SocketRole role)
         {
@@ -134,10 +88,6 @@ namespace MlkAdmin.Infrastructure.Cache
         public void AddRoleDescription(ulong roleId, string roleDescription)
         {
             RolesDescriptions.TryAdd(roleId, roleDescription);
-        }
-        public Dictionary<ulong, SocketRole> GetSwitchColorDictionary()
-        {
-            return SwitchColorRoles;
         }
         #endregion
 

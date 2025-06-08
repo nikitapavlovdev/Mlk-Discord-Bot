@@ -10,13 +10,9 @@ namespace MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers
 {
     public class TextMessageManager(ILogger<TextMessageManager> logger, 
         EmbedMessageExtension extensionEmbedMessage,
-        EmotesCache emotesCache,
         JsonChannelsMapProvider channelsProvider,
-        JsonDiscordEmotesProvider emotesProvider, 
         JsonChannelsMapProvider jsonChannelsMapProvider,
-        JsonDiscordDynamicMessagesProvider jsonDiscordDynamicMessagesProvider,
         ChannelsCache channelsCache,       
-        SelectionMenuExtension extensionSelectionMenu,
         JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider,
         DiscordSocketClient client)
     {
@@ -32,15 +28,6 @@ namespace MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers
                 logger.LogError("Error: {Message}", ex.Message);
             }
         }
-        public async Task SendDynamicMessages(SocketGuild socketGuild)
-        {
-            await Task.WhenAll(
-                SendMainGuildRolesMessage(socketGuild),
-                SendSwitchColorRolesMessage(socketGuild),
-                SendRulesMessage(socketGuild),
-                SendAutorizationCheckMessage(socketGuild),
-                SendRequestForLobbyNameMessage(socketGuild));
-        }
         #endregion
 
         #region Private
@@ -53,92 +40,7 @@ namespace MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers
 
             await Task.CompletedTask;
         }
-        private async Task SendMainGuildRolesMessage(SocketGuild socketGuild)
-        {
-            SocketTextChannel? textRolesChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Id);
-
-            if (await textRolesChannel.GetMessageAsync(jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.Roles.MainRoles.Id) is IUserMessage sentMessage)
-            {
-                await sentMessage.ModifyAsync(message =>
-                {
-                    message.Embed = extensionEmbedMessage.GetMainRolesEmbedMessage();
-                });
-            }
-            else
-            {
-                await textRolesChannel.SendMessageAsync(embed: extensionEmbedMessage.GetMainRolesEmbedMessage());
-            }
-        }
-        private async Task SendSwitchColorRolesMessage(SocketGuild socketGuild)
-        {
-            SocketTextChannel? textRolesChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Id);
-
-            if (await textRolesChannel.GetMessageAsync(jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.Roles.SwitchColor.Id) is IUserMessage sentMessage)
-            {
-                await sentMessage.ModifyAsync(message =>
-                {
-                    message.Embed = extensionEmbedMessage.GetSwitchColorEmbedMessage();
-                    message.Components = extensionSelectionMenu.GetColorSwitchSelectionMenu();
-                });
-            }
-            else
-            {
-                await textRolesChannel.SendMessageAsync(embed: extensionEmbedMessage.GetSwitchColorEmbedMessage(), components: extensionSelectionMenu.GetColorSwitchSelectionMenu());
-            }
-        }
-        private async Task SendRulesMessage(SocketGuild socketGuild)
-        {
-            SocketTextChannel? textRulesChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Rules.Id);
-
-            if (await textRulesChannel.GetMessageAsync(jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.Roles.Rules.Id) is IUserMessage sentMessage)
-            {
-                await sentMessage.ModifyAsync(message =>
-                {
-                    message.Embed = extensionEmbedMessage.GetRulesEmbedMessage();
-                });
-            }
-            else
-            {
-                await textRulesChannel.SendMessageAsync(embed: extensionEmbedMessage.GetRulesEmbedMessage());
-            }
-        }
-        private async Task SendRequestForLobbyNameMessage(SocketGuild socketGuild)
-        {
-            SocketTextChannel? serverHubTextChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Id);
-
-            if (await serverHubTextChannel.GetMessageAsync(jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.ServerHub.AutoLobbyName.Id) is IUserMessage sentMessage)
-            {
-                await sentMessage.ModifyAsync(message =>
-                {
-                    message.Embed = extensionEmbedMessage.GetAutoLobbyNamingMessage();
-                    message.Components = MessageComponentsExtension.GetServerHubFeatuesButtons();
-                });
-            }
-            else
-            {
-                await serverHubTextChannel.SendMessageAsync(embed: extensionEmbedMessage.GetAutoLobbyNamingMessage(), components: MessageComponentsExtension.GetServerHubFeatuesButtons());
-            }
-        }
-        private async Task SendAutorizationCheckMessage(SocketGuild socketGuild)
-        {
-            SocketTextChannel? serverHubTextChannel = socketGuild.TextChannels.FirstOrDefault(x => x.Id == jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Id);
-            Emote? emote = socketGuild.Emotes.FirstOrDefault(x => x.Name == "mlkstaticevent");
-
-            if(await serverHubTextChannel.GetMessageAsync(jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.ServerHub.Autorization.Id) is IUserMessage sentMessage)
-            {
-                await sentMessage.ModifyAsync(message =>
-                {
-                    message.Embed = extensionEmbedMessage.GetAutorizationReactionMessage();
-                });
-
-                await sentMessage.AddReactionAsync(emote);
-            }
-            else
-            {
-                RestUserMessage message = await serverHubTextChannel.SendMessageAsync(embed: extensionEmbedMessage.GetAutorizationReactionMessage());
-                await message.AddReactionAsync(emote);
-            }
-        }
+        
         #endregion
 
         #region Public
@@ -169,24 +71,6 @@ namespace MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers
             {
                 logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
-        }
-        public async Task SendFollowupMessageOnSuccessAutorization(SocketModal modal)
-        {
-            await modal.FollowupAsync(embed: extensionEmbedMessage.GetSuccesAuthorizationMessageEmbedTemplate(),
-                ephemeral: true);
-        }
-        public async Task SendFollowupMessageOnErrorAutorization(SocketModal modal)
-        {
-            GuildEmote? emoteError = emotesCache.GetEmote(emotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Hmph.Id);
-
-            await modal.FollowupAsync(embed: extensionEmbedMessage.GetErrorAuthorizationMessageEmbedTemplate(emoteError), ephemeral: true);
-        }
-        public async Task SendMemberInformation(SocketGuildUser socketGuildUser)
-        {
-            Embed memberInformationEmbed = extensionEmbedMessage.GetGuildUserInformationMessageTemplate(socketGuildUser);
-            SocketTextChannel adminTextChannel = socketGuildUser.Guild.GetTextChannel(jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Logs.Id);
-
-            await adminTextChannel.SendMessageAsync(embed: memberInformationEmbed);
         }
         public async Task SendUserInputToDeveloper(SocketModal modal, string title, string buttonName, string input_text1)
         {

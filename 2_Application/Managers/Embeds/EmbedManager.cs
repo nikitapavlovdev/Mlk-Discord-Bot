@@ -1,44 +1,52 @@
-﻿
-using MlkAdmin._1_Domain.Enums;
+﻿using MlkAdmin._1_Domain.Enums;
 using MlkAdmin._1_Domain.Interfaces.TextMessages;
 using MlkAdmin._2_Application.DTOs;
+using MlkAdmin._3_Infrastructure.Cache;
+using MlkAdmin.Infrastructure.Providers.JsonProvider;
 
 namespace MlkAdmin._2_Application.Managers.Embeds
 {
-    public class EmbedManager : IEmbedCreator
+    public class EmbedManager(
+        EmbedDescriptionsCache embedDescriptionsCache,
+        JsonDiscordPicturesProvider jsonDiscordPicturesProvider) : IEmbedDtoCreator
     {
-        public Task<EmbedDto> CreateEmbed(DynamicMessageType type)
+        public Task<EmbedDto> GetEmbedDto(DynamicMessageType type)
         {
             return Task.FromResult(type switch
             {
-                DynamicMessageType.Rules => new EmbedDto()
+                DynamicMessageType.Authorization => new EmbedDto()
                 {
-                    Title = "Rule Test",
-                    Description = "Rule dicription"
-                },
-
-                DynamicMessageType.Roles => new EmbedDto()
-                {
-                    Title = "Role Test",
-                    Description = "Role dicription"
-                },
-
-                DynamicMessageType.NameColor => new EmbedDto()
-                {
-                    Title = "NameColor Test",
-                    Description = "NameColor dicription"
-                },
-
-                DynamicMessageType.AuthorizationCheck => new EmbedDto()
-                {
-                    Title = "AuthorizationCheck Test",
-                    Description = "AuthorizationCheck dicription"
+                    Title = "ᴀᴜᴛᴏʀɪᴢᴀᴛɪᴏɴ",
+                    Description = embedDescriptionsCache.GetDescriptionForAutorization(),
+                    PicturesUrl = jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.AuMessage
                 },
 
                 DynamicMessageType.Features => new EmbedDto()
                 {
-                    Title = "Features Test",
-                    Description = "Features dicription"
+                    Title = "ꜰᴇᴀᴛᴜʀᴇs",
+                    Description = embedDescriptionsCache.GetDescriptionForFeatures(),
+                    PicturesUrl = jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.AutoLobbyNamingMessage
+                },
+
+                DynamicMessageType.Rules => new EmbedDto()
+                {
+                    Title = "ᴍᴀʟᴇɴᴋɪᴇ ʀᴜʟᴇs",
+                    Description = embedDescriptionsCache.GetDescriptionForRules(),
+                    PicturesUrl = jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.RulesBanner
+                },
+
+                DynamicMessageType.Roles => new EmbedDto()
+                {
+                    Title = "ᴍᴀʟᴇɴᴋɪᴇ ʀᴏʟᴇs",
+                    Description = embedDescriptionsCache.GetDiscriptionForMainRoles(), 
+                    PicturesUrl = ""
+                },
+
+                DynamicMessageType.NameColor => new EmbedDto()
+                {
+                    Title = "ɴɪᴄᴋɴᴀᴍᴇ ᴄᴏʟᴏʀ",
+                    Description = embedDescriptionsCache.GetDescriptionForNameColor(),
+                    PicturesUrl = ""
                 },
 
                 _ => throw new ArgumentOutOfRangeException(nameof(type), $"Unknown type: {type}")

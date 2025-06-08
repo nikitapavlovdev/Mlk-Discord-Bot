@@ -1,5 +1,4 @@
-﻿using MlkAdmin.Infrastructure.JsonModels.Channels;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace MlkAdmin.Infrastructure.JsonModels.DynamicMessages
 {
@@ -11,60 +10,32 @@ namespace MlkAdmin.Infrastructure.JsonModels.DynamicMessages
 
     public class Messages
     {
+        [JsonProperty(nameof(ServerHub))]
+        public ServerHub? ServerHub { get; set; }
+
         [JsonProperty(nameof(Roles))]
         public Roles? Roles { get; set; }
 
-        [JsonProperty(nameof(ServerHub))]
-        public ServerHub? ServerHub { get; set; }
+        [JsonProperty(nameof(Rules))]
+        public Rules? Rules { get; set; }
     }
 
     public class ServerHub
     {
-        [JsonProperty(nameof(AutoLobbyName))]
-        public AutoLobbyName? AutoLobbyName { get; set; }
-
-        [JsonProperty(nameof(Guide))]
-        public Guide? Guide { get; set; }
-
         [JsonProperty(nameof(Autorization))]
         public Autorization? Autorization { get; set; }
+
+        [JsonProperty(nameof(Features))]
+        public Features? Features { get; set; }
     }
 
-    public class Roles
-    {
-        [JsonProperty(nameof(MainRoles))]
-        public MainRoles? MainRoles { get; set; }
-
-        [JsonProperty(nameof(SwitchColor))]
-        public SwitchColor? SwitchColor { get; set; }
-
-        [JsonProperty(nameof(Rules))]
-        public Rules? Rules { get; set; }    
-    }
-
-    public class Guide
-    {
-        [JsonProperty(nameof(Id))]
-        public ulong Id { get; set; }
-    }
-    public class AutoLobbyName
-    {
-        [JsonProperty(nameof(Id))]
-        public ulong Id { get; set; }
-    }
     public class Autorization
     {
         [JsonProperty(nameof(Id))]
         public ulong Id { get; set; }
     }
 
-    public class MainRoles
-    {
-        [JsonProperty(nameof(Id))]
-        public ulong Id { get; set; }
-    }
-
-    public class SwitchColor
+    public class Features
     {
         [JsonProperty(nameof(Id))]
         public ulong Id { get; set; }
@@ -73,10 +44,26 @@ namespace MlkAdmin.Infrastructure.JsonModels.DynamicMessages
     public class Rules
     {
         [JsonProperty(nameof(Id))]
+        public ulong Id{ get; set; }
+    }
+
+
+    public class Roles
+    {
+        [JsonProperty(nameof(Main))]
+        public Main? Main { get; set; }
+
+        [JsonProperty(nameof(NameColor))]
+        public NameColor? NameColor { get; set; }
+    }
+
+    public class Main
+    {
+        [JsonProperty(nameof(Id))]
         public ulong Id { get; set; }
     }
 
-    public class Hub
+    public class NameColor
     {
         [JsonProperty(nameof(Id))]
         public ulong Id { get; set; }

@@ -25,6 +25,11 @@ using MlkAdmin._2_Application.Notifications.UserVoiceStateUpdated;
 using MlkAdmin.Infrastructure.Providers.JsonProvider;
 using MlkAdmin.Core.Utilities.DI;
 using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
+using MlkAdmin._1_Domain.Interfaces.TextMessages;
+using MlkAdmin._2_Application.Managers.Messages;
+using MlkAdmin._2_Application.Managers.Embeds;
+using MlkAdmin._3_Infrastructure.Cache;
+using MlkAdmin._4_Presentation.Extensions;
 
 namespace MlkAdmin.Presentation.DI
 {
@@ -41,6 +46,15 @@ namespace MlkAdmin.Presentation.DI
             }
             ));
 
+            services.AddJsonProvider<JsonChannelsMapProvider>("../../../3_Infrastructure/Configuration/DiscordChannelsMap.json");
+            services.AddJsonProvider<JsonDiscordConfigurationProvider>("../../../3_Infrastructure/Configuration/DiscordConfiguration.json");
+            services.AddJsonProvider<JsonDiscordEmotesProvider>("../../../3_Infrastructure/Configuration/DiscordEmotes.json");
+            services.AddJsonProvider<JsonDiscordPicturesProvider>("../../../3_Infrastructure/Configuration/DiscordPictures.json");
+            services.AddJsonProvider<JsonDiscordRolesProvider>("../../../3_Infrastructure/Configuration/DiscordRoles.json");
+            services.AddJsonProvider<JsonDiscordCategoriesProvider>("../../../3_Infrastructure/Configuration/DiscordCategoriesMap.json");
+            services.AddJsonProvider<JsonDiscordDynamicMessagesProvider>("../../../3_Infrastructure/Configuration/DiscordDynamicMessages.json");
+            services.AddJsonProvider<JsonDiscordUsersLobbyProvider>("../../../3_Infrastructure/Configuration/DiscordUsersLobby.json");
+
             return services;
         }
         public static IServiceCollection AddInfastructureServices(this IServiceCollection services)
@@ -49,6 +63,7 @@ namespace MlkAdmin.Presentation.DI
             services.AddSingleton<RolesCache>();
             services.AddSingleton<EmotesCache>();
             services.AddSingleton<AutorizationCache>();
+            services.AddSingleton<EmbedDescriptionsCache>();
 
             return services;
         }
@@ -68,51 +83,7 @@ namespace MlkAdmin.Presentation.DI
                 typeof(MessageReceivedHandler).Assembly,
                 typeof(ReactionAddedHandler).Assembly));
 
-            services.AddSingleton<JsonChannelsMapProvider>(x =>
-            {
-                return new JsonChannelsMapProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory,
-                    "..", "..", "..", "3_Infrastructure", "Configuration", "DiscordChannelsMap.json")),
-                    x.GetRequiredService<ILogger<JsonChannelsMapProvider>>());
-            });
-            services.AddSingleton<JsonDiscordConfigurationProvider>(x =>
-            {
-                return new JsonDiscordConfigurationProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "3_Infrastructure", "Configuration", "DiscordConfiguration.json")),
-                    x.GetRequiredService<ILogger<JsonDiscordConfigurationProvider>>());
-            });
-            services.AddSingleton<JsonDiscordEmotesProvider>(x =>
-            {
-                return new JsonDiscordEmotesProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "3_Infrastructure", "Configuration", "DiscordEmotes.json")),
-                    x.GetRequiredService<ILogger<JsonDiscordEmotesProvider>>());
-            });
-            services.AddSingleton<JsonDiscordPicturesProvider>(x =>
-            {
-                return new JsonDiscordPicturesProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "3_Infrastructure", "Configuration", "DiscordPictures.json")),
-                    x.GetRequiredService<ILogger<JsonDiscordPicturesProvider>>());
-            });
-            services.AddSingleton<JsonDiscordRolesProvider>(x =>
-            {
-                return new JsonDiscordRolesProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory,
-                    "..", "..", "..", "3_Infrastructure", "Configuration", "DiscordRoles.json")),
-                    x.GetRequiredService<ILogger<JsonDiscordRolesProvider>>());
-            });
-            services.AddSingleton<JsonDiscordCategoriesProvider>(x =>
-            {
-                return new JsonDiscordCategoriesProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory,
-                    "..", "..", "..", "3_Infrastructure", "Configuration", "DiscordCategoriesMap.json")),
-                        x.GetRequiredService<ILogger<JsonDiscordCategoriesProvider>>());
-            });
-            services.AddSingleton<JsonDiscordDynamicMessagesProvider>(x =>
-            {
-                return new JsonDiscordDynamicMessagesProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory,
-                    "..", "..", "..", "3_Infrastructure", "Configuration", "DiscordDynamicMessages.json")),
-                        x.GetRequiredService<ILogger<JsonDiscordDynamicMessagesProvider>>());
-            });
-            services.AddSingleton<JsonDiscordUsersLobbyProvider>(x =>
-            {
-                return new JsonDiscordUsersLobbyProvider(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory,
-                    "..", "..", "..", "3_Infrastructure", "Configuration", "DiscordUsersLobby.json")),
-                    x.GetRequiredService<ILogger<JsonDiscordUsersLobbyProvider>>());
-            });
+           
             services.AddSingleton<RolesManager>();
             services.AddSingleton<AutorizationManager>();
             services.AddSingleton<VoiceChannelsManager>();
@@ -130,6 +101,8 @@ namespace MlkAdmin.Presentation.DI
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IModeratorLogsSender, ModeratorLogsManager>();
+            services.AddScoped<IDynamicMessageCenter, DynamicMessageManager>();
+            services.AddScoped<IEmbedDtoCreator, EmbedManager>();
 
             return services;
         }

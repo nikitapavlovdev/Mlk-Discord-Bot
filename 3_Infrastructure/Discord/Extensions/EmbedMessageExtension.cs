@@ -1,111 +1,32 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using MlkAdmin._2_Application.DTOs;
 using MlkAdmin.Infrastructure.Cache;
 using MlkAdmin.Infrastructure.Providers.JsonProvider;
 
 namespace MlkAdmin.Core.Utilities.DI
 {
     public class EmbedMessageExtension(
-        RolesCache rolesCachhe, 
         EmotesCache emotesCache,
         JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider,
         JsonDiscordEmotesProvider jsonDiscordEmotesProvider,
         JsonDiscordPicturesProvider jsonDiscordPicturesProvider,
-        JsonDiscordRolesProvider jsonDiscordRolesProvider,
         JsonChannelsMapProvider jsonChannelsMapProvider)
     {
         private readonly string? developer = jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name;
         private readonly string? avatarUrl = jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink;
 
-        public Embed GetMainRolesEmbedMessage()
+        public Embed GetDynamicMessageEmbedTamplate(EmbedDto embedDto)
         {
-            return new EmbedBuilder()
-                .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ ʀᴏʟᴇs")
-                .WithDescription(rolesCachhe.GetDescriptionForMainRoles())
+             return new EmbedBuilder()
+                .WithTitle(embedDto.Title)
+                .WithDescription(embedDto.Description)
                 .WithFooter(developer, avatarUrl)
-                .WithColor(50, 50, 53)                .Build();
-        }
-        public Embed GetSwitchColorEmbedMessage()
-        {
-            return new EmbedBuilder()
-                .WithTitle("ɴɪᴄᴋɴᴀᴍᴇ ᴄᴏʟᴏʀ")
-                .WithDescription(rolesCachhe.GetDescriptionForSwitchColorRoles())
-                .WithFooter(developer, avatarUrl)
-                .WithColor(50, 50, 53)
+                .WithColor(50, 50, 53)  
+                .WithImageUrl(embedDto.PicturesUrl)
                 .Build();
         }
-        public Embed GetRulesEmbedMessage()
-        {
-            return new EmbedBuilder()
-               .WithTitle("ᴍᴀʟᴇɴᴋɪᴇ ʀᴜʟᴇs")
-               .WithDescription(rolesCachhe.GetDescriptionForRules())
-               .WithFooter(developer, avatarUrl)
-               .WithColor(50, 50, 53)
-               .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.RulesBanner)
-               .Build();
-        }
-        public Embed GetSuccesAuthorizationMessageEmbedTemplate()
-        {
-            string title = $"Успех\n\n";
-
-            string description = $"**Верификация пройдена успешно!**{emotesCache.GetEmote(jsonDiscordEmotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Love.Id)}\n\n" +
-                            $"Добавлена базовая роль: {rolesCachhe.GetRole(jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Autorization.MalenkiyMember.Id).Mention}\n" +
-                            $"Добавлена игровая роль: {rolesCachhe.GetRole(jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.Gamer.Id).Mention}";
-
-            Color color = new(0, 255, 127);
-
-            Embed message = new EmbedBuilder()
-                .WithTitle(title)
-                .WithDescription(description)
-                .WithColor(color)
-                .WithTimestamp(DateTime.UtcNow)
-                .WithFooter(developer, avatarUrl)
-                .Build();
-
-            return message;
-        }
-        public Embed GetErrorAuthorizationMessageEmbedTemplate(Emote? emoteError)
-        {
-            string title = $"Ошибка\n\n";
-            string description = $"**Введен неправильный код, повтори попытку!**{emoteError}";
-            Color color = new(220, 20, 60);
-
-            Embed embed = new EmbedBuilder()
-                .WithTitle(title)
-                .WithDescription(description)
-                .WithColor(color)
-                .WithFooter(developer, avatarUrl)
-                .Build();
-
-            return embed;
-        }
-        public Embed GetErrorDateMessageEmbedTemplate()
-        {
-            Color color = new(178, 34, 34);
-
-            string title = "Ошибка ввода даты";
-
-            string description = "Введенная дата не соответствует представленному шаблону!\n " +
-                "Учти, что формат определяется исходя из российского региона в виде 01.02.2003, где: \n\n" +
-                "01 - день месяца\n" +
-                "02 - месяц\n" +
-                "2003 - год\n\n" +
-                "Обязательно разделить точками!\n " +
-                "Пока что я не придумал, как сделать выбор сразу нужного типа, чтобы не вводить это строкой :)";
-
-            string footerText = "Повтори попытку исходя из описанного выше";
-
-            Embed embed = new EmbedBuilder()
-                .WithTitle(title)
-                .WithDescription(description)
-                .WithColor(color)
-                .WithFooter(new EmbedFooterBuilder()
-                .WithText(footerText)
-                .WithIconUrl(jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink))
-                .Build();
-
-            return embed;
-        }
+        
         public Embed GetJoinedEmbedTemplate(SocketGuildUser socketGuildUser)    
         {
             GuildEmote? welcomeMessageEmote = emotesCache.GetEmote(jsonDiscordEmotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Love.Id);
@@ -151,47 +72,7 @@ namespace MlkAdmin.Core.Utilities.DI
 
             return embed;
         }
-        public Embed GetGuildUserInformationMessageTemplate(SocketGuildUser socketGuildUser)
-        {
-            string blockOfName = $"### общᴀя инɸоᴩʍᴀция\n\n" +
-                $"> Имя пользователя: **{(string.IsNullOrWhiteSpace(socketGuildUser.Username) ? "Нет данных" : socketGuildUser.Username)}**\n" +
-                $"> Имя на сервере: **{(string.IsNullOrWhiteSpace(socketGuildUser.DisplayName) ? "Нет данных" : socketGuildUser.DisplayName)}**\n" +
-                $"> Глобальное имя: **{(string.IsNullOrWhiteSpace(socketGuildUser.GlobalName) ? "Нет данных" : socketGuildUser.GlobalName)}**\n" +
-                $"> Дата вступления: **{socketGuildUser.JoinedAt.GetValueOrDefault():D}**\n";
-
-            string blockOfAdditionInformation = $"### доᴨоᴧниᴛᴇᴧьнᴀя инɸоᴩʍᴀция\n\n" +
-                $"> ID пользователя: **{socketGuildUser.Id}**\n" +
-                $"> ID аватара: **{socketGuildUser.AvatarId}**\n" +
-                $"> Пользователь бот: **{(socketGuildUser.IsBot ? "Да" : "Нет")}**\n" +
-                $"> Статус пользователя: **{socketGuildUser.Status}**\n";
-
-            string blockOfClients = "### Активные клиенты\n\n" +
-                $"> Пользователь **{socketGuildUser.DisplayName}** активен с **{socketGuildUser.ActiveClients.Count}** клиента (-ов)\n";
-
-            foreach(ClientType clientType in socketGuildUser.ActiveClients)
-            {
-                blockOfClients += $"> {clientType}\n";
-            }
-
-            string blockOfPublicFlags = "### ɸᴧᴀᴦи\n\n" +
-                $"Флаги для пользователя **{socketGuildUser.DisplayName}**:\n>>> {socketGuildUser.Flags}\n";
-
-            string general = ""
-                + blockOfName
-                + blockOfAdditionInformation
-                + blockOfClients 
-                + blockOfPublicFlags;
-
-            Embed message = new EmbedBuilder()
-                .WithTitle("ᴜsᴇʀ ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ")
-                .WithAuthor(socketGuildUser.DisplayName, socketGuildUser.GetAvatarUrl(ImageFormat.Auto, 48))
-                .WithDescription(general)
-                .WithColor(30, 144, 255)
-                .WithCurrentTimestamp()
-                .Build();
-
-            return message;
-        }
+       
         public Embed GetAutoLobbyNamingMessage()
         {
             GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
@@ -210,20 +91,7 @@ namespace MlkAdmin.Core.Utilities.DI
                 .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.AutoLobbyNamingMessage)
                 .Build();
         }
-        public Embed GetAutorizationReactionMessage()
-        {
-            GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
-
-            return new EmbedBuilder()
-                .WithTitle("ᴍʟᴋ - ʙᴇᴩиɸиᴋᴀция")
-                .WithDescription("Обязательно к ознакомлению:\n" +
-                $"> {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Rules.Https} - правила сервера.\n" +
-                $"> {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Https} - роли сервера.\n\n" +
-                $"{pointEmote} **Чтобы завершить верификацию добавьте любую реакцию на этом сообщение!**")
-                .WithColor(232, 228, 225)
-                .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.AuMessage)
-                .Build();
-        }
+       
         public Embed GetUserChoiceEmbedTamplate(SocketUser user, string title, string description)
         {
             if(user is SocketGuildUser socketGuildUser)

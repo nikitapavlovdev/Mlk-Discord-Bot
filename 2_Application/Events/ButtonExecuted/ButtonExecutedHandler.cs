@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 namespace MlkAdmin._2_Application.Notifications.ButtonExecuted
 {
     public class ButtonExecutedHandler(
-        ILogger<ButtonExecutedHandler> _logger) : INotificationHandler<ButtonExecuted>
+        ILogger<ButtonExecutedHandler> logger) : INotificationHandler<ButtonExecuted>
     {
         public async Task Handle(ButtonExecuted notification, CancellationToken cancellationToken)
         {
@@ -37,7 +37,7 @@ namespace MlkAdmin._2_Application.Notifications.ButtonExecuted
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
     }
