@@ -1,8 +1,8 @@
 ﻿using Discord;
 
-namespace MlkAdmin.Core.Utilities.DI
+namespace MlkAdmin._3_Infrastructure.Discord.Extensions
 {
-    class MessageComponentsExtension
+    public class MessageComponentsExtension
     {
         public static MessageComponent GetServerHubFeatuesButtons()
         {

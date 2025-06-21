@@ -2,7 +2,7 @@
 using Discord.WebSocket;
 using Discord.Commands;
 using Microsoft.Extensions.Logging;
-using MlkAdmin.Core.Utilities.DI;
+using MlkAdmin._3_Infrastructure.Discord.Extensions;
 using Discord;
 
 namespace MlkAdmin._2_Application.Notifications.MessageReceived
@@ -21,7 +21,7 @@ namespace MlkAdmin._2_Application.Notifications.MessageReceived
 
                 int argPos = 0;
 
-                if (socketGuildUser.Id == 628236760681545748 && socketUserMessage.HasStringPrefix("$mlk:", ref argPos))
+                if (socketGuildUser.Id == 949714170453053450 && socketUserMessage.HasStringPrefix("$mlk:", ref argPos))
                 {
                     string command = notification.SocketMessage.Content[argPos..];
                     string title = "ᴍᴀʟᴇɴᴋɪᴇ 🠒 ᴄᴏᴍᴍᴀɴᴅ";

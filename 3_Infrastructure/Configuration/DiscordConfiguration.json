@@ -1,15 +1,13 @@
 {
     "MalenkieAdminBot": {
-        "API_KEY": "MTEzNDg4Mzk0MDA4ODQxODMyNQ.G507AD.jpVMqpxLKoKNQbGjQL3hPyeW7oDXcZT3fVeqnc"
+        "API_KEY": "MTM4NDkyNzQxMzU4NjM2NjQ2NA.GDucXE.GhqR17EuxxwLv87oblD7f1UvEJaCOzsrUt2dM0"
     },
-
     "DevelopersData": {
         "Name": "ᴅᴇᴠᴇʟᴏᴘᴇᴅ ʙʏ ɴɪᴋɪᴛᴋᴀᴅᴇᴠ",
-        "IconLink": "https://i.pinimg.com/736x/4c/55/3a/4c553a36b312ecf39acdab73e6460a42.jpg"
+        "IconLink": "https://i.pinimg.com/736x/3e/94/5b/3e945b1f73bd28fc981d90de0e4bf675.jpg"
     },
-
     "Guild": {
-        "Id": 1134877618034966589,
+        "Id": 1384930620546748417,
         "Discription": "Сервер Malenkie"
     }
 }

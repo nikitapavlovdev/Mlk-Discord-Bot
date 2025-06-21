@@ -4,12 +4,12 @@ using MlkAdmin._2_Application.DTOs;
 using MlkAdmin.Infrastructure.Cache;
 using MlkAdmin.Infrastructure.Providers.JsonProvider;
 
-namespace MlkAdmin.Core.Utilities.DI
+namespace MlkAdmin._3_Infrastructure.Discord.Extensions
 {
     public class EmbedMessageExtension(
         EmotesCache emotesCache,
         JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider,
-        JsonDiscordEmotesProvider jsonDiscordEmotesProvider,
+        //JsonDiscordEmotesProvider jsonDiscordEmotesProvider,
         JsonDiscordPicturesProvider jsonDiscordPicturesProvider,
         JsonChannelsMapProvider jsonChannelsMapProvider)
     {
@@ -29,11 +29,11 @@ namespace MlkAdmin.Core.Utilities.DI
         
         public Embed GetJoinedEmbedTemplate(SocketGuildUser socketGuildUser)    
         {
-            GuildEmote? welcomeMessageEmote = emotesCache.GetEmote(jsonDiscordEmotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Love.Id);
+            //GuildEmote? welcomeMessageEmote = emotesCache.GetEmote(jsonDiscordEmotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Love.Id);
 
             string title = "ᴍᴀʟᴇɴᴋɪᴇ ɴᴇᴡ ᴍᴇᴍʙᴇʀ";
-            string description = $"Привет, **{socketGuildUser.Username}**! " +
-                $"{welcomeMessageEmote}\nДобро пожаловать на сервер **{socketGuildUser.Guild.Name}**\n\n" +
+            string description = $"Привет, **{socketGuildUser.Username}**!" +
+                $"\nДобро пожаловать на сервер **{socketGuildUser.Guild.Name}**\n\n" +
                 $"Для продолжения проследуйте в {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Https}";
 
             Embed embed = new EmbedBuilder()

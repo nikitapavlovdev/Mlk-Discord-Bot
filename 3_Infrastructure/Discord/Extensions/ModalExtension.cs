@@ -1,6 +1,6 @@
 ﻿using Discord;
 
-namespace MlkAdmin.Core.Utilities.DI
+namespace MlkAdmin._3_Infrastructure.Discord.Extensions
 {
     class ModalExtension
     {

@@ -1,5 +1,5 @@
 ﻿using Discord.WebSocket;
-using MlkAdmin.Core.Utilities.DI;
+using MlkAdmin._3_Infrastructure.Discord.Extensions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

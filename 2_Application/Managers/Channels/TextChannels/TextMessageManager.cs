@@ -1,7 +1,7 @@
 ﻿using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using Discord;
-using MlkAdmin.Core.Utilities.DI;
+using MlkAdmin._3_Infrastructure.Discord.Extensions;
 using MlkAdmin.Infrastructure.Cache;
 using MlkAdmin.Infrastructure.Providers.JsonProvider;
 using Discord.Rest;

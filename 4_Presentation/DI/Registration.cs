@@ -5,7 +5,6 @@ using Discord.Commands;
 using MlkAdmin.Presentation.PresentationServices;
 using MlkAdmin.Presentation.DiscordListeners;
 using MlkAdmin.Infrastructure.Cache;
-using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
 using MlkAdmin._2_Application.Managers.EmotesManagers;
@@ -23,13 +22,14 @@ using MlkAdmin._2_Application.Notifications.UserJoined;
 using MlkAdmin._2_Application.Notifications.UserLeft;
 using MlkAdmin._2_Application.Notifications.UserVoiceStateUpdated;
 using MlkAdmin.Infrastructure.Providers.JsonProvider;
-using MlkAdmin.Core.Utilities.DI;
+using MlkAdmin._3_Infrastructure.Discord.Extensions;
 using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
 using MlkAdmin._1_Domain.Interfaces.TextMessages;
 using MlkAdmin._2_Application.Managers.Messages;
 using MlkAdmin._2_Application.Managers.Embeds;
 using MlkAdmin._3_Infrastructure.Cache;
 using MlkAdmin._4_Presentation.Extensions;
+using MlkAdmin._2_Application.Managers.Components;
 
 namespace MlkAdmin.Presentation.DI
 {
@@ -38,13 +38,10 @@ namespace MlkAdmin.Presentation.DI
         public static IServiceCollection AddPresentationServices(this IServiceCollection services)
         {
             services.AddHostedService<DiscordBotHostService>();
+
             services.AddSingleton<DiscordEventsListener>();
             services.AddSingleton<CommandService>();
-            services.AddSingleton(new DiscordSocketClient(new()
-            {
-                GatewayIntents = GatewayIntents.All
-            }
-            ));
+            services.AddSingleton(new DiscordSocketClient(new() { GatewayIntents = GatewayIntents.All}));
 
             services.AddJsonProvider<JsonChannelsMapProvider>("../../../3_Infrastructure/Configuration/DiscordChannelsMap.json");
             services.AddJsonProvider<JsonDiscordConfigurationProvider>("../../../3_Infrastructure/Configuration/DiscordConfiguration.json");
@@ -95,6 +92,7 @@ namespace MlkAdmin.Presentation.DI
             services.AddSingleton<SelectionMenuExtension>();
             services.AddSingleton<MessageComponentsExtension>();
             services.AddSingleton<ModalExtension>();
+            services.AddScoped<ComponentsManager>();
 
             return services;
         }

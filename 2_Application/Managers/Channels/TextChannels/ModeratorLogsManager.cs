@@ -1,4 +1,4 @@
-﻿using MlkAdmin.Core.Utilities.DI;
+﻿using MlkAdmin._3_Infrastructure.Discord.Extensions;
 using Discord.WebSocket;
 using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
 using MlkAdmin._2_Application.DTOs;

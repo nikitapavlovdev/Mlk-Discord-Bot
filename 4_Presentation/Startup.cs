@@ -16,6 +16,7 @@ namespace MlkAdmin.Presentation
                     services.AddInfastructureServices();
                     services.AddPresentationServices();
                 })
+
                 .ConfigureLogging((logging) =>
                 {
                     logging.AddDebug();

@@ -4,8 +4,9 @@ using MlkAdmin._1_Domain.Interfaces.TextMessages;
 using MlkAdmin._2_Application.DTOs;
 using MlkAdmin.Infrastructure.Providers.JsonProvider;
 using Microsoft.Extensions.Logging;
-using MlkAdmin.Core.Utilities.DI;
+using MlkAdmin._3_Infrastructure.Discord.Extensions;
 using MlkAdmin._1_Domain.Enums;
+using MlkAdmin._2_Application.Managers.Components;
 
 namespace MlkAdmin._2_Application.Managers.Messages
 {
@@ -15,7 +16,8 @@ namespace MlkAdmin._2_Application.Managers.Messages
         DiscordSocketClient client,
         EmbedMessageExtension embedExtension,
         JsonChannelsMapProvider jsonChannelsMapProvider,
-        JsonDiscordDynamicMessagesProvider jsonDiscordDynamicMessagesProvider) : IDynamicMessageCenter
+        JsonDiscordDynamicMessagesProvider jsonDiscordDynamicMessagesProvider,
+        ComponentsManager componentsManager) : IDynamicMessageCenter
     {
         public async Task UpdateAllDM(ulong guildId)
         {
@@ -27,7 +29,7 @@ namespace MlkAdmin._2_Application.Managers.Messages
                 SendMessageWithNameColor(guildId));
         }
 
-        private async Task SendOrUpdateAsync(DynamicMessageDto DMdto, EmbedDto embedDto)
+        private async Task SendOrUpdateAsync(DynamicMessageDto DMdto, EmbedDto embedDto, MessageComponent? messageComponent = null)
         {
             try
             {
@@ -39,11 +41,12 @@ namespace MlkAdmin._2_Application.Managers.Messages
                     await sentMessage.ModifyAsync(message =>
                     {
                         message.Embed = embedExtension.GetDynamicMessageEmbedTamplate(embedDto);
+                        message.Components = messageComponent;
                     });
                 }
                 else
                 {
-                    await channel.SendMessageAsync(embed: embedExtension.GetDynamicMessageEmbedTamplate(embedDto));
+                    await channel.SendMessageAsync(embed: embedExtension.GetDynamicMessageEmbedTamplate(embedDto), components: messageComponent);
                 } 
             }
             catch (Exception ex)
@@ -60,7 +63,7 @@ namespace MlkAdmin._2_Application.Managers.Messages
                 ChannelId = jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Id,
                 MessageId = jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.ServerHub.Autorization.Id,
             },
-          await embedDtoCreator.GetEmbedDto(DynamicMessageType.Authorization));
+            await embedDtoCreator.GetEmbedDto(DynamicMessageType.Authorization));
         }
 
         private async Task SendMessageWithFeatures(ulong guildId)
@@ -71,7 +74,7 @@ namespace MlkAdmin._2_Application.Managers.Messages
                 ChannelId = jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Id,
                 MessageId = jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.ServerHub.Features.Id,
             },
-           await embedDtoCreator.GetEmbedDto(DynamicMessageType.Features));
+           await embedDtoCreator.GetEmbedDto(DynamicMessageType.Features), await componentsManager.GetMessageComponent(DynamicMessageType.Features));
         }
 
         private async Task SendMessageWithRules(ulong guildId)
@@ -104,7 +107,7 @@ namespace MlkAdmin._2_Application.Managers.Messages
                 ChannelId = jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Id,
                 MessageId = jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.Roles.NameColor.Id,
             },
-            await embedDtoCreator.GetEmbedDto(DynamicMessageType.NameColor));
+            await embedDtoCreator.GetEmbedDto(DynamicMessageType.NameColor), await componentsManager.GetMessageComponent(DynamicMessageType.NameColor));
         }
     }
 }
