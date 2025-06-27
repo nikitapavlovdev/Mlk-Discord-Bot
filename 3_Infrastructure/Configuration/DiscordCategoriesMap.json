@@ -1,0 +1,34 @@
+{
+    "Guild": {
+        "Administration": {
+            "Id": 1384934347441700987,
+            "Name": "АДМИНИСТРАЦИЯ",
+            "Description": ""
+        },
+        "Server": {
+            "Id": 1384931668611174462,
+            "Name": "",
+            "Description": ""
+        },
+        "General": {
+            "Id": 1384935727921496126,
+            "Name": "",
+            "Description": ""
+        },
+        "Gaming": {
+            "Id": 1384933756632174703,
+            "Name": "",
+            "Description": ""
+        },
+        "Autolobby": {
+            "Id": 1384933605280579694,
+            "Name": "",
+            "Description": ""
+        },
+        "Chill": {
+            "Id": 1384933827851583608,
+            "Name": "",
+            "Description": ""
+        }
+    }
+}
