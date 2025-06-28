@@ -4,7 +4,7 @@ using MlkAdmin.Infrastructure.Providers.JsonProvider;
 
 namespace MlkAdmin.Infrastructure.Cache
 {
-    public class ChannelsCache(JsonChannelsMapProvider jsonChannelsMapProvider)
+    public class ChannelsCache(JsonDiscordChannelsMapProvider jsonChannelsMapProvider)
     {
         private readonly List<SocketVoiceChannel> GuildVoiceChannels = [];
         private readonly List<SocketTextChannel> GuildTextChannels = [];

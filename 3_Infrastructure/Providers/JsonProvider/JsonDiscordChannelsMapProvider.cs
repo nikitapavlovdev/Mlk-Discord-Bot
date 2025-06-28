@@ -5,13 +5,13 @@ using MlkAdmin._1_Domain.Interfaces;
 
 namespace MlkAdmin.Infrastructure.Providers.JsonProvider
 {
-    public class JsonChannelsMapProvider : IJsonConfigurationProvider
+    public class JsonDiscordChannelsMapProvider : IJsonConfigurationProvider
     {
-        private readonly ILogger<JsonChannelsMapProvider> _logger;
+        private readonly ILogger<JsonDiscordChannelsMapProvider> _logger;
         private readonly string _filePath;
         public RootChannel? RootChannel { get; set; }
 
-        public JsonChannelsMapProvider(string filePath, ILogger<JsonChannelsMapProvider> logger)
+        public JsonDiscordChannelsMapProvider(string filePath, ILogger<JsonDiscordChannelsMapProvider> logger)
         {
             _logger = logger;
             _filePath = filePath;

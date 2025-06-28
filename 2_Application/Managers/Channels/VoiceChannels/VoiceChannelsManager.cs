@@ -15,7 +15,8 @@ namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers
         ILogger<VoiceChannelsManager> logger,
         IModeratorLogsSender moderatorLogsSender,
         JsonDiscordCategoriesProvider jsonDiscordCategoriesProvider,
-        JsonChannelsMapProvider jsonChannelsMapProvider, 
+        JsonDiscordChannelsMapProvider jsonChannelsMapProvider,
+        JsonDiscordRolesProvider discordRolesProvider,
         StaticDataServices staticDataServices)
     {
 
@@ -95,19 +96,20 @@ namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers
                 {
                     properties.CategoryId = jsonDiscordCategoriesProvider.RootDiscordCategories.Guild.Autolobby.Id;
                     properties.Bitrate = 64000;
-                    properties.RTCRegion = "rotterdam";
                     properties.PermissionOverwrites = new Overwrite[]
                     {
                         new(
-                            socketGuild.EveryoneRole.Id,
-                            PermissionTarget.Role,
-                            new OverwritePermissions(connect: PermValue.Allow, sendMessages: PermValue.Allow, manageChannel: PermValue.Deny)
+                            discordRolesProvider.RootDiscordRoles.GeneralRole.Categories.Gamer.Id,
+                            PermissionTarget.Role, 
+                            new OverwritePermissions(
+                                connect: PermValue.Allow,
+                                sendMessages: PermValue.Allow,
+                                manageChannel: PermValue.Deny)
                         ),
-
                         new(
                             leader.Id,
                             PermissionTarget.User,
-                            new OverwritePermissions(connect: PermValue.Allow, sendMessages: PermValue.Allow, manageChannel: PermValue.Allow)
+                            new OverwritePermissions(manageChannel: PermValue.Allow)
                         )
                     };
                 }

@@ -10,7 +10,7 @@ namespace MlkAdmin._3_Infrastructure.Cache
     public class EmbedDescriptionsCache(
         RolesCache rolesCache, 
         EmotesCache emotesCache,
-        JsonChannelsMapProvider jsonChannelsMapProvider )
+        JsonDiscordChannelsMapProvider jsonChannelsMapProvider )
     {
         public string GetDiscriptionForMainRoles()
         {
@@ -71,15 +71,16 @@ namespace MlkAdmin._3_Infrastructure.Cache
 
             string description =
                 $"{pointEmote} Внимательно прочтите правила ниже.\n" +
+                $"{pointEmote} Никакой чунга-чанги..\n" +
                 $"{pointEmote} Будьте искренними с самим собой и вашими собеседниками.\n" +
                 $"{pointEmote} Не засоряйте тематические каналы информационным мусором, который никак не связан с темой канала.\n" +
                 $"{pointEmote} Постарайтесь уважительно относиться к точке зрения собеседника - у всех нас разный опыт за плечами.\n" +
                 $"{pointEmote} Не осуждайте человека за его ошибки. Постарайтесь понять корень проблемы прежде чем делать выводы.\n" +
                 $"{pointEmote} Не обсуждайте мировую политику и не создавайте ситуационных споров на этой почве.\n" +
                 $"{pointEmote} Постарайтесь не выливать весь негатив на ваших собеседников. Либо делайте это, но с заранее выключеным микрофоном.\n" +
-                $"{pointEmote} Будьте самими собою\n" +
+                $"{pointEmote} Будьте самими собою!\n" +
                 $"{pointEmote} Не стесняйтесь просить помощи у других.\n" +
-                $"{pointEmote} Не стоит быть чересчур навязчивым\n" +
+                $"{pointEmote} Не стоит быть чересчур навязчивым.\n" +
                 $"{pointEmote} А это правило существует, чисто чтобы проверить команду!\n\n";
 
             description += "И самое главное - наслаждайтесь моментом!";

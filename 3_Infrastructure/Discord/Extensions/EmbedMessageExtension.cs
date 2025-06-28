@@ -11,7 +11,7 @@ namespace MlkAdmin._3_Infrastructure.Discord.Extensions
         JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider,
         //JsonDiscordEmotesProvider jsonDiscordEmotesProvider,
         JsonDiscordPicturesProvider jsonDiscordPicturesProvider,
-        JsonChannelsMapProvider jsonChannelsMapProvider)
+        JsonDiscordChannelsMapProvider jsonChannelsMapProvider)
     {
         private readonly string? developer = jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name;
         private readonly string? avatarUrl = jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink;
@@ -99,7 +99,7 @@ namespace MlkAdmin._3_Infrastructure.Discord.Extensions
                 return new EmbedBuilder()
                 .WithTitle(title)
                 .WithDescription(description)
-                .WithColor(218, 247, 166)
+                .WithColor(50, 50, 53)
                 .WithAuthor(socketGuildUser.DisplayName, socketGuildUser.GetAvatarUrl(ImageFormat.Auto, 48))
                 .Build();
             }

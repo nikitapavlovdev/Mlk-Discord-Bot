@@ -19,7 +19,7 @@ namespace MlkAdmin._2_Application.Notifications.UserJoined
             }
             catch (Exception ex)
             {
-                logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace); 
             }
         }
     }

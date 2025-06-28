@@ -10,8 +10,8 @@ namespace MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers
 {
     public class TextMessageManager(ILogger<TextMessageManager> logger, 
         EmbedMessageExtension extensionEmbedMessage,
-        JsonChannelsMapProvider channelsProvider,
-        JsonChannelsMapProvider jsonChannelsMapProvider,
+        JsonDiscordChannelsMapProvider channelsProvider,
+        JsonDiscordChannelsMapProvider jsonChannelsMapProvider,
         ChannelsCache channelsCache,       
         JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider,
         DiscordSocketClient client)
@@ -72,16 +72,20 @@ namespace MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers
                 logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
-        public async Task SendUserInputToDeveloper(SocketModal modal, string title, string buttonName, string input_text1)
+        public async Task SendUserInputToDeveloper(SocketModal modal, string title, string buttonName, string input_text_lable_1, string input_text_lable_2 = "")
         {
             try
             {
                 SocketGuild guild = client.GetGuild(jsonDiscordConfigurationProvider.RootDiscordConfiguration.Guild.Id);
-                SocketTextChannel channel = guild.GetTextChannel(jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Logs.Id);
+                SocketTextChannel channel = guild.GetTextChannel(jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Feedback.Id);
 
-                string descriptions = $"**Данные из формы**: {buttonName}\n" +
-                    $"**Введенные данные**: \n\n" +
-                    "text_input 1: " + "```" + input_text1 + "```" + "\n";
+                string descriptions = $"**Данные из формы**: {buttonName}\n\n" +
+                    "input_1: \n> " + input_text_lable_1 + "\n\n";
+
+                if (!string.IsNullOrEmpty(input_text_lable_2))
+                {
+                    descriptions += $"input_2: \n> " + input_text_lable_2 + "\n\n";
+                }
 
                 await channel.SendMessageAsync(embed: extensionEmbedMessage.GetUserChoiceEmbedTamplate(modal.User, title, descriptions));
             }
@@ -89,27 +93,6 @@ namespace MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers
             {
                 logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
-
-        }
-        public async Task SendUserInputToDeveloper(SocketModal modal, string title, string buttonName, string input_text1, string input_text2)
-        {
-            try
-            {
-                SocketGuild guild = client.GetGuild(jsonDiscordConfigurationProvider.RootDiscordConfiguration.Guild.Id);
-                SocketTextChannel channel = guild.GetTextChannel(jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Logs.Id);
-
-                string descriptions = $"**Данные из формы**: {buttonName}\n" +
-                    $"**Введенные данные**: \n\n" +
-                    "text_input 1: " + input_text1 + "\n" +
-                    "text_input 2: " + input_text2;
-
-                await channel.SendMessageAsync(embed: extensionEmbedMessage.GetUserChoiceEmbedTamplate(modal.User, title, descriptions));
-            }
-            catch (Exception ex)
-            {
-                logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
-            }
-
         }
         #endregion
     }

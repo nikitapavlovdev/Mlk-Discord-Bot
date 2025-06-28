@@ -15,7 +15,7 @@ namespace MlkAdmin._2_Application.Managers.Messages
         IEmbedDtoCreator embedDtoCreator,
         DiscordSocketClient client,
         EmbedMessageExtension embedExtension,
-        JsonChannelsMapProvider jsonChannelsMapProvider,
+        JsonDiscordChannelsMapProvider jsonChannelsMapProvider,
         JsonDiscordDynamicMessagesProvider jsonDiscordDynamicMessagesProvider,
         ComponentsManager componentsManager) : IDynamicMessageCenter
     {

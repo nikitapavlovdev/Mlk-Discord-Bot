@@ -210,6 +210,24 @@ namespace MlkAdmin.Infrastructure.JsonModels.Channels
 
         [JsonProperty(nameof(Logs))]
         public Logs? Logs { get; set; }
+
+        [JsonProperty(nameof(Feedback))]
+        public Feedback? Feedback { get; set; }
+    }
+
+    public class Feedback
+    {
+        [JsonProperty(nameof(Name))]
+        public string? Name { get; set; }
+
+        [JsonProperty(nameof(Id))]
+        public ulong Id { get; set; }
+
+        [JsonProperty(nameof(Https))]
+        public string? Https { get; set; }
+
+        [JsonProperty(nameof(Description))]
+        public string? Description { get; set; }
     }
     public class Chat
     {

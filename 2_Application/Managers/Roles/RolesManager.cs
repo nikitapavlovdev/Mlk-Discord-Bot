@@ -27,13 +27,7 @@ namespace MlkAdmin._2_Application.Managers.RolesManagers
         {
             try
             {
-                await socketGuildUser.AddRoleAsync(rolesCache.GetRole(
-                    jsonDiscordRolesProvider
-                    .RootDiscordRoles
-                    .GeneralRole
-                    .Autorization
-                    .NotRegistered
-                    .Id));
+                await socketGuildUser.AddRoleAsync(jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Autorization.NotRegistered.Id);
             }
             catch (Exception ex)
             {

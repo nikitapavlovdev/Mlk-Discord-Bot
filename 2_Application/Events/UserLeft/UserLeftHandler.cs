@@ -9,7 +9,7 @@ namespace MlkAdmin._2_Application.Notifications.UserLeft
     class UserLeftHandler(
         ILogger<UserLeftHandler> logger,
         IModeratorLogsSender moderatorLogsSender,
-        JsonChannelsMapProvider jsonChannelsMapProvider) : INotificationHandler<UserLeft>
+        JsonDiscordChannelsMapProvider jsonChannelsMapProvider) : INotificationHandler<UserLeft>
     {
         public async Task Handle(UserLeft notification, CancellationToken cancellationToken)
         {
