@@ -4,7 +4,6 @@ using Discord;
 using MlkAdmin._3_Infrastructure.Discord.Extensions;
 using MlkAdmin.Infrastructure.Cache;
 using MlkAdmin.Infrastructure.Providers.JsonProvider;
-using Discord.Rest;
 
 namespace MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers
 {
@@ -65,7 +64,7 @@ namespace MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers
                     return;
                 }
 
-                await textChannel.SendMessageAsync($"{socketGuildUser.Mention}", embed: embedMessage);
+                await textChannel.SendMessageAsync($"{socketGuildUser.Mention}", embed: embedMessage, components: MessageComponentsExtension.GetServerHubLinkButton(channelsProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Https));
             }
             catch (Exception ex)
             {

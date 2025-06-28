@@ -24,7 +24,6 @@ namespace MlkAdmin._2_Application.Notifications.SelectMenuExecuted
                     if (notification.SocketMessageComponent.Data.Values.ElementAt(0) != "remove_color")
                     {
                         await rolesManager.SetColorNameRole(notification.SocketMessageComponent.User, notification.SocketMessageComponent.Data.Values.ElementAt(0).ConvertId());
-
                     }
                 }
 			}
