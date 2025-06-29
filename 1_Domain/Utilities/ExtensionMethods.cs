@@ -20,20 +20,5 @@ namespace MlkAdmin.Core.Utilities.General
 
             return dateIsCorrect;
         }
-        public static string GetRandomCode(int len)
-        {
-            StringBuilder code = new();
-            Random rand = new();
-
-            char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".ToCharArray();
-
-            for(int i = 0; i < len; i++)
-            {
-                int index = rand.Next(chars.Length);
-                code.Append(chars[index]);
-            }
-
-            return code.ToString();
-        }
     } 
 }

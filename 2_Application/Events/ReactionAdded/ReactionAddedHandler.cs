@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.UserManagers;
-using MlkAdmin.Infrastructure.Providers.JsonProvider;
+using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
 namespace MlkAdmin._2_Application.Notifications.ReactionAdded
 {
@@ -14,7 +14,7 @@ namespace MlkAdmin._2_Application.Notifications.ReactionAdded
         {
             try
             {
-                if (notification.Message.Id == jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.ServerHub.Autorization.Id)
+                if (notification.Message.Id == jsonDiscordDynamicMessagesProvider.AuMessageId)
                 {
                     await autorizationManager.AuthorizeUser(notification.Reaction.UserId);
                 }

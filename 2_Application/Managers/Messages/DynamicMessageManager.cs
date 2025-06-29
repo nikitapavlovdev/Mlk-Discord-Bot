@@ -2,7 +2,7 @@
 using Discord;
 using MlkAdmin._1_Domain.Interfaces.TextMessages;
 using MlkAdmin._2_Application.DTOs;
-using MlkAdmin.Infrastructure.Providers.JsonProvider;
+using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._3_Infrastructure.Discord.Extensions;
 using MlkAdmin._1_Domain.Enums;
@@ -15,7 +15,7 @@ namespace MlkAdmin._2_Application.Managers.Messages
         IEmbedDtoCreator embedDtoCreator,
         DiscordSocketClient client,
         EmbedMessageExtension embedExtension,
-        JsonChannelsMapProvider jsonChannelsMapProvider,
+        JsonDiscordChannelsMapProvider jsonChannelsMapProvider,
         JsonDiscordDynamicMessagesProvider jsonDiscordDynamicMessagesProvider,
         ComponentsManager componentsManager) : IDynamicMessageCenter
     {
@@ -29,14 +29,14 @@ namespace MlkAdmin._2_Application.Managers.Messages
                 SendMessageWithNameColor(guildId));
         }
 
-        private async Task SendOrUpdateAsync(DynamicMessageDto DMdto, EmbedDto embedDto, MessageComponent? messageComponent = null)
+        private async Task SendOrUpdateAsync(DynamicMessageDto DMDto, EmbedDto embedDto, MessageComponent? messageComponent = null)
         {
             try
             {
-                SocketGuild guild = client.GetGuild(DMdto.GuildId);
-                SocketTextChannel? channel = guild.TextChannels.FirstOrDefault(x => x.Id == DMdto.ChannelId);
+                SocketGuild guild = client.GetGuild(DMDto.GuildId);
+                SocketTextChannel? channel = guild.TextChannels.FirstOrDefault(x => x.Id == DMDto.ChannelId);
 
-                if (await channel.GetMessageAsync(DMdto.MessageId) is IUserMessage sentMessage)
+                if (await channel.GetMessageAsync(DMDto.MessageId) is IUserMessage sentMessage)
                 {
                     await sentMessage.ModifyAsync(message =>
                     {
@@ -54,58 +54,53 @@ namespace MlkAdmin._2_Application.Managers.Messages
                 logger.LogError("Error: {Message}", ex.Message);
             }
         }
-
         private async Task SendMessageWithAutorization(ulong guildId)
         {
             await SendOrUpdateAsync(new DynamicMessageDto()
             {
                 GuildId = guildId,
-                ChannelId = jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Id,
-                MessageId = jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.ServerHub.Autorization.Id,
+                ChannelId = jsonChannelsMapProvider.HubChannelId,
+                MessageId = jsonDiscordDynamicMessagesProvider.AuMessageId,
             },
             await embedDtoCreator.GetEmbedDto(DynamicMessageType.Authorization));
         }
-
         private async Task SendMessageWithFeatures(ulong guildId)
         {
             await SendOrUpdateAsync(new DynamicMessageDto()
             {
                 GuildId = guildId,
-                ChannelId = jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Id,
-                MessageId = jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.ServerHub.Features.Id,
+                ChannelId = jsonChannelsMapProvider.HubChannelId,
+                MessageId = jsonDiscordDynamicMessagesProvider.FeaturesMessageId,
             },
            await embedDtoCreator.GetEmbedDto(DynamicMessageType.Features), await componentsManager.GetMessageComponent(DynamicMessageType.Features));
         }
-
         private async Task SendMessageWithRules(ulong guildId)
         {
             await SendOrUpdateAsync(new DynamicMessageDto()
             {
                 GuildId = guildId,
-                ChannelId = jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Rules.Id,
-                MessageId = jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.Rules.Id,
+                ChannelId = jsonChannelsMapProvider.RulesChannelId,
+                MessageId = jsonDiscordDynamicMessagesProvider.RulesMessageId,
             },
            await embedDtoCreator.GetEmbedDto(DynamicMessageType.Rules));
         }
-
         private async Task SendMessageWithGuildRoles(ulong guildId)
         {
             await SendOrUpdateAsync(new DynamicMessageDto()
             {
                 GuildId = guildId,
-                ChannelId = jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Id,
-                MessageId = jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.Roles.Main.Id,
+                ChannelId = jsonChannelsMapProvider.RolesChannelId,
+                MessageId = jsonDiscordDynamicMessagesProvider.MainRolesMessageId,
             },
             await embedDtoCreator.GetEmbedDto(DynamicMessageType.Roles));
         }
-
         private async Task SendMessageWithNameColor(ulong guildId)
         {
             await SendOrUpdateAsync(new DynamicMessageDto()
             {
                 GuildId = guildId,
-                ChannelId = jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Id,
-                MessageId = jsonDiscordDynamicMessagesProvider.DynamicMessages.Messages.Roles.NameColor.Id,
+                ChannelId = jsonChannelsMapProvider.RolesChannelId,
+                MessageId = jsonDiscordDynamicMessagesProvider.NameColorRolesMessageId,
             },
             await embedDtoCreator.GetEmbedDto(DynamicMessageType.NameColor), await componentsManager.GetMessageComponent(DynamicMessageType.NameColor));
         }

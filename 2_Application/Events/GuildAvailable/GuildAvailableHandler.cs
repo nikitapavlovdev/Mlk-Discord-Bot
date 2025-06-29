@@ -13,8 +13,7 @@ namespace MlkAdmin._2_Application.Notifications.GuildAvailable
         TextMessageManager textMessageManager,
         VoiceChannelsManager voiceChannelsManager,
         RolesManager rolesManager,
-        EmotesManager emotesManager,
-        StaticDataServices staticDataServices) : INotificationHandler<GuildAvailable>
+        EmotesManager emotesManager) : INotificationHandler<GuildAvailable>
     {
         public async Task Handle(GuildAvailable notification, CancellationToken cancellationToken)
         {
@@ -24,8 +23,7 @@ namespace MlkAdmin._2_Application.Notifications.GuildAvailable
                     textMessageManager.GuildTextChannelsInitialization(notification.SocketGuild),
                     voiceChannelsManager.GuildVoiceChannelsInitialization(notification.SocketGuild),
                     rolesManager.GuildRolesInitialization(notification.SocketGuild),
-                    emotesManager.EmotesInitialization(notification.SocketGuild),
-                    staticDataServices.LoadStaticData()
+                    emotesManager.EmotesInitialization(notification.SocketGuild)
                 );
             }
             catch (Exception ex)

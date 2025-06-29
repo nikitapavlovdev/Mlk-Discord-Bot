@@ -21,7 +21,7 @@ using MlkAdmin._2_Application.Notifications.SelectMenuExecuted;
 using MlkAdmin._2_Application.Notifications.UserJoined;
 using MlkAdmin._2_Application.Notifications.UserLeft;
 using MlkAdmin._2_Application.Notifications.UserVoiceStateUpdated;
-using MlkAdmin.Infrastructure.Providers.JsonProvider;
+using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using MlkAdmin._3_Infrastructure.Discord.Extensions;
 using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
 using MlkAdmin._1_Domain.Interfaces.TextMessages;
@@ -43,7 +43,7 @@ namespace MlkAdmin.Presentation.DI
             services.AddSingleton<CommandService>();
             services.AddSingleton(new DiscordSocketClient(new() { GatewayIntents = GatewayIntents.All}));
 
-            services.AddJsonProvider<JsonChannelsMapProvider>("../../../3_Infrastructure/Configuration/DiscordChannelsMap.json");
+            services.AddJsonProvider<JsonDiscordChannelsMapProvider>("../../../3_Infrastructure/Configuration/DiscordChannelsMap.json");
             services.AddJsonProvider<JsonDiscordConfigurationProvider>("../../../3_Infrastructure/Configuration/DiscordConfiguration.json");
             services.AddJsonProvider<JsonDiscordEmotesProvider>("../../../3_Infrastructure/Configuration/DiscordEmotes.json");
             services.AddJsonProvider<JsonDiscordPicturesProvider>("../../../3_Infrastructure/Configuration/DiscordPictures.json");
@@ -59,7 +59,6 @@ namespace MlkAdmin.Presentation.DI
             services.AddSingleton<ChannelsCache>();
             services.AddSingleton<RolesCache>();
             services.AddSingleton<EmotesCache>();
-            services.AddSingleton<AutorizationCache>();
             services.AddSingleton<EmbedDescriptionsCache>();
 
             return services;

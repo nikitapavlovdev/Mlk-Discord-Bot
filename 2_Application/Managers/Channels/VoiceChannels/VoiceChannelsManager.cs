@@ -1,7 +1,7 @@
 ﻿using Discord;
 using Discord.Rest;
 using Discord.WebSocket;
-using MlkAdmin.Infrastructure.Providers.JsonProvider;
+using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using MlkAdmin.Infrastructure.Cache;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.UserManagers;
@@ -15,16 +15,41 @@ namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers
         ILogger<VoiceChannelsManager> logger,
         IModeratorLogsSender moderatorLogsSender,
         JsonDiscordCategoriesProvider jsonDiscordCategoriesProvider,
-        JsonChannelsMapProvider jsonChannelsMapProvider, 
+        JsonDiscordChannelsMapProvider jsonChannelsMapProvider,
+        JsonDiscordRolesProvider discordRolesProvider,
         StaticDataServices staticDataServices)
     {
+        #region Controllers
+        public async Task GuildVoiceChannelsInitialization(SocketGuild socketGuild)
+        {
+            try
+            {
+                await LoadVoiceChannelsFromGuild(socketGuild);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Error: {Message}", ex.Message);
+            }
+        }
+        #endregion
+
+        #region Private
+        private async Task LoadVoiceChannelsFromGuild(SocketGuild socketGuild)
+        {
+            foreach (SocketVoiceChannel socketVoiceChannel in socketGuild.VoiceChannels)
+            {
+                channelsCache.AddVoiceChannel(socketVoiceChannel);
+            }
+
+            await Task.CompletedTask;
+        }
 
         private string GetLobbyName(ulong userId)
         {
             Random rnd = new();
             string uniqueName = staticDataServices.GetUniqueLobbyName(userId);
 
-            if(rnd.Next(0, 1000000) == 0)
+            if (rnd.Next(0, 1000000) == 0)
             {
                 return "🤍 Million Amnymchik Kid";
             }
@@ -39,38 +64,31 @@ namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers
                 return "💜 One Thousand Kid";
             }
 
-            if(uniqueName != string.Empty)
+            if (uniqueName != string.Empty)
             {
                 return uniqueName;
             }
 
             return "ᴍʟᴋ_ʟᴏʙʙʏ";
         }
-        public async Task GuildVoiceChannelsInitialization(SocketGuild socketGuild)
-        {
-            try
-            {
-                await LoadVoiceChannelsFromGuild(socketGuild);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError("Error: {Message}", ex.Message);
-            }
-        }
+
+        #endregion
+
+        #region Public
         public async Task ClearTemporaryVoiceChannels(SocketGuild socketGuild)
         {
-            foreach(SocketVoiceChannel socketVoiceChannel in socketGuild.VoiceChannels)
+            foreach (SocketVoiceChannel socketVoiceChannel in socketGuild.VoiceChannels)
             {
-                if(socketVoiceChannel.Category.Id == jsonDiscordCategoriesProvider.RootDiscordCategories.Guild.Autolobby.Id 
-                    && socketVoiceChannel.Id != jsonChannelsMapProvider.RootChannel.Channels.VoiceChannels.AutoLobby.AutoGamesLobby.Id)
+                if (socketVoiceChannel.Category.Id == jsonDiscordCategoriesProvider.AutoLobbyCategoryId
+                    && socketVoiceChannel.Id != jsonChannelsMapProvider.AutoGameLobbyId)
                 {
-                    if(socketVoiceChannel.ConnectedUsers.Count == 0)
+                    if (socketVoiceChannel.ConnectedUsers.Count == 0)
                     {
                         await moderatorLogsSender.SendLogMessageAsync(new LogMessageDto()
                         {
                             Description = "> Метод: ClearTemporaryVoiceChannels\n" +
                             $"> Удален канал: {socketVoiceChannel.Name}",
-                            ChannelId = jsonChannelsMapProvider.RootChannel.Channels.TextChannels.AdministratorCategory.Logs.Id,
+                            ChannelId = jsonChannelsMapProvider.LogsChannelId,
                             UserId = 0,
                             GuildId = socketVoiceChannel.Guild.Id,
                             Title = "Удаление канала"
@@ -88,39 +106,32 @@ namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers
         public async Task<RestVoiceChannel> CreateVoiceChannelAsync(SocketGuild socketGuild, SocketUser socketUser)
         {
             SocketGuildUser? leader = socketUser as SocketGuildUser;
-            
+
             return await socketGuild.CreateVoiceChannelAsync(
                 $"🔉 | {GetLobbyName(socketUser.Id)}",
                 properties =>
                 {
-                    properties.CategoryId = jsonDiscordCategoriesProvider.RootDiscordCategories.Guild.Autolobby.Id;
+                    properties.CategoryId = jsonDiscordCategoriesProvider.AutoLobbyCategoryId;
                     properties.Bitrate = 64000;
-                    properties.RTCRegion = "rotterdam";
                     properties.PermissionOverwrites = new Overwrite[]
                     {
                         new(
-                            socketGuild.EveryoneRole.Id,
+                            discordRolesProvider.RootDiscordRoles.GeneralRole.Categories.Gamer.Id,
                             PermissionTarget.Role,
-                            new OverwritePermissions(connect: PermValue.Allow, sendMessages: PermValue.Allow, manageChannel: PermValue.Deny)
+                            new OverwritePermissions(
+                                connect: PermValue.Allow,
+                                sendMessages: PermValue.Allow,
+                                manageChannel: PermValue.Deny)
                         ),
-
                         new(
                             leader.Id,
                             PermissionTarget.User,
-                            new OverwritePermissions(connect: PermValue.Allow, sendMessages: PermValue.Allow, manageChannel: PermValue.Allow)
+                            new OverwritePermissions(manageChannel: PermValue.Allow)
                         )
                     };
                 }
             );
         }
-        private async Task LoadVoiceChannelsFromGuild(SocketGuild socketGuild)
-        {
-            foreach (SocketVoiceChannel socketVoiceChannel in socketGuild.VoiceChannels)
-            {
-                channelsCache.AddVoiceChannel(socketVoiceChannel);
-            }
-
-            await Task.CompletedTask;
-        }
+        #endregion
     }
 }

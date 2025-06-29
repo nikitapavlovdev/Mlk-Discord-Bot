@@ -1,21 +1,28 @@
 ﻿using MlkAdmin._1_Domain.Interfaces;
-using MlkAdmin.Infrastructure.JsonModels.Pictures;
+using MlkAdmin._3_Infrastructure.JsonModels.Pictures;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using MlkAdmin.Infrastructure.JsonModels.Emotes;
 
-namespace MlkAdmin.Infrastructure.Providers.JsonProvider
+namespace MlkAdmin._3_Infrastructure.Providers.JsonProvider
 {
     public class JsonDiscordPicturesProvider : IJsonConfigurationProvider
     {
-        private readonly ILogger<JsonDiscordPicturesProvider> _logger;
-        private readonly string _filePath;
-        public RootDiscordPictures? RootDiscordPictures { get; set; }
+        private readonly ILogger<JsonDiscordPicturesProvider> logger;
+        private readonly string filePath;
+        private RootDiscordPictures? RootDiscordPictures { get; set; }
+
+        #region Aliases
+
+        public string? PinterestPictureForAuMessageLink => RootDiscordPictures.Pinterest.ForMessage.AuMessage;
+        public string? PinterestPictureForAutoLobbyNamingMessageLink => RootDiscordPictures.Pinterest.ForMessage.AutoLobbyNamingMessage;
+        public string? PinterestPictureForRulesLink => RootDiscordPictures.Pinterest.ForMessage.RulesBanner;
+
+        #endregion
 
         public JsonDiscordPicturesProvider(string filePath, ILogger<JsonDiscordPicturesProvider> logger)
         {
-            _logger = logger;
-            _filePath = filePath;
+            this.logger = logger;
+            this.filePath = filePath;
             Load();
         }
 
@@ -23,11 +30,11 @@ namespace MlkAdmin.Infrastructure.Providers.JsonProvider
         {
             try
             {
-                RootDiscordPictures = JsonConvert.DeserializeObject<RootDiscordPictures>(File.ReadAllText(_filePath));
+                RootDiscordPictures = JsonConvert.DeserializeObject<RootDiscordPictures>(File.ReadAllText(filePath));
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
     }

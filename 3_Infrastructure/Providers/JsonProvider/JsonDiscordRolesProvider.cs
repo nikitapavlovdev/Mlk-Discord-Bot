@@ -1,21 +1,20 @@
 ﻿using MlkAdmin._1_Domain.Interfaces;
-using MlkAdmin.Infrastructure.JsonModels.Roles;
+using MlkAdmin._3_Infrastructure.JsonModels.Roles;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using MlkAdmin.Infrastructure.JsonModels.Pictures;
 
-namespace MlkAdmin.Infrastructure.Providers.JsonProvider
+namespace MlkAdmin._3_Infrastructure.Providers.JsonProvider
 {
     public class JsonDiscordRolesProvider : IJsonConfigurationProvider
     {
-        private readonly ILogger<JsonDiscordRolesProvider> _logger;
-        private readonly string _filePath;
+        private readonly ILogger<JsonDiscordRolesProvider> logger;
+        private readonly string filePath;
         public RootDiscordRoles? RootDiscordRoles { get; set; }
 
         public JsonDiscordRolesProvider(string filePath, ILogger<JsonDiscordRolesProvider> logger)
         {
-            _logger = logger;
-            _filePath = filePath;
+            this.logger = logger;
+            this.filePath = filePath;
             Load();
         }
 
@@ -23,11 +22,11 @@ namespace MlkAdmin.Infrastructure.Providers.JsonProvider
         {
             try
             {
-                RootDiscordRoles = JsonConvert.DeserializeObject<RootDiscordRoles>(File.ReadAllText(_filePath));
+                RootDiscordRoles = JsonConvert.DeserializeObject<RootDiscordRoles>(File.ReadAllText(filePath));
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
     }

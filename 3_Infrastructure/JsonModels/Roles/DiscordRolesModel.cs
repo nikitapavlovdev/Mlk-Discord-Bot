@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace MlkAdmin.Infrastructure.JsonModels.Roles
+namespace MlkAdmin._3_Infrastructure.JsonModels.Roles
 {
     public class RootDiscordRoles
     {

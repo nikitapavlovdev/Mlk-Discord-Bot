@@ -8,7 +8,7 @@ namespace MlkAdmin._3_Infrastructure.Discord.Extensions
         {
             return new ComponentBuilder()
                 .WithButton(new ButtonBuilder()
-                .WithStyle(ButtonStyle.Primary)
+                    .WithStyle(ButtonStyle.Primary)
                     .WithCustomId("autolobby_naming_button")
                     .WithLabel("Моя комната"))
                 .WithButton(new ButtonBuilder()
@@ -19,6 +19,16 @@ namespace MlkAdmin._3_Infrastructure.Discord.Extensions
                  .WithStyle(ButtonStyle.Primary)
                     .WithCustomId("feedback_button")
                     .WithLabel("Разраб делай"))
+                .Build();
+        }
+
+        public static MessageComponent GetServerHubLinkButton(string serverhubChannelLink)
+        {
+            return new ComponentBuilder()
+                .WithButton(new ButtonBuilder()
+                    .WithStyle(ButtonStyle.Link)
+                    .WithLabel("Пройти верификацию")
+                    .WithUrl(serverhubChannelLink))
                 .Build();
         }
     }
