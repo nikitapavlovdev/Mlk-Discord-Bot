@@ -1,7 +1,7 @@
 ﻿using Discord.WebSocket;
 using MlkAdmin.Infrastructure.Cache;
 using Microsoft.Extensions.Logging;
-using MlkAdmin.Infrastructure.Providers.JsonProvider;
+using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
 namespace MlkAdmin._2_Application.Managers.RolesManagers
 {

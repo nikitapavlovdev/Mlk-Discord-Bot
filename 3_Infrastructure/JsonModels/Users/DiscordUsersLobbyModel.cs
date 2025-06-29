@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using Newtonsoft.Json;
 
-namespace MlkAdmin.Infrastructure.JsonModels.Users
+namespace MlkAdmin._3_Infrastructure.JsonModels.Users
 {
     public class RootDiscordUsersLobby
     {

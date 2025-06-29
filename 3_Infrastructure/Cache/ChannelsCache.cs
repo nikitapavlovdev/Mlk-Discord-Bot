@@ -1,6 +1,6 @@
 ﻿using Discord.Rest;
 using Discord.WebSocket;
-using MlkAdmin.Infrastructure.Providers.JsonProvider;
+using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
 namespace MlkAdmin.Infrastructure.Cache
 {
@@ -34,7 +34,7 @@ namespace MlkAdmin.Infrastructure.Cache
         {
             if(!GuildVoiceChannels.Any(x => x.Id == socketVoiceChannel.Id))
             {
-                if (socketVoiceChannel.Id == jsonChannelsMapProvider.RootChannel.Channels.VoiceChannels.AutoLobby.AutoGamesLobby.Id)
+                if (socketVoiceChannel.Id == jsonChannelsMapProvider.AutoGameLobbyId)
                 {
                     GenereatingChannels.Add(socketVoiceChannel);
                 }

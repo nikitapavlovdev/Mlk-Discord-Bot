@@ -2,18 +2,18 @@
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace MlkAdmin.Infrastructure.Providers.JsonProvider
+namespace MlkAdmin._3_Infrastructure.Providers.JsonProvider
 {
     public class JsonDiscordUsersLobbyProvider : IJsonConfigurationProvider
     {
-        private readonly ILogger<JsonDiscordUsersLobbyProvider> _logger;
-        private readonly string _filePath;
+        private readonly ILogger<JsonDiscordUsersLobbyProvider> logger;
+        private readonly string filePath;
         public Dictionary<ulong, string>? UsersLobbyNames { get; set; }
 
         public JsonDiscordUsersLobbyProvider(string filePath, ILogger<JsonDiscordUsersLobbyProvider> logger)
         {
-            _logger = logger;
-            _filePath = filePath;
+            this.logger = logger;
+            this.filePath = filePath;
             Load();
         }
 
@@ -21,11 +21,11 @@ namespace MlkAdmin.Infrastructure.Providers.JsonProvider
         {
             try
             {
-                UsersLobbyNames = JsonConvert.DeserializeObject<Dictionary<ulong, string>>(File.ReadAllText(_filePath));
+                UsersLobbyNames = JsonConvert.DeserializeObject<Dictionary<ulong, string>>(File.ReadAllText(filePath));
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
         }
     }

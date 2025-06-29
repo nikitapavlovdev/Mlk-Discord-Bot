@@ -1,9 +1,8 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using MlkAdmin._1_Domain.Enums;
 using MlkAdmin.Infrastructure.Cache;
-using MlkAdmin.Infrastructure.Providers.JsonProvider;
+using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
 namespace MlkAdmin._3_Infrastructure.Cache
 {
@@ -92,8 +91,8 @@ namespace MlkAdmin._3_Infrastructure.Cache
             GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
 
             string description = "Обязательно к ознакомлению:\n" +
-                $"> {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Rules.Https} - правила сервера.\n" +
-                $"> {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Roles.Https} - роли сервера.\n\n" +
+                $"> {jsonChannelsMapProvider.RulesChannelHttps} - правила сервера.\n" +
+                $"> {jsonChannelsMapProvider.RolesChannelHttps} - роли сервера.\n\n" +
                 $"{pointEmote} **Чтобы завершить верификацию добавьте любую реакцию на этом сообщение!**";
 
             return description;

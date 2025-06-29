@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace MlkAdmin.Infrastructure.JsonModels.Configuration
+namespace MlkAdmin._3_Infrastructure.JsonModels.Configuration
 {
     public class RootDiscordConfiguration
     {

@@ -17,22 +17,22 @@ namespace MlkAdmin._2_Application.Notifications.ButtonExecuted
                     return;
                 }
 
-                if(notification.SocketMessageComponent.Data.CustomId == $"personal_data_button")
+                switch (notification.SocketMessageComponent.Data.CustomId)
                 {
-                    await notification.SocketMessageComponent.RespondWithModalAsync(ModalExtension.GetPersonalInformationModal());
-                    return;
-                }
+                    case "personal_data_button":
+                        await notification.SocketMessageComponent.RespondWithModalAsync(ModalExtension.GetPersonalInformationModal());
+                        return;
 
-                if(notification.SocketMessageComponent.Data.CustomId == "autolobby_naming_button")
-                {
-                    await notification.SocketMessageComponent.RespondWithModalAsync(ModalExtension.GetLobbyNamingModal());
-                    return;
-                }
+                    case "autolobby_naming_button":
+                        await notification.SocketMessageComponent.RespondWithModalAsync(ModalExtension.GetLobbyNamingModal());
+                        return;
 
-                if(notification.SocketMessageComponent.Data.CustomId == "feedback_button")
-                {
-                    await notification.SocketMessageComponent.RespondWithModalAsync(ModalExtension.GetFeedBackModal());
-                    return;
+                    case "feedback_button":
+                        await notification.SocketMessageComponent.RespondWithModalAsync(ModalExtension.GetFeedBackModal());
+                        return;
+
+                    default:
+                        break;
                 }
             }
             catch (Exception ex)

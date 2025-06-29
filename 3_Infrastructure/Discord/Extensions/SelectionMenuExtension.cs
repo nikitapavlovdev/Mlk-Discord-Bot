@@ -1,5 +1,5 @@
 ﻿using Discord;
-using MlkAdmin.Infrastructure.Providers.JsonProvider;
+using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
 namespace MlkAdmin._3_Infrastructure.Discord.Extensions
 {

@@ -2,19 +2,18 @@
 using Discord.WebSocket;
 using MlkAdmin._2_Application.DTOs;
 using MlkAdmin.Infrastructure.Cache;
-using MlkAdmin.Infrastructure.Providers.JsonProvider;
+using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
 namespace MlkAdmin._3_Infrastructure.Discord.Extensions
 {
     public class EmbedMessageExtension(
         EmotesCache emotesCache,
         JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider,
-        //JsonDiscordEmotesProvider jsonDiscordEmotesProvider,
         JsonDiscordPicturesProvider jsonDiscordPicturesProvider,
         JsonDiscordChannelsMapProvider jsonChannelsMapProvider)
     {
-        private readonly string? developer = jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.Name;
-        private readonly string? avatarUrl = jsonDiscordConfigurationProvider.RootDiscordConfiguration.DevelopersData.IconLink;
+        private readonly string? developer = jsonDiscordConfigurationProvider.DevName;
+        private readonly string? avatarUrl = jsonDiscordConfigurationProvider.DevIconUrl;
 
         public Embed GetDynamicMessageEmbedTamplate(EmbedDto embedDto)
         {
@@ -29,12 +28,10 @@ namespace MlkAdmin._3_Infrastructure.Discord.Extensions
         
         public Embed GetJoinedEmbedTemplate(SocketGuildUser socketGuildUser)    
         {
-            //GuildEmote? welcomeMessageEmote = emotesCache.GetEmote(jsonDiscordEmotesProvider.RootDiscordEmotes.StaticEmotes.StaticZero.Love.Id);
-
             string title = "ᴍᴀʟᴇɴᴋɪᴇ ɴᴇᴡ ᴍᴇᴍʙᴇʀ";
             string description = $"Привет, **{socketGuildUser.Username}**!" +
                 $"\nДобро пожаловать на сервер **{socketGuildUser.Guild.Name}**\n\n" +
-                $"Для продолжения проследуйте в {jsonChannelsMapProvider.RootChannel.Channels.TextChannels.ServerCategory.Hub.Https}";
+                $"Для продолжения проследуйте в {jsonChannelsMapProvider.HubChannelHttps}";
 
             Embed embed = new EmbedBuilder()
                 .WithTitle(title)
@@ -88,7 +85,7 @@ namespace MlkAdmin._3_Infrastructure.Discord.Extensions
                     "\n > Хочется **обратной связи** от сообщества и послушать Ваши гениальные идеи, а ну.. и попрогать тоже!" +
                     $"\n\n {pointEmote} В будущем, при появление новых функций, они будут появляться именно тут.")
                 .WithColor(232, 228, 225)
-                .WithImageUrl(jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.AutoLobbyNamingMessage)
+                .WithImageUrl(jsonDiscordPicturesProvider.PinterestPictureForAutoLobbyNamingMessageLink)
                 .Build();
         }
        

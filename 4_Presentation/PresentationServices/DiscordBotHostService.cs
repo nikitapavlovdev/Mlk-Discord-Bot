@@ -1,7 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Hosting;
-using MlkAdmin.Infrastructure.Providers.JsonProvider;
+using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using Microsoft.Extensions.Logging;
 using MlkAdmin.Presentation.DiscordListeners;
 
@@ -11,14 +11,12 @@ namespace MlkAdmin.Presentation.PresentationServices
         ILogger <DiscordBotHostService> logger,
         DiscordSocketClient discordClient,
         DiscordEventsListener discordEventsController,
-        JsonDiscordConfigurationProvider discordBotConfig) : IHostedService
+        JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider) : IHostedService
     {
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            string? MlkAdminBotApiKey = discordBotConfig
-                .RootDiscordConfiguration?
-                .MalenkieAdminBot?
-                .API_KEY;
+            string? MlkAdminBotApiKey = jsonDiscordConfigurationProvider.ApiKey;
+               
 
             if (string.IsNullOrWhiteSpace(MlkAdminBotApiKey))
             {

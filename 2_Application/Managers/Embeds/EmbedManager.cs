@@ -2,7 +2,7 @@
 using MlkAdmin._1_Domain.Interfaces.TextMessages;
 using MlkAdmin._2_Application.DTOs;
 using MlkAdmin._3_Infrastructure.Cache;
-using MlkAdmin.Infrastructure.Providers.JsonProvider;
+using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
 namespace MlkAdmin._2_Application.Managers.Embeds
 {
@@ -18,21 +18,21 @@ namespace MlkAdmin._2_Application.Managers.Embeds
                 {
                     Title = "ᴀᴜᴛᴏʀɪᴢᴀᴛɪᴏɴ",
                     Description = embedDescriptionsCache.GetDescriptionForAutorization(),
-                    PicturesUrl = jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.AuMessage
+                    PicturesUrl = jsonDiscordPicturesProvider.PinterestPictureForAuMessageLink
                 },
 
                 DynamicMessageType.Features => new EmbedDto()
                 {
                     Title = "ꜰᴇᴀᴛᴜʀᴇs",
                     Description = embedDescriptionsCache.GetDescriptionForFeatures(),
-                    PicturesUrl = jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.AutoLobbyNamingMessage
+                    PicturesUrl = jsonDiscordPicturesProvider.PinterestPictureForAutoLobbyNamingMessageLink
                 },
 
                 DynamicMessageType.Rules => new EmbedDto()
                 {
                     Title = "ᴍᴀʟᴇɴᴋɪᴇ ʀᴜʟᴇs",
                     Description = embedDescriptionsCache.GetDescriptionForRules(),
-                    PicturesUrl = jsonDiscordPicturesProvider.RootDiscordPictures.Pinterest.ForMessage.RulesBanner
+                    PicturesUrl = jsonDiscordPicturesProvider.PinterestPictureForRulesLink
                 },
 
                 DynamicMessageType.Roles => new EmbedDto()

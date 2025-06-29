@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace MlkAdmin.Infrastructure.JsonModels.Channels
+namespace MlkAdmin._3_Infrastructure.JsonModels.Channels
 {
     public class RootChannel
     {
