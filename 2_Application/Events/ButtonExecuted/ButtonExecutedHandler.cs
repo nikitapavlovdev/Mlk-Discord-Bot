@@ -1,12 +1,17 @@
-﻿using Discord.WebSocket;
+﻿using MediatR;
+using Discord.WebSocket;
 using MlkAdmin._3_Infrastructure.Discord.Extensions;
-using MediatR;
 using Microsoft.Extensions.Logging;
+using MlkAdmin._2_Application.Managers.Embeds;
+using MlkAdmin._1_Domain.Enums;
+using MlkAdmin._1_Domain.Interfaces.TextMessages;
 
 namespace MlkAdmin._2_Application.Notifications.ButtonExecuted
 {
     public class ButtonExecutedHandler(
-        ILogger<ButtonExecutedHandler> logger) : INotificationHandler<ButtonExecuted>
+        ILogger<ButtonExecutedHandler> logger,
+        EmbedMessageExtension embedMessageExtension,
+        IEmbedDtoCreator embedManager) : INotificationHandler<ButtonExecuted>
     {
         public async Task Handle(ButtonExecuted notification, CancellationToken cancellationToken)
         {
@@ -29,6 +34,17 @@ namespace MlkAdmin._2_Application.Notifications.ButtonExecuted
 
                     case "feedback_button":
                         await notification.SocketMessageComponent.RespondWithModalAsync(ModalExtension.GetFeedBackModal());
+                        return;
+
+                    case "any_informations_button":
+                        if (notification.SocketMessageComponent.User.Id == 949714170453053450)
+                        {
+                            await notification.SocketMessageComponent.RespondAsync(embed: embedMessageExtension.GetStaticMessageEmbedTamplate(await embedManager.GetEmbedDto(StaticMessageType.ServerPeculiarities)), ephemeral: true);
+                        }
+                        else
+                        {
+                            await notification.SocketMessageComponent.RespondAsync("Данный блок находится в разработке!", ephemeral: true);
+                        }
                         return;
 
                     default:

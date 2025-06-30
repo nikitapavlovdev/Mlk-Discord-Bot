@@ -16,9 +16,13 @@ namespace MlkAdmin._3_Infrastructure.Discord.Extensions
                     .WithCustomId($"personal_data_button")
                     .WithLabel("Обо мне"))
                 .WithButton(new ButtonBuilder()
-                 .WithStyle(ButtonStyle.Primary)
+                    .WithStyle(ButtonStyle.Primary)
                     .WithCustomId("feedback_button")
                     .WithLabel("Разраб делай"))
+                .WithButton(new ButtonBuilder()
+                    .WithStyle(ButtonStyle.Primary)
+                    .WithCustomId("any_informations_button")
+                    .WithLabel("Особенности сервера"))
                 .Build();
         }
 

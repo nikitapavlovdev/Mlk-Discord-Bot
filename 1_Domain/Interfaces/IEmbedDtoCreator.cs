@@ -6,5 +6,7 @@ namespace MlkAdmin._1_Domain.Interfaces.TextMessages
     public interface IEmbedDtoCreator
     {
         Task<EmbedDto> GetEmbedDto(DynamicMessageType type);
+        Task<EmbedDto> GetEmbedDto(StaticMessageType type);
+
     }
 }
