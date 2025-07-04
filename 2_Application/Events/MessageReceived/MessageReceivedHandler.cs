@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using MlkAdmin._3_Infrastructure.Discord.Extensions;
 using Discord;
 
-namespace MlkAdmin._2_Application.Notifications.MessageReceived
+namespace MlkAdmin._2_Application.Events.MessageReceived
 {
     public class MessageReceivedHandler(
         ILogger<MessageReceivedHandler> logger) : INotificationHandler<MessageReceived>

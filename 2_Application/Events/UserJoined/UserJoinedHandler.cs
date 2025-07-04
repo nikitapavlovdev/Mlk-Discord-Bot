@@ -5,7 +5,7 @@ using MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers;
 using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
-namespace MlkAdmin._2_Application.Notifications.UserJoined
+namespace MlkAdmin._2_Application.Events.UserJoined
 {
     class UserJoinedHandler(
         ILogger<UserJoinedHandler> logger,
@@ -18,6 +18,8 @@ namespace MlkAdmin._2_Application.Notifications.UserJoined
         {
             try
             {
+                if (notification.SocketGuildUser.IsBot) { return; }
+
                 await rolesManager.AddNotRegisteredRoleAsync(notification.SocketGuildUser);
                 await textMessageManager.SendWelcomeMessageAsync(notification.SocketGuildUser);
                 await moderatorLogsSender.SendLogMessageAsync(new DTOs.LogMessageDto

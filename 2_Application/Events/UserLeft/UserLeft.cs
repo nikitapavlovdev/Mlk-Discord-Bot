@@ -2,7 +2,7 @@
 using MediatR;
 
 
-namespace MlkAdmin._2_Application.Notifications.UserLeft
+namespace MlkAdmin._2_Application.Events.UserLeft
 {
     class UserLeft(SocketGuild socketGuild, SocketUser socketUser) : INotification
     {

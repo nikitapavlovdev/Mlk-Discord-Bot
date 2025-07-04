@@ -5,7 +5,7 @@ using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
 using MlkAdmin._1_Domain.Interfaces.TextMessages;
 using Microsoft.Extensions.Logging;
 
-namespace MlkAdmin._2_Application.Notifications.Ready
+namespace MlkAdmin._2_Application.Events.Ready
 {
     public class ReadyHandler(
         ILogger<ReadyHandler> logger,

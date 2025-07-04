@@ -36,7 +36,7 @@ namespace MlkAdmin.Presentation.PresentationServices
         {
             await discordClient.StopAsync();
 
-            logger.LogInformation("Bot is shutting down...");
+            logger.LogInformation("Bot is shutting down.");
         }
     }
 }

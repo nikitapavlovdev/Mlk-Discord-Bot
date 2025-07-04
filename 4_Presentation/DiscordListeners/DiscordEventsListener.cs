@@ -1,17 +1,18 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using MediatR;
-using MlkAdmin._2_Application.Notifications.UserJoined;
-using MlkAdmin._2_Application.Notifications.UserLeft;
-using MlkAdmin._2_Application.Notifications.ModalSubmitted;
-using MlkAdmin._2_Application.Notifications.ButtonExecuted;
-using MlkAdmin._2_Application.Notifications.GuildAvailable;
-using MlkAdmin._2_Application.Notifications.SelectMenuExecuted;
-using MlkAdmin._2_Application.Notifications.UserVoiceStateUpdated;
-using MlkAdmin._2_Application.Notifications.Log;
-using MlkAdmin._2_Application.Notifications.Ready;
-using MlkAdmin._2_Application.Notifications.MessageReceived;
-using MlkAdmin._2_Application.Notifications.ReactionAdded;
+using MlkAdmin._2_Application.Events.UserJoined;
+using MlkAdmin._2_Application.Events.UserLeft;
+using MlkAdmin._2_Application.Events.ModalSubmitted;
+using MlkAdmin._2_Application.Events.ButtonExecuted;
+using MlkAdmin._2_Application.Events.GuildAvailable;
+using MlkAdmin._2_Application.Events.SelectMenuExecuted;
+using MlkAdmin._2_Application.Events.UserVoiceStateUpdated;
+using MlkAdmin._2_Application.Events.Log;
+using MlkAdmin._2_Application.Events.Ready;
+using MlkAdmin._2_Application.Events.MessageReceived;
+using MlkAdmin._2_Application.Events.ReactionAdded;
+using MlkAdmin._2_Application.Events.UserUpdated;
 using Microsoft.Extensions.Logging;
 
 namespace MlkAdmin.Presentation.DiscordListeners
@@ -33,6 +34,7 @@ namespace MlkAdmin.Presentation.DiscordListeners
             client.Ready += OnReady;
             client.MessageReceived += OnMessageReceived;
             client.ReactionAdded += OnReactionAdded;
+            client.UserUpdated += OnUserUpdated;
         }
         private async Task OnUserJoined(SocketGuildUser socketGuildUser)
         {
@@ -159,6 +161,18 @@ namespace MlkAdmin.Presentation.DiscordListeners
             catch (Exception ex)
             {
                 logger.LogError("[OnReactionAdded] Error - {Message}", ex.Message);
+            }
+        }
+        private async Task OnUserUpdated(SocketUser oldUserState, SocketUser newUserState)
+        {
+            try
+            {
+                await mediator.Publish(new UserUpdated(oldUserState, newUserState));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnUserUpdated] Error - {Message}", ex.Message);
+
             }
         }
     }

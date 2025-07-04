@@ -3,7 +3,7 @@ using MlkAdmin.Core.Utilities.General;
 using MlkAdmin._2_Application.Managers.RolesManagers;
 using Microsoft.Extensions.Logging;
 
-namespace MlkAdmin._2_Application.Notifications.SelectMenuExecuted
+namespace MlkAdmin._2_Application.Events.SelectMenuExecuted
 {
     class SelectMenuExecutedHandler(
         RolesManager rolesManager,

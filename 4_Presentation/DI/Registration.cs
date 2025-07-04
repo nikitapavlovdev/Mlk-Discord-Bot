@@ -10,17 +10,17 @@ using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
 using MlkAdmin._2_Application.Managers.EmotesManagers;
 using MlkAdmin._2_Application.Managers.RolesManagers;
 using MlkAdmin._2_Application.Managers.UserManagers;
-using MlkAdmin._2_Application.Notifications.ButtonExecuted;
-using MlkAdmin._2_Application.Notifications.GuildAvailable;
-using MlkAdmin._2_Application.Notifications.Log;
-using MlkAdmin._2_Application.Notifications.MessageReceived;
-using MlkAdmin._2_Application.Notifications.ModalSubmitted;
-using MlkAdmin._2_Application.Notifications.ReactionAdded;
-using MlkAdmin._2_Application.Notifications.Ready;
-using MlkAdmin._2_Application.Notifications.SelectMenuExecuted;
-using MlkAdmin._2_Application.Notifications.UserJoined;
-using MlkAdmin._2_Application.Notifications.UserLeft;
-using MlkAdmin._2_Application.Notifications.UserVoiceStateUpdated;
+using MlkAdmin._2_Application.Events.ButtonExecuted;
+using MlkAdmin._2_Application.Events.GuildAvailable;
+using MlkAdmin._2_Application.Events.Log;
+using MlkAdmin._2_Application.Events.MessageReceived;
+using MlkAdmin._2_Application.Events.ModalSubmitted;
+using MlkAdmin._2_Application.Events.ReactionAdded;
+using MlkAdmin._2_Application.Events.Ready;
+using MlkAdmin._2_Application.Events.SelectMenuExecuted;
+using MlkAdmin._2_Application.Events.UserJoined;
+using MlkAdmin._2_Application.Events.UserLeft;
+using MlkAdmin._2_Application.Events.UserVoiceStateUpdated;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using MlkAdmin._3_Infrastructure.Discord.Extensions;
 using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
@@ -30,6 +30,7 @@ using MlkAdmin._2_Application.Managers.Embeds;
 using MlkAdmin._3_Infrastructure.Cache;
 using MlkAdmin._4_Presentation.Extensions;
 using MlkAdmin._2_Application.Managers.Components;
+using MlkAdmin._2_Application.Events.UserUpdated;
 
 namespace MlkAdmin.Presentation.DI
 {
@@ -77,7 +78,8 @@ namespace MlkAdmin.Presentation.DI
                 typeof(SelectMenuExecutedHandler).Assembly,
                 typeof(ReadyHandler).Assembly,
                 typeof(MessageReceivedHandler).Assembly,
-                typeof(ReactionAddedHandler).Assembly));
+                typeof(ReactionAddedHandler).Assembly,
+                typeof(UserUpdatedHandler).Assembly));
 
            
             services.AddSingleton<RolesManager>();

@@ -5,7 +5,7 @@ using Discord.Rest;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
 
-namespace MlkAdmin._2_Application.Notifications.UserVoiceStateUpdated
+namespace MlkAdmin._2_Application.Events.UserVoiceStateUpdated
 {
     class UserVoiceStateUpdatedHandler(
         ChannelsCache channelsCache, 

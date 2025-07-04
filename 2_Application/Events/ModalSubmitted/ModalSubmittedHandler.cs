@@ -3,7 +3,7 @@ using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers;
 
-namespace MlkAdmin._2_Application.Notifications.ModalSubmitted
+namespace MlkAdmin._2_Application.Events.ModalSubmitted
 {
     class ModalSubmittedHandler(
         ILogger<ModalSubmittedHandler> logger,

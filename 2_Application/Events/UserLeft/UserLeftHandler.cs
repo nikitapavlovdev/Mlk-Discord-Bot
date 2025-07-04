@@ -4,7 +4,7 @@ using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
 using MlkAdmin._2_Application.DTOs;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
-namespace MlkAdmin._2_Application.Notifications.UserLeft
+namespace MlkAdmin._2_Application.Events.UserLeft
 {
     class UserLeftHandler(
         ILogger<UserLeftHandler> logger,

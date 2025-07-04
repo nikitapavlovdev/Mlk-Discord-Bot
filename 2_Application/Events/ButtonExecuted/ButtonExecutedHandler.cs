@@ -6,7 +6,7 @@ using MlkAdmin._2_Application.Managers.Embeds;
 using MlkAdmin._1_Domain.Enums;
 using MlkAdmin._1_Domain.Interfaces.TextMessages;
 
-namespace MlkAdmin._2_Application.Notifications.ButtonExecuted
+namespace MlkAdmin._2_Application.Events.ButtonExecuted
 {
     public class ButtonExecutedHandler(
         ILogger<ButtonExecutedHandler> logger,

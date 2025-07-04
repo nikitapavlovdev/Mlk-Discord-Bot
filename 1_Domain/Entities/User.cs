@@ -1,6 +1,4 @@
-﻿using Discord.WebSocket;
-
-namespace MlkAdmin._1_Domain.Entities
+﻿namespace MlkAdmin._1_Domain.Entities
 {
     public  class User
     {
