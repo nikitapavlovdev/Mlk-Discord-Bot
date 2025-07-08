@@ -3,13 +3,14 @@ using Discord.WebSocket;
 using MlkAdmin._1_Domain.Enums;
 using MlkAdmin.Infrastructure.Cache;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MlkAdmin._3_Infrastructure.Cache
 {
     public class EmbedDescriptionsCache(
+        IServiceProvider serviceProvider,
         RolesCache rolesCache, 
-        EmotesCache emotesCache,
-        JsonDiscordChannelsMapProvider jsonChannelsMapProvider )
+        EmotesCache emotesCache)
     {
         public string GetDiscriptionForMainRoles()
         {
@@ -88,6 +89,9 @@ namespace MlkAdmin._3_Infrastructure.Cache
         }
         public string GetDescriptionForAutorization()
         {
+            using var scope = serviceProvider.CreateScope();
+            JsonDiscordChannelsMapProvider jsonChannelsMapProvider = scope.ServiceProvider.GetRequiredService<JsonDiscordChannelsMapProvider>();
+
             GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
 
             string description = "Обязательно к ознакомлению:\n" +

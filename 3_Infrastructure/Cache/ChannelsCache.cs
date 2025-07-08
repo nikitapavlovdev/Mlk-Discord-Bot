@@ -1,10 +1,14 @@
 ﻿using Discord.Rest;
 using Discord.WebSocket;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
 namespace MlkAdmin.Infrastructure.Cache
 {
-    public class ChannelsCache(JsonDiscordChannelsMapProvider jsonChannelsMapProvider)
+    public class ChannelsCache(
+        IServiceProvider serviceProvider,
+        ILogger<ChannelsCache> logger)
     {
         private readonly List<SocketVoiceChannel> GuildVoiceChannels = [];
         private readonly List<SocketTextChannel> GuildTextChannels = [];
@@ -13,7 +17,7 @@ namespace MlkAdmin.Infrastructure.Cache
 
         public bool IsGeneratingChannel(SocketVoiceChannel socketVoiceChannel)
         {
-            return GenereatingChannels.Any(x => x == socketVoiceChannel);
+            return GenereatingChannels.Any(x => x.Id == socketVoiceChannel.Id);
         }
         public bool IsTemporaryChannel(SocketVoiceChannel socketVoiceChannel)
         {
@@ -32,11 +36,16 @@ namespace MlkAdmin.Infrastructure.Cache
         }
         public void AddVoiceChannel(SocketVoiceChannel socketVoiceChannel)
         {
-            if(!GuildVoiceChannels.Any(x => x.Id == socketVoiceChannel.Id))
+            var scope = serviceProvider.CreateScope();
+            JsonDiscordChannelsMapProvider jsonChannelsMapProvider = scope.ServiceProvider.GetRequiredService<JsonDiscordChannelsMapProvider>();
+
+            if (!GuildVoiceChannels.Any(x => x.Id == socketVoiceChannel.Id))
             {
                 if (socketVoiceChannel.Id == jsonChannelsMapProvider.AutoGameLobbyId)
+
                 {
                     GenereatingChannels.Add(socketVoiceChannel);
+                    logger.LogInformation("Gereating channels has been added");
                 }
 
                 GuildVoiceChannels.Add(socketVoiceChannel);

@@ -14,12 +14,13 @@ using MlkAdmin._2_Application.Events.MessageReceived;
 using MlkAdmin._2_Application.Events.ReactionAdded;
 using MlkAdmin._2_Application.Events.UserUpdated;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MlkAdmin.Presentation.DiscordListeners
 {
     public class DiscordEventsListener(
-        IMediator mediator,
-        ILogger<DiscordEventsListener> logger)
+        ILogger<DiscordEventsListener> logger,
+        IServiceScopeFactory serviceScopeFactory)
     {
         public void SubscribeOnEvents(DiscordSocketClient client)
         {
@@ -34,12 +35,15 @@ namespace MlkAdmin.Presentation.DiscordListeners
             client.Ready += OnReady;
             client.MessageReceived += OnMessageReceived;
             client.ReactionAdded += OnReactionAdded;
-            client.UserUpdated += OnUserUpdated;
+            client.GuildMemberUpdated += GuildMemberUpdated;
         }
         private async Task OnUserJoined(SocketGuildUser socketGuildUser)
         {
             try
             {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
                 await mediator.Publish(new UserJoined(socketGuildUser));
             }
             catch (Exception ex)
@@ -51,6 +55,9 @@ namespace MlkAdmin.Presentation.DiscordListeners
         {
             try
             {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
                 await mediator.Publish(new MessageReceived(socketMessage));
             }
             catch (Exception ex)
@@ -63,6 +70,9 @@ namespace MlkAdmin.Presentation.DiscordListeners
         {
             try
             {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
                 await mediator.Publish(new UserLeft(socketGuild, socketUser));
             }
             catch (Exception ex)
@@ -74,6 +84,9 @@ namespace MlkAdmin.Presentation.DiscordListeners
         {
             try
             {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
                 await mediator.Publish(new ModalSubmitted(socketModal));
             }
             catch (Exception ex)
@@ -85,8 +98,10 @@ namespace MlkAdmin.Presentation.DiscordListeners
         {
             try
             {
-                await mediator.Publish(new ButtonExecuted(socketMessageComponent));
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
+                await mediator.Publish(new ButtonExecuted(socketMessageComponent));
             }
             catch (Exception ex)
             {
@@ -97,8 +112,10 @@ namespace MlkAdmin.Presentation.DiscordListeners
         {
             try
             {
-                await mediator.Publish(new GuildAvailable(socketGuild));
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
+                await mediator.Publish(new GuildAvailable(socketGuild));
             }
             catch (Exception ex)
             {
@@ -109,6 +126,9 @@ namespace MlkAdmin.Presentation.DiscordListeners
         {
             try
             {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
                 await mediator.Publish(new UserVoiceStateUpdated(socketUser, oldState, newState));
             }
             catch (Exception ex)
@@ -121,6 +141,9 @@ namespace MlkAdmin.Presentation.DiscordListeners
         {
             try
             {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
                 await mediator.Publish(new Log(logMessage));
 
             }
@@ -133,6 +156,9 @@ namespace MlkAdmin.Presentation.DiscordListeners
         {
             try
             {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
                 await mediator.Publish(new SelectMenuExecuted(socketMessageComponent));
             }
             catch (Exception ex)
@@ -145,6 +171,9 @@ namespace MlkAdmin.Presentation.DiscordListeners
         {
             try
             {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
                 await mediator.Publish(new Ready());
             }
             catch (Exception ex)
@@ -156,6 +185,9 @@ namespace MlkAdmin.Presentation.DiscordListeners
         {
             try
             {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
                 await mediator.Publish(new ReactionAdded(message, channel, reaction));
             }
             catch (Exception ex)
@@ -163,11 +195,14 @@ namespace MlkAdmin.Presentation.DiscordListeners
                 logger.LogError("[OnReactionAdded] Error - {Message}", ex.Message);
             }
         }
-        private async Task OnUserUpdated(SocketUser oldUserState, SocketUser newUserState)
+        private async Task GuildMemberUpdated(Cacheable<SocketGuildUser, ulong> oldUserState, SocketGuildUser newUserState)
         {
             try
             {
-                await mediator.Publish(new UserUpdated(oldUserState, newUserState));
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                await mediator.Publish(new GuildMemberUpdated(oldUserState, newUserState));
             }
             catch (Exception ex)
             {
