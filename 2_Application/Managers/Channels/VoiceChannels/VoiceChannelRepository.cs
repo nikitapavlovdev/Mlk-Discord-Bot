@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Formats.Asn1;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._1_Domain.Entities;
 using MlkAdmin._1_Domain.Interfaces;
@@ -48,6 +49,25 @@ namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannels
             {
                 logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
+        }
+
+        public async Task<bool> IsTemporaryVoiceChannel(ulong id)
+        {
+            VoiceChannel? channel = await mlkAdminDbContext.Voices.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (channel == null) { return false; };
+
+            return channel.IsTemporary;
+            
+        }
+        public async Task<bool> IsGeneratingVoiceChannel(ulong id)
+        {
+            VoiceChannel? channel = await mlkAdminDbContext.Voices.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (channel == null) { return false; }
+            ;
+
+            return channel.IsGenerating;
         }
     }
 }

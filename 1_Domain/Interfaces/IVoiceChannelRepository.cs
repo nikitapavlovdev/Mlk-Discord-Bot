@@ -6,5 +6,8 @@ namespace MlkAdmin._1_Domain.Interfaces
     {
         Task UpsertDbVoiceChannelAsync(VoiceChannel channel);
         Task RemoveDbVoiceChannelAsync(ulong id);
+        Task<bool> IsTemporaryVoiceChannel(ulong id);
+        Task<bool> IsGeneratingVoiceChannel(ulong id);
+
     }
 }
