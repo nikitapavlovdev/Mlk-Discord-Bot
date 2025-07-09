@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.UserManagers;
 using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
 using MlkAdmin._2_Application.DTOs;
+using MlkAdmin._1_Domain.Interfaces;
+using MlkAdmin._1_Domain.Entities;
 
 namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers
 {
@@ -14,6 +16,7 @@ namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers
         ChannelsCache channelsCache,
         ILogger<VoiceChannelsManager> logger,
         IModeratorLogsSender moderatorLogsSender,
+        IVoiceChannelRepository voiceChannelRepository,
         JsonDiscordCategoriesProvider jsonDiscordCategoriesProvider,
         JsonDiscordChannelsMapProvider jsonChannelsMapProvider,
         JsonDiscordRolesProvider discordRolesProvider,
@@ -75,6 +78,22 @@ namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers
         #endregion
 
         #region Public
+        public async Task SyncVoicesAsync(SocketGuild socketGuild)
+        {
+            foreach (SocketVoiceChannel channel in socketGuild.VoiceChannels)
+            {
+                VoiceChannel dbVoiceChannel = new()
+                {
+                    Id = channel.Id,
+                    ChannelName = channel.Name,
+                    Category = channel.Category.ToString(),
+                    IsGenerating = channel.Id == jsonChannelsMapProvider.AutoGameLobbyId,
+                    IsTemporary = channel.Category.Id == jsonDiscordCategoriesProvider.AutoLobbyCategoryId && channel.Id != jsonChannelsMapProvider.AutoGameLobbyId
+                };
+
+                await voiceChannelRepository.UpsertDbVoiceChannelAsync(dbVoiceChannel);
+            }
+        }
         public async Task ClearTemporaryVoiceChannels(SocketGuild socketGuild)
         {
             foreach (SocketVoiceChannel socketVoiceChannel in socketGuild.VoiceChannels)

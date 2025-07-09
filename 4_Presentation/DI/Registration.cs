@@ -33,6 +33,9 @@ using MlkAdmin._2_Application.Managers.Components;
 using MlkAdmin._2_Application.Events.UserUpdated;
 using MlkAdmin._3_Infrastructure.DataBase;
 using Microsoft.EntityFrameworkCore;
+using MlkAdmin._1_Domain.Interfaces;
+using MlkAdmin._2_Application.Managers.Users;
+using MlkAdmin._2_Application.Managers.Channels.VoiceChannels;
 
 namespace MlkAdmin.Presentation.DI
 {
@@ -76,6 +79,9 @@ namespace MlkAdmin.Presentation.DI
             services.AddScoped<IModeratorLogsSender, ModeratorLogsManager>();
             services.AddScoped<IDynamicMessageCenter, DynamicMessageManager>();
             services.AddScoped<IEmbedDtoCreator, EmbedManager>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IVoiceChannelRepository, VoiceChannelRepository>();
+            services.AddScoped<UserSyncService>();
 
             return services;
         }

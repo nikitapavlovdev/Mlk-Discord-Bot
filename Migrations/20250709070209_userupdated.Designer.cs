@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MlkAdmin._3_Infrastructure.DataBase;
 
@@ -10,9 +11,11 @@ using MlkAdmin._3_Infrastructure.DataBase;
 namespace MlkAdmin.Migrations
 {
     [DbContext(typeof(MlkAdminDbContext))]
-    partial class MlkAdminDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250709070209_userupdated")]
+    partial class userupdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.6");
@@ -24,9 +27,11 @@ namespace MlkAdmin.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("DiscordDisplayName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("DiscordGlobalName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<ulong>("GuildId")
@@ -42,23 +47,26 @@ namespace MlkAdmin.Migrations
 
             modelBuilder.Entity("MlkAdmin._1_Domain.Entities.VoiceChannel", b =>
                 {
-                    b.Property<ulong>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Category")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<ulong>("ChannelId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("ChannelName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Https")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsGenerating")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsTemporary")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
