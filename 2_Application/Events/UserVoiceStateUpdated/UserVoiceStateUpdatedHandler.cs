@@ -22,7 +22,7 @@ namespace MlkAdmin._2_Application.Events.UserVoiceStateUpdated
                     return;
                 }
 
-                if (notification.OldState.VoiceChannel != null && notification.NewState.VoiceChannel == null)
+                if (notification.OldState.VoiceChannel != null)
                 {
                     if(await voiceChannelRepository.IsTemporaryVoiceChannel(notification.OldState.VoiceChannel.Id) && notification.OldState.VoiceChannel.ConnectedUsers.Count == 0)
                     {
@@ -31,33 +31,8 @@ namespace MlkAdmin._2_Application.Events.UserVoiceStateUpdated
                     }
                 }
 
-                if (notification.OldState.VoiceChannel == null && notification.NewState.VoiceChannel != null)
+                if (notification.NewState.VoiceChannel != null)
                 {
-                    if(!await voiceChannelRepository.IsGeneratingVoiceChannel(notification.NewState.VoiceChannel.Id)) { return; }
-
-                    RestVoiceChannel brandNewRestChannel = await voiceChannelsCreator.CreateVoiceChannelAsync(notification.NewState.VoiceChannel.Guild, notification.SocketUser);
-
-                    VoiceChannel dbChannel = new()
-                    {
-                        Category = notification.NewState.VoiceChannel.Category.ToString(),
-                        Id = brandNewRestChannel.Id,
-                        ChannelName = brandNewRestChannel.Name,
-                        IsGenerating = false,
-                        IsTemporary = true
-                    };
-
-                    await voiceChannelRepository.UpsertDbVoiceChannelAsync(dbChannel);
-                    await guildUser.ModifyAsync(properties => properties.ChannelId = brandNewRestChannel.Id);
-                }
-
-                if (notification.OldState.VoiceChannel != null && notification.NewState.VoiceChannel != null)
-                {
-                    if(await voiceChannelRepository.IsTemporaryVoiceChannel(notification.OldState.VoiceChannel.Id) && notification.OldState.VoiceChannel.ConnectedUsers.Count == 0)
-                    {
-                        await voiceChannelRepository.RemoveDbVoiceChannelAsync(notification.OldState.VoiceChannel.Id);
-                        await notification.OldState.VoiceChannel.DeleteAsync();
-                    }
-
                     if (await voiceChannelRepository.IsGeneratingVoiceChannel(notification.NewState.VoiceChannel.Id))
                     {
                         RestVoiceChannel brandNewRestChannel = await voiceChannelsCreator.CreateVoiceChannelAsync(notification.NewState.VoiceChannel.Guild, notification.SocketUser);

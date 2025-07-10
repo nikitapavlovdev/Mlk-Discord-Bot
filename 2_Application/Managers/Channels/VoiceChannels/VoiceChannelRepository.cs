@@ -1,5 +1,4 @@
-﻿using System.Formats.Asn1;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._1_Domain.Entities;
 using MlkAdmin._1_Domain.Interfaces;
@@ -8,7 +7,7 @@ using MlkAdmin._3_Infrastructure.DataBase;
 namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannels
 {
     public class VoiceChannelRepository(
-        ILogger<VoiceChannelRepository> logger,
+        ILogger<TextChannelRepository> logger,
         MlkAdminDbContext mlkAdminDbContext) : IVoiceChannelRepository
     {
         public async Task UpsertDbVoiceChannelAsync(VoiceChannel channel)
@@ -17,14 +16,8 @@ namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannels
             {
                 VoiceChannel? dbChannel = await mlkAdminDbContext.Voices.FirstOrDefaultAsync(x => x.Id == channel.Id);
 
-                if (dbChannel == null)
-                {
-                    await mlkAdminDbContext.Voices.AddAsync(channel);
-                }
-                else
-                {
-                    mlkAdminDbContext.Entry(dbChannel).CurrentValues.SetValues(channel);
-                }
+                if (dbChannel == null) await mlkAdminDbContext.Voices.AddAsync(channel); 
+                else mlkAdminDbContext.Entry(dbChannel).CurrentValues.SetValues(channel); 
 
                 await mlkAdminDbContext.SaveChangesAsync();
             }
@@ -65,7 +58,6 @@ namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannels
             VoiceChannel? channel = await mlkAdminDbContext.Voices.FirstOrDefaultAsync(x => x.Id == id);
 
             if (channel == null) { return false; }
-            ;
 
             return channel.IsGenerating;
         }

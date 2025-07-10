@@ -6,6 +6,7 @@ using MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
 using MlkAdmin._1_Domain.Interfaces.TextMessages;
 using MlkAdmin._2_Application.Managers.Users;
+using MlkAdmin._2_Application.Managers.Channels.VoiceChannels;
 
 namespace MlkAdmin._2_Application.Events.GuildAvailable
 {   
@@ -13,8 +14,8 @@ namespace MlkAdmin._2_Application.Events.GuildAvailable
         ILogger<GuildAvailableHandler> logger,
         IDynamicMessageCenter dynamicMessageCenter,
         UserSyncService userSyncService,
-        TextMessageManager textMessageManager,
         VoiceChannelsManager voiceChannelsManager,
+        VoiceChannelSyncServices voiceChannelSyncServices,
         RolesManager rolesManager,
         EmotesManager emotesManager) : INotificationHandler<GuildAvailable>
     {
@@ -23,14 +24,12 @@ namespace MlkAdmin._2_Application.Events.GuildAvailable
             try
             {
                 await Task.WhenAll(
-                    textMessageManager.GuildTextChannelsInitialization(notification.SocketGuild),
-                    voiceChannelsManager.GuildVoiceChannelsInitialization(notification.SocketGuild),
-                    voiceChannelsManager.ClearTemporaryVoiceChannels(notification.SocketGuild),
-                    voiceChannelsManager.SyncVoicesAsync(notification.SocketGuild),
+                    voiceChannelsManager.UpsertGuildVoiceChannelsAsync(notification.SocketGuild),
                     rolesManager.GuildRolesInitialization(notification.SocketGuild),
                     emotesManager.EmotesInitialization(notification.SocketGuild),
                     dynamicMessageCenter.UpdateAllDM(notification.SocketGuild.Id),
-                    userSyncService.SyncUsersAsync(notification.SocketGuild)
+                    userSyncService.SyncUsersAsync(notification.SocketGuild),
+                    voiceChannelSyncServices.SyncVoiceChannelsDbWithGuildAsync(notification.SocketGuild)
                 );
             }
             catch (Exception ex)

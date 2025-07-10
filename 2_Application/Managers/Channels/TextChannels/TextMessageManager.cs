@@ -10,37 +10,9 @@ namespace MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers
     public class TextMessageManager(ILogger<TextMessageManager> logger, 
         EmbedMessageExtension extensionEmbedMessage,
         JsonDiscordChannelsMapProvider jsonChannelsMapProvider,
-        ChannelsCache channelsCache,       
         JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider,
         DiscordSocketClient client)
     {
-        #region Conrollers
-        public async Task GuildTextChannelsInitialization(SocketGuild socketGuild)
-        {
-            try
-            {
-                await LoadTextChannelsFromGuild(socketGuild);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError("Error: {Message}", ex.Message);
-            }
-        }
-        #endregion
-
-        #region Private
-        private async Task LoadTextChannelsFromGuild(SocketGuild socketGuild)
-        {
-            foreach (SocketTextChannel channel in socketGuild.TextChannels)
-            {
-                channelsCache.AddTextChannel(channel);
-            }
-
-            await Task.CompletedTask;
-        }
-        
-        #endregion
-
         #region Public
         public async Task SendWelcomeMessageAsync(SocketGuildUser socketGuildUser)
         {

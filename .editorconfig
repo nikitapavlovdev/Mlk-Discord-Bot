@@ -23,6 +23,9 @@ csharp_style_prefer_tuple_swap = true:suggestion
 csharp_style_prefer_unbound_generic_type_in_nameof = true:suggestion
 csharp_style_prefer_utf8_string_literals = true:suggestion
 
+# CS8981: Имя типа содержит только строчные символы ASCII. Такие имена могут резервироваться для языка.
+dotnet_diagnostic.CS8981.severity = none
+
 [*.{cs,vb}]
 #### Стили именования ####
 

@@ -2,51 +2,22 @@
 using Discord.Rest;
 using Discord.WebSocket;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
-using MlkAdmin.Infrastructure.Cache;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.UserManagers;
-using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
-using MlkAdmin._2_Application.DTOs;
 using MlkAdmin._1_Domain.Interfaces;
 using MlkAdmin._1_Domain.Entities;
 
 namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers
 {
     public class VoiceChannelsManager(
-        ChannelsCache channelsCache,
         ILogger<VoiceChannelsManager> logger,
-        IModeratorLogsSender moderatorLogsSender,
         IVoiceChannelRepository voiceChannelRepository,
         JsonDiscordCategoriesProvider jsonDiscordCategoriesProvider,
         JsonDiscordChannelsMapProvider jsonChannelsMapProvider,
         JsonDiscordRolesProvider discordRolesProvider,
         StaticDataServices staticDataServices)
     {
-        #region Controllers
-        public async Task GuildVoiceChannelsInitialization(SocketGuild socketGuild)
-        {
-            try
-            {
-                await LoadVoiceChannelsFromGuild(socketGuild);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError("Error: {Message}", ex.Message);
-            }
-        }
-        #endregion
-
         #region Private
-        private async Task LoadVoiceChannelsFromGuild(SocketGuild socketGuild)
-        {
-            foreach (SocketVoiceChannel socketVoiceChannel in socketGuild.VoiceChannels)
-            {
-                channelsCache.AddVoiceChannel(socketVoiceChannel);
-            }
-
-            await Task.CompletedTask;
-        }
-
         private string GetLobbyName(ulong userId)
         {
             Random rnd = new();
@@ -78,49 +49,29 @@ namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers
         #endregion
 
         #region Public
-        public async Task SyncVoicesAsync(SocketGuild socketGuild)
+        public async Task UpsertGuildVoiceChannelsAsync(SocketGuild socketGuild)
         {
-            foreach (SocketVoiceChannel channel in socketGuild.VoiceChannels)
+            try
             {
-                VoiceChannel dbVoiceChannel = new()
+                foreach (SocketVoiceChannel channel in socketGuild.VoiceChannels)
                 {
-                    Id = channel.Id,
-                    ChannelName = channel.Name,
-                    Category = channel.Category.ToString(),
-                    IsGenerating = channel.Id == jsonChannelsMapProvider.AutoGameLobbyId,
-                    IsTemporary = channel.Category.Id == jsonDiscordCategoriesProvider.AutoLobbyCategoryId && channel.Id != jsonChannelsMapProvider.AutoGameLobbyId
-                };
-
-                await voiceChannelRepository.UpsertDbVoiceChannelAsync(dbVoiceChannel);
-            }
-        }
-        public async Task ClearTemporaryVoiceChannels(SocketGuild socketGuild)
-        {
-            foreach (SocketVoiceChannel socketVoiceChannel in socketGuild.VoiceChannels)
-            {
-                if (socketVoiceChannel.Category.Id == jsonDiscordCategoriesProvider.AutoLobbyCategoryId
-                    && socketVoiceChannel.Id != jsonChannelsMapProvider.AutoGameLobbyId)
-                {
-                    if (socketVoiceChannel.ConnectedUsers.Count == 0)
+                    VoiceChannel dbVoiceChannel = new()
                     {
-                        await moderatorLogsSender.SendLogMessageAsync(new LogMessageDto()
-                        {
-                            Description = "> Метод: ClearTemporaryVoiceChannels\n" +
-                            $"> Удален канал: {socketVoiceChannel.Name}",
-                            ChannelId = jsonChannelsMapProvider.LogsChannelId,
-                            UserId = 0,
-                            GuildId = socketVoiceChannel.Guild.Id,
-                            Title = "Удаление канала"
-                        });
+                        Id = channel.Id,
+                        ChannelName = channel.Name,
+                        Category = channel.Category.ToString() ?? "No category",
+                        IsGenerating = channel.Id == jsonChannelsMapProvider.AutoGameLobbyId,
+                        IsTemporary = channel.Category.Id == jsonDiscordCategoriesProvider.AutoLobbyCategoryId && channel.Id != jsonChannelsMapProvider.AutoGameLobbyId
+                    };
 
-                        await socketVoiceChannel.DeleteAsync();
-                    }
-                    else
-                    {
-                        channelsCache.AddTemporaryChannel(socketVoiceChannel);
-                    }
+                    await voiceChannelRepository.UpsertDbVoiceChannelAsync(dbVoiceChannel);
                 }
             }
+            catch (Exception ex)
+            {
+                logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+            }
+
         }
         public async Task<RestVoiceChannel> CreateVoiceChannelAsync(SocketGuild socketGuild, SocketUser socketUser)
         {

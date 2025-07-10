@@ -82,12 +82,12 @@ namespace MlkAdmin.Presentation.DI
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IVoiceChannelRepository, VoiceChannelRepository>();
             services.AddScoped<UserSyncService>();
+            services.AddScoped<VoiceChannelSyncServices>();
 
             return services;
         }
         public static IServiceCollection AddInfastructureServices(this IServiceCollection services)
         {
-            services.AddSingleton<ChannelsCache>();
             services.AddSingleton<RolesCache>();
             services.AddSingleton<EmotesCache>();
             services.AddSingleton<EmbedDescriptionsCache>();

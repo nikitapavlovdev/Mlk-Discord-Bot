@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MlkAdmin._3_Infrastructure.DataBase;
 
@@ -10,29 +11,14 @@ using MlkAdmin._3_Infrastructure.DataBase;
 namespace MlkAdmin.Migrations
 {
     [DbContext(typeof(MlkAdminDbContext))]
-    partial class MlkAdminDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250710031635_textchannelentity")]
+    partial class textchannelentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.6");
-
-            modelBuilder.Entity("MlkAdmin._1_Domain.Entities.TextChannel", b =>
-                {
-                    b.Property<ulong>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Category")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ChannelName")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Texts");
-                });
 
             modelBuilder.Entity("MlkAdmin._1_Domain.Entities.User", b =>
                 {
