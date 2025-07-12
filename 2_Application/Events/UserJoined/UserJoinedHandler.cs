@@ -11,7 +11,7 @@ namespace MlkAdmin._2_Application.Events.UserJoined
         ILogger<UserJoinedHandler> logger,
         IModeratorLogsSender moderatorLogsSender,
         RolesManager rolesManager,
-        TextMessageManager textMessageManager,
+        TextChannelManager textChannelManager,
         JsonDiscordChannelsMapProvider jsonChannelsMapProvider) : INotificationHandler<UserJoined>
     {
         public async Task Handle(UserJoined notification, CancellationToken cancellationToken)
@@ -21,7 +21,7 @@ namespace MlkAdmin._2_Application.Events.UserJoined
                 if (notification.SocketGuildUser.IsBot) { return; }
 
                 await rolesManager.AddNotRegisteredRoleAsync(notification.SocketGuildUser);
-                await textMessageManager.SendWelcomeMessageAsync(notification.SocketGuildUser);
+                await textChannelManager.SendWelcomeMessageAsync(notification.SocketGuildUser);
                 await moderatorLogsSender.SendLogMessageAsync(new DTOs.LogMessageDto
                 {
                     Description = $"> Пользователь {notification.SocketGuildUser.Mention} присоединился к серверу",

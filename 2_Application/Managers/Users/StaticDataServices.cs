@@ -19,6 +19,5 @@ namespace MlkAdmin._2_Application.Managers.UserManagers
                 return "";
             }
         }
-
     }
 }

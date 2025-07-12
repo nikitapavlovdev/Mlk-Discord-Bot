@@ -62,7 +62,7 @@ namespace MlkAdmin.Presentation.DI
             services.AddScoped<RolesManager>();
             services.AddScoped<AutorizationManager>();
             services.AddScoped<VoiceChannelsManager>();
-            services.AddScoped<TextMessageManager>();
+            services.AddScoped<TextChannelManager>();
             services.AddScoped<EmotesManager>();
             services.AddScoped<ModeratorLogsManager>();
             services.AddScoped<StaticDataServices>();

@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.RolesManagers;
 using MlkAdmin._2_Application.Managers.EmotesManagers;
-using MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
 using MlkAdmin._1_Domain.Interfaces.TextMessages;
 using MlkAdmin._2_Application.Managers.Users;

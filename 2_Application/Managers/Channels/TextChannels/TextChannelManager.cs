@@ -2,12 +2,11 @@
 using Microsoft.Extensions.Logging;
 using Discord;
 using MlkAdmin._3_Infrastructure.Discord.Extensions;
-using MlkAdmin.Infrastructure.Cache;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
 namespace MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers
 {
-    public class TextMessageManager(ILogger<TextMessageManager> logger, 
+    public class TextChannelManager(ILogger<TextChannelManager> logger, 
         EmbedMessageExtension extensionEmbedMessage,
         JsonDiscordChannelsMapProvider jsonChannelsMapProvider,
         JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider,
