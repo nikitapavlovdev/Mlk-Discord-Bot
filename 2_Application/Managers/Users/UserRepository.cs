@@ -22,7 +22,9 @@ namespace MlkAdmin._2_Application.Managers.Users
                 }
                 else
                 {
+                    string? lobbyName = dbUser.LobbyName;
                     mlkAdminDbContext.Entry(dbUser).CurrentValues.SetValues(user);
+                    dbUser.LobbyName = lobbyName;
                 }
 
                 await mlkAdminDbContext.SaveChangesAsync();
@@ -47,6 +49,11 @@ namespace MlkAdmin._2_Application.Managers.Users
             {
                 logger.LogError("Error: {Message}\nStackTrace: {StackTrace}", ex.Message, ex.StackTrace);
             }
+        }
+
+        public async Task<User?> GetDbUserAsync(ulong id)
+        {
+            return await mlkAdminDbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

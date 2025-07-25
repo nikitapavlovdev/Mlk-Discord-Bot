@@ -6,5 +6,6 @@ namespace MlkAdmin._1_Domain.Interfaces
     {
         Task UpsertUserAsync(User user);
         Task DeleteDbUserAsync(ulong id);
+        Task<User?> GetDbUserAsync(ulong id);
     }
 }

@@ -3,7 +3,6 @@ using Discord.Rest;
 using Discord.WebSocket;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using Microsoft.Extensions.Logging;
-using MlkAdmin._2_Application.Managers.UserManagers;
 using MlkAdmin._1_Domain.Interfaces;
 using MlkAdmin._1_Domain.Entities;
 
@@ -12,38 +11,26 @@ namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers
     public class VoiceChannelsManager(
         ILogger<VoiceChannelsManager> logger,
         IVoiceChannelRepository voiceChannelRepository,
+        IUserRepository userRepository,
         JsonDiscordCategoriesProvider jsonDiscordCategoriesProvider,
         JsonDiscordChannelsMapProvider jsonChannelsMapProvider,
-        JsonDiscordRolesProvider discordRolesProvider,
-        StaticDataServices staticDataServices)
+        JsonDiscordRolesProvider discordRolesProvider)
     {
         #region Private
-        private string GetLobbyName(ulong userId)
+        private async Task<string> GetLobbyName(ulong userId)
         {
-            Random rnd = new();
-            string uniqueName = staticDataServices.GetUniqueLobbyName(userId);
+            User? user = await userRepository.GetDbUserAsync(userId);
 
-            if (rnd.Next(0, 1000000) == 0)
+            if(user != null)
             {
-                return "🤍 Million Amnymchik Kid";
-            }
-
-            if (rnd.Next(0, 100000) == 0)
-            {
-                return "💖 One Hundred Thousand Kid";
-            }
-
-            if (rnd.Next(0, 1000) == 0)
-            {
-                return "💜 One Thousand Kid";
-            }
-
-            if (uniqueName != string.Empty)
-            {
-                return uniqueName;
+                if (user.LobbyName != string.Empty && user.LobbyName != null)
+                {
+                    return user.LobbyName;
+                }
             }
 
             return "ᴍʟᴋ_ʟᴏʙʙʏ";
+
         }
 
         #endregion
@@ -78,7 +65,7 @@ namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers
             SocketGuildUser? leader = socketUser as SocketGuildUser;
 
             return await socketGuild.CreateVoiceChannelAsync(
-                $"🔉 | {GetLobbyName(socketUser.Id)}",
+                $"🔉 | {await GetLobbyName(socketUser.Id)}",
                 properties =>
                 {
                     properties.CategoryId = jsonDiscordCategoriesProvider.AutoLobbyCategoryId;
