@@ -398,3 +398,11 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/3_Infrastructure/Configuration/DiscordCategoriesMap.json
+/3_Infrastructure/Configuration/DiscordChannelsMap.json
+/3_Infrastructure/Configuration/DiscordConfiguration.json
+/3_Infrastructure/Configuration/DiscordDynamicMessages.json
+/3_Infrastructure/Configuration/DiscordEmotes.json
+/3_Infrastructure/Configuration/DiscordPictures.json
+/3_Infrastructure/Configuration/DiscordRoles.json
+/3_Infrastructure/Configuration/DiscordUsersLobby.json
