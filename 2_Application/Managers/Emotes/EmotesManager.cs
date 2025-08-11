@@ -32,7 +32,7 @@ namespace MlkAdmin._2_Application.Managers.EmotesManagers
         }
         private async Task CloneEmotesFromGuild(SocketGuild socketGuild)
         {
-           await emotesCache.GuildEmotesInitialization(socketGuild.Emotes);
+           await emotesCache.CloneGuildEmotes(socketGuild.Emotes);
         }
     }
 }

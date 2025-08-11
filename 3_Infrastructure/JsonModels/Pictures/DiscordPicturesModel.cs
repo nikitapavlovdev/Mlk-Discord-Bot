@@ -45,5 +45,8 @@ namespace MlkAdmin._3_Infrastructure.JsonModels.Pictures
 
         [JsonProperty(nameof(AutoLobbyNamingMessage))]
         public string? AutoLobbyNamingMessage { get; set ; }
+
+        [JsonProperty(nameof(ServerPeculiaritiesImg))]
+        public string? ServerPeculiaritiesImg { get; set; }
     }
 }

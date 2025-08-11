@@ -1,5 +1,4 @@
-﻿
-namespace MlkAdmin._2_Application.DTOs
+﻿namespace MlkAdmin._2_Application.DTOs
 {
     public class EmbedDto
     {

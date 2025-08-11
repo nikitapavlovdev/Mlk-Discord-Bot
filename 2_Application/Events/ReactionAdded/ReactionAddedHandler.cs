@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.UserManagers;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
-namespace MlkAdmin._2_Application.Notifications.ReactionAdded
+namespace MlkAdmin._2_Application.Events.ReactionAdded
 {
     public class ReactionAddedHandler(
         ILogger<ReactionAddedHandler> logger,

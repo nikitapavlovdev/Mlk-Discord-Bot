@@ -39,14 +39,26 @@ namespace MlkAdmin._2_Application.Managers.Embeds
                 {
                     Title = "ᴍᴀʟᴇɴᴋɪᴇ ʀᴏʟᴇs",
                     Description = embedDescriptionsCache.GetDiscriptionForMainRoles(), 
-                    PicturesUrl = ""
                 },
 
                 DynamicMessageType.NameColor => new EmbedDto()
                 {
                     Title = "ɴɪᴄᴋɴᴀᴍᴇ ᴄᴏʟᴏʀ",
                     Description = embedDescriptionsCache.GetDescriptionForNameColor(),
-                    PicturesUrl = ""
+                },
+
+                _ => throw new ArgumentOutOfRangeException(nameof(type), $"Unknown type: {type}")
+            });
+        }
+        public Task<EmbedDto> GetEmbedDto(StaticMessageType type)
+        {
+            return Task.FromResult(type switch
+            {
+                StaticMessageType.ServerPeculiarities => new EmbedDto()
+                {
+                    Title = "ᴘᴇᴄᴜʟɪᴀʀɪᴛɪᴇs",
+                    Description = embedDescriptionsCache.GetDescriptionForServerPeculiarities(),
+                    PicturesUrl = jsonDiscordPicturesProvider.PinterestPictureForServerPeculiaritiesImg
                 },
 
                 _ => throw new ArgumentOutOfRangeException(nameof(type), $"Unknown type: {type}")

@@ -3,12 +3,15 @@ using Discord.WebSocket;
 using Discord.Commands;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._3_Infrastructure.Discord.Extensions;
+using MlkAdmin._1_Domain.Interfaces;
+using MlkAdmin._1_Domain.Entities;
 using Discord;
 
-namespace MlkAdmin._2_Application.Notifications.MessageReceived
+namespace MlkAdmin._2_Application.Events.MessageReceived
 {
     public class MessageReceivedHandler(
-        ILogger<MessageReceivedHandler> logger) : INotificationHandler<MessageReceived>
+        ILogger<MessageReceivedHandler> logger,
+        IUserRepository userRepository) : INotificationHandler<MessageReceived>
     {
         public async Task Handle(MessageReceived notification, CancellationToken cancellationToken)
         {
@@ -23,10 +26,10 @@ namespace MlkAdmin._2_Application.Notifications.MessageReceived
 
                 if (socketGuildUser.Id == 949714170453053450 && socketUserMessage.HasStringPrefix("$mlk:", ref argPos))
                 {
-                    string command = notification.SocketMessage.Content[argPos..];
+                    string[] command = notification.SocketMessage.Content[argPos..].Split(" ");
                     string title = "ᴍᴀʟᴇɴᴋɪᴇ 🠒 ᴄᴏᴍᴍᴀɴᴅ";
 
-                    switch (command)
+                    switch (command[0])
                     {
                         case "rm":
 
@@ -37,6 +40,22 @@ namespace MlkAdmin._2_Application.Notifications.MessageReceived
 
                             IEnumerable<IMessage> messages = await textChannel.GetMessagesAsync(limit: 100).FlattenAsync();
                             await textChannel.DeleteMessagesAsync(messages);
+
+                            break;
+
+                        case "lobbyname":
+
+                            string lobbyName = "";
+
+                            for(int i = 1; i < command.Length; i++)
+                            {
+                                lobbyName += " " + command[i];
+                            }
+
+                            User? user = await userRepository.GetDbUserAsync(notification.SocketMessage.Author.Id);
+                            user.LobbyName = lobbyName;
+
+                            await userRepository.UpsertUserAsync(user);
 
                             break;
 

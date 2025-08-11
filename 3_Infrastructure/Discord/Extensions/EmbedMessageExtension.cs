@@ -1,15 +1,12 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using MlkAdmin._2_Application.DTOs;
-using MlkAdmin.Infrastructure.Cache;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
 namespace MlkAdmin._3_Infrastructure.Discord.Extensions
 {
     public class EmbedMessageExtension(
-        EmotesCache emotesCache,
         JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider,
-        JsonDiscordPicturesProvider jsonDiscordPicturesProvider,
         JsonDiscordChannelsMapProvider jsonChannelsMapProvider)
     {
         private readonly string? developer = jsonDiscordConfigurationProvider.DevName;
@@ -22,6 +19,16 @@ namespace MlkAdmin._3_Infrastructure.Discord.Extensions
                 .WithDescription(embedDto.Description)
                 .WithFooter(developer, avatarUrl)
                 .WithColor(50, 50, 53)  
+                .WithImageUrl(embedDto.PicturesUrl)
+                .Build();
+        }
+
+        public Embed GetStaticMessageEmbedTamplate(EmbedDto embedDto)
+        {
+            return new EmbedBuilder()
+                .WithTitle(embedDto.Title)
+                .WithDescription(embedDto.Description)
+                .WithColor(50, 50, 53)
                 .WithImageUrl(embedDto.PicturesUrl)
                 .Build();
         }
@@ -68,25 +75,6 @@ namespace MlkAdmin._3_Infrastructure.Discord.Extensions
                 .Build();
 
             return embed;
-        }
-       
-        public Embed GetAutoLobbyNamingMessage()
-        {
-            GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
-
-            return new EmbedBuilder()
-                .WithTitle("ᴍʟᴋ - ɸунᴋции")
-                .WithDescription($"### ᴋноᴨᴋи\n" +
-                    $"**`Моя комната`** - по этой кнопочке Вы можете предложить имя создаваемой вами личной комнаты!" +
-                    "\n > Когда вы заходите в канал **➕ | ᴄоздᴀᴛь ᴧобби**, бот автоматически создает вашу личную комнату.\n\n" +
-                    $"**`Обо мне`** - по это кнопочке Вы можете отправить свои данные, но только если доверяете Никитке! " +
-                    "\n > **Дата рождения** нужна, чтобы я знал, когда Вас поздравлять, а **Имя** - более комфортный формат обращение для меня!\n\n" +
-                    $"**`Разраб делай`** - по этой кнопочке вы можете предложить свои квалити оф лайф фичи для сервера!" +
-                    "\n > Хочется **обратной связи** от сообщества и послушать Ваши гениальные идеи, а ну.. и попрогать тоже!" +
-                    $"\n\n {pointEmote} В будущем, при появление новых функций, они будут появляться именно тут.")
-                .WithColor(232, 228, 225)
-                .WithImageUrl(jsonDiscordPicturesProvider.PinterestPictureForAutoLobbyNamingMessageLink)
-                .Build();
         }
        
         public Embed GetUserChoiceEmbedTamplate(SocketUser user, string title, string description)

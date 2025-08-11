@@ -4,13 +4,14 @@ using Microsoft.Extensions.Hosting;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using Microsoft.Extensions.Logging;
 using MlkAdmin.Presentation.DiscordListeners;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MlkAdmin.Presentation.PresentationServices
 {
     public class DiscordBotHostService(
         ILogger <DiscordBotHostService> logger,
         DiscordSocketClient discordClient,
-        DiscordEventsListener discordEventsController,
+        IServiceProvider serviceProvider,
         JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider) : IHostedService
     {
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -24,6 +25,8 @@ namespace MlkAdmin.Presentation.PresentationServices
                 return;
             }
 
+            using var scope = serviceProvider.CreateScope();
+            DiscordEventsListener discordEventsController = scope.ServiceProvider.GetRequiredService<DiscordEventsListener>();
             discordEventsController.SubscribeOnEvents(discordClient);
 
             await discordClient.LoginAsync(TokenType.Bot, MlkAdminBotApiKey);
@@ -36,7 +39,7 @@ namespace MlkAdmin.Presentation.PresentationServices
         {
             await discordClient.StopAsync();
 
-            logger.LogInformation("Bot is shutting down...");
+            logger.LogInformation("Bot is shutting down.");
         }
     }
 }

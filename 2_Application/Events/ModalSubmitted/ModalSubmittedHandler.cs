@@ -3,11 +3,11 @@ using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers;
 
-namespace MlkAdmin._2_Application.Notifications.ModalSubmitted
+namespace MlkAdmin._2_Application.Events.ModalSubmitted
 {
     class ModalSubmittedHandler(
         ILogger<ModalSubmittedHandler> logger,
-        TextMessageManager textMessageManager) : INotificationHandler<ModalSubmitted>
+        TextChannelManager textChannelManager) : INotificationHandler<ModalSubmitted>
     {
         public async Task Handle(ModalSubmitted notification, CancellationToken cancellationToken)
         {
@@ -24,7 +24,7 @@ namespace MlkAdmin._2_Application.Notifications.ModalSubmitted
                 {
                     case "personal_data_modal":
 
-                        await textMessageManager.SendUserInputToDeveloper(
+                        await textChannelManager.SendUserInputToDeveloper(
                             notification.Modal, 
                             "Персональные данные", 
                             "Обо мне",
@@ -33,7 +33,7 @@ namespace MlkAdmin._2_Application.Notifications.ModalSubmitted
                         break;
 
                     case "lobby_naming_modal":
-                        await textMessageManager.SendUserInputToDeveloper(
+                        await textChannelManager.SendUserInputToDeveloper(
                             notification.Modal, 
                             "Запрос на имя комнаты",
                             "Моя комната",
@@ -41,7 +41,7 @@ namespace MlkAdmin._2_Application.Notifications.ModalSubmitted
                         break;
 
                     case "feedback_modal":
-                        await textMessageManager.SendUserInputToDeveloper(
+                        await textChannelManager.SendUserInputToDeveloper(
                             notification.Modal,
                             "Обратная связь",
                             "Разраб делай",

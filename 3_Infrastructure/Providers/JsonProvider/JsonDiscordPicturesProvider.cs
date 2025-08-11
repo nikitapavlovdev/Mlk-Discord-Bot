@@ -16,6 +16,7 @@ namespace MlkAdmin._3_Infrastructure.Providers.JsonProvider
         public string? PinterestPictureForAuMessageLink => RootDiscordPictures.Pinterest.ForMessage.AuMessage;
         public string? PinterestPictureForAutoLobbyNamingMessageLink => RootDiscordPictures.Pinterest.ForMessage.AutoLobbyNamingMessage;
         public string? PinterestPictureForRulesLink => RootDiscordPictures.Pinterest.ForMessage.RulesBanner;
+        public string? PinterestPictureForServerPeculiaritiesImg => RootDiscordPictures.Pinterest.ForMessage.ServerPeculiaritiesImg;
 
         #endregion
 

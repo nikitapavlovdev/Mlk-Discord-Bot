@@ -3,13 +3,14 @@ using Discord.WebSocket;
 using MlkAdmin._1_Domain.Enums;
 using MlkAdmin.Infrastructure.Cache;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MlkAdmin._3_Infrastructure.Cache
 {
     public class EmbedDescriptionsCache(
+        IServiceProvider serviceProvider,
         RolesCache rolesCache, 
-        EmotesCache emotesCache,
-        JsonDiscordChannelsMapProvider jsonChannelsMapProvider )
+        EmotesCache emotesCache)
     {
         public string GetDiscriptionForMainRoles()
         {
@@ -88,6 +89,9 @@ namespace MlkAdmin._3_Infrastructure.Cache
         }
         public string GetDescriptionForAutorization()
         {
+            using var scope = serviceProvider.CreateScope();
+            JsonDiscordChannelsMapProvider jsonChannelsMapProvider = scope.ServiceProvider.GetRequiredService<JsonDiscordChannelsMapProvider>();
+
             GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
 
             string description = "Обязательно к ознакомлению:\n" +
@@ -102,15 +106,34 @@ namespace MlkAdmin._3_Infrastructure.Cache
             GuildEmote? pointEmote = emotesCache.GetEmote("grey_dot");
 
             string description = $"### ᴋноᴨᴋи\n" +
-                    $"**`Моя комната`** - по этой кнопочке Вы можете предложить имя создаваемой вами личной комнаты!" +
+                    $"**\"Моя комната\"** - по этой кнопочке Вы можете предложить имя создаваемой вами личной комнаты!" +
                     "\n > Когда вы заходите в канал **➕ | ᴄоздᴀᴛь ᴧобби**, бот автоматически создает вашу личную комнату.\n\n" +
-                    $"**`Обо мне`** - по это кнопочке Вы можете отправить свои данные, но только если доверяете Никитке! " +
+                    $"**\"Обо мне\"** - по это кнопочке Вы можете отправить свои данные, но только если доверяете Никитке! " +
                     "\n > **Дата рождения** нужна, чтобы я знал, когда Вас поздравлять, а **Имя** - более комфортный формат обращение для меня!\n\n" +
-                    $"**`Разраб делай`** - по этой кнопочке вы можете предложить свои квалити оф лайф фичи для сервера!" +
+                    $"**\"Разраб делай\"** - по этой кнопочке вы можете предложить свои квалити оф лайф фичи для сервера!" +
                     "\n > Хочется **обратной связи** от сообщества и послушать Ваши гениальные идеи, а ну.. и попрогать тоже!" +
                     $"\n\n {pointEmote} В будущем, при появление новых функций, они будут появляться именно тут.";
 
             return description;
+        }
+        public string GetDescriptionForServerPeculiarities()
+        {
+            return $"### 1. Случайное название авто-лобби\n" +
+                $"При создании личной комнаты, с малой долей вероятности Вам может выпасть случайное название создаваемого канала!\n\n" +
+                $"Уникальные названия и шанс замены имени комнаты: \n" +
+                $"> — _million amnymchik kid c шансом **1 к 1.000.000**_;\n" +
+                $"> — _one hundred thousand kid с шансом **1 к 100.000**_;\n" +
+                $"> — _one thousand kid с шансом **1 к 1.000**_;\n\n" +
+                $"Идея в том, что если Вам выпадет одно из этих названий - Вы получаете соответствующую награду! Проблема, что она должна быть ценна из-за редкости события, но пока я ничего не смог придумать. Как заработаю денег, так сразу!\n" +
+                $"### 2. Гача Бот\n" +
+                $"Дабы разнообразить нашу деятельность внутри Discord было принято решение разработать гачи-бота, через который можно внутри сервера крутить персонажей!\n\n" +
+                $"Бот позволяет: \n" +
+                $"> — _накапливать валюту путем активности на сервере_\n" +
+                $"> — _тратить валюту на пулы_\n" +
+                $"> — _просматривать коллекцию персонажей_\n" +
+                $"> — _получать уникальные роли сервера за коллекцию персонажей_\n" +
+                $"> — _и многое другое!_\n\n" +
+                $"Идея в том, чтобы просто разнообразить времяпровождение на сервере путем внедрения геймификации опираясь на излюбленный концепт гача-игр!";
         }
     }
 }

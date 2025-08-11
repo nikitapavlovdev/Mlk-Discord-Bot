@@ -1,17 +1,20 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using MlkAdmin._2_Application.Managers.UserManagers;
 using MlkAdmin._2_Application.Managers.RolesManagers;
 using MlkAdmin._2_Application.Managers.EmotesManagers;
-using MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
+using MlkAdmin._1_Domain.Interfaces.TextMessages;
+using MlkAdmin._2_Application.Managers.Users;
+using MlkAdmin._2_Application.Managers.Channels.VoiceChannels;
 
-namespace MlkAdmin._2_Application.Notifications.GuildAvailable
+namespace MlkAdmin._2_Application.Events.GuildAvailable
 {   
     class GuildAvailableHandler(
         ILogger<GuildAvailableHandler> logger,
-        TextMessageManager textMessageManager,
+        IDynamicMessageCenter dynamicMessageCenter,
+        UserSyncService userSyncService,
         VoiceChannelsManager voiceChannelsManager,
+        VoiceChannelSyncServices voiceChannelSyncServices,
         RolesManager rolesManager,
         EmotesManager emotesManager) : INotificationHandler<GuildAvailable>
     {
@@ -20,10 +23,12 @@ namespace MlkAdmin._2_Application.Notifications.GuildAvailable
             try
             {
                 await Task.WhenAll(
-                    textMessageManager.GuildTextChannelsInitialization(notification.SocketGuild),
-                    voiceChannelsManager.GuildVoiceChannelsInitialization(notification.SocketGuild),
+                    voiceChannelsManager.UpsertGuildVoiceChannelsAsync(notification.SocketGuild),
                     rolesManager.GuildRolesInitialization(notification.SocketGuild),
-                    emotesManager.EmotesInitialization(notification.SocketGuild)
+                    emotesManager.EmotesInitialization(notification.SocketGuild),
+                    dynamicMessageCenter.UpdateAllDM(notification.SocketGuild.Id),
+                    userSyncService.SyncUsersAsync(notification.SocketGuild),
+                    voiceChannelSyncServices.SyncVoiceChannelsDbWithGuildAsync(notification.SocketGuild)
                 );
             }
             catch (Exception ex)

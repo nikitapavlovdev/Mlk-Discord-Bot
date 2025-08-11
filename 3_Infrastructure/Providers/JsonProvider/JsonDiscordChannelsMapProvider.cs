@@ -20,7 +20,7 @@ namespace MlkAdmin._3_Infrastructure.Providers.JsonProvider
         public ulong RulesChannelId => RootChannel.Channels.TextChannels.ServerCategory.Rules.Id;
         public string? RulesChannelHttps => RootChannel.Channels.TextChannels.ServerCategory.Rules.Https;
         public ulong RolesChannelId => RootChannel.Channels.TextChannels.ServerCategory.Roles.Id;
-        public string? RolesChannelHttps => RootChannel.Channels.TextChannels.ServerCategory.Rules.Https;
+        public string? RolesChannelHttps => RootChannel.Channels.TextChannels.ServerCategory.Roles.Https;
         public ulong AutoGameLobbyId => RootChannel.Channels.VoiceChannels.AutoLobby.AutoGamesLobby.Id;
         #endregion
 
