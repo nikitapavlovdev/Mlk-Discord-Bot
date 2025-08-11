@@ -86,7 +86,7 @@ namespace MlkAdmin.Presentation.DI
 
             return services;
         }
-        public static IServiceCollection AddInfastructureServices(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
             services.AddSingleton<RolesCache>();
             services.AddSingleton<EmotesCache>();

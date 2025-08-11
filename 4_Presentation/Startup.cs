@@ -13,7 +13,7 @@ namespace MlkAdmin.Presentation
                 {
                     services.AddDomainServices();
                     services.AddApplicationServices();
-                    services.AddInfastructureServices();
+                    services.AddInfrastructureServices();
                     services.AddPresentationServices();
                 })
                 .ConfigureLogging((logging) =>
