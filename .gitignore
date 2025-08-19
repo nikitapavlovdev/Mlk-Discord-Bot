@@ -406,3 +406,5 @@ FodyWeavers.xsd
 /3_Infrastructure/Configuration/DiscordPictures.json
 /3_Infrastructure/Configuration/DiscordRoles.json
 /3_Infrastructure/Configuration/DiscordUsersLobby.json
+/mlkadmin.db
+/mlkadmin.dn
