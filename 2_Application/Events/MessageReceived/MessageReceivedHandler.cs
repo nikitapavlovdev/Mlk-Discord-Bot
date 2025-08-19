@@ -6,6 +6,7 @@ using MlkAdmin._3_Infrastructure.Discord.Extensions;
 using MlkAdmin._1_Domain.Interfaces;
 using MlkAdmin._1_Domain.Entities;
 using Discord;
+using AniLiberty.NET.Client;
 
 namespace MlkAdmin._2_Application.Events.MessageReceived
 {
@@ -58,7 +59,6 @@ namespace MlkAdmin._2_Application.Events.MessageReceived
                             await userRepository.UpsertUserAsync(user);
 
                             break;
-
 
                         default:
 

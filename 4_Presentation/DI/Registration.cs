@@ -36,6 +36,7 @@ using Microsoft.EntityFrameworkCore;
 using MlkAdmin._1_Domain.Interfaces;
 using MlkAdmin._2_Application.Managers.Users;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannels;
+using AniLiberty.NET.Client;
 
 namespace MlkAdmin.Presentation.DI
 {
@@ -106,6 +107,7 @@ namespace MlkAdmin.Presentation.DI
             services.AddScoped<CommandService>();
 
             services.AddSingleton(new DiscordSocketClient(new() { GatewayIntents = GatewayIntents.All}));
+            services.AddSingleton(new AnilibertyClient(new HttpClient()));
 
             services.AddJsonProvider<JsonDiscordChannelsMapProvider>("../../../3_Infrastructure/Configuration/DiscordChannelsMap.json");
             services.AddJsonProvider<JsonDiscordConfigurationProvider>("../../../3_Infrastructure/Configuration/DiscordConfiguration.json");
