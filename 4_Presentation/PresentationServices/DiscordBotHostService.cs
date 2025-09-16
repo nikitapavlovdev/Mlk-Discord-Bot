@@ -5,6 +5,7 @@ using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using Microsoft.Extensions.Logging;
 using MlkAdmin.Presentation.DiscordListeners;
 using Microsoft.Extensions.DependencyInjection;
+using MlkAdmin._4_Presentation.Discord;
 
 namespace MlkAdmin.Presentation.PresentationServices
 {
@@ -28,6 +29,8 @@ namespace MlkAdmin.Presentation.PresentationServices
             using var scope = serviceProvider.CreateScope();
             DiscordEventsListener discordEventsController = scope.ServiceProvider.GetRequiredService<DiscordEventsListener>();
             discordEventsController.SubscribeOnEvents(discordClient);
+
+            Console.WriteLine("Подключены команды");
 
             await discordClient.LoginAsync(TokenType.Bot, MlkAdminBotApiKey);
             await discordClient.StartAsync();

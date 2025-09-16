@@ -15,6 +15,7 @@ using MlkAdmin._2_Application.Events.ReactionAdded;
 using MlkAdmin._2_Application.Events.UserUpdated;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using MlkAdmin._2_Application.Events.SlashCommandExecuted;
 
 namespace MlkAdmin.Presentation.DiscordListeners
 {
@@ -36,6 +37,7 @@ namespace MlkAdmin.Presentation.DiscordListeners
             client.MessageReceived += OnMessageReceived;
             client.ReactionAdded += OnReactionAdded;
             client.GuildMemberUpdated += GuildMemberUpdated;
+            client.SlashCommandExecuted += OnSlashCommandExecuted;
         }
         private async Task OnUserJoined(SocketGuildUser socketGuildUser)
         {
@@ -203,6 +205,21 @@ namespace MlkAdmin.Presentation.DiscordListeners
                 var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
                 await mediator.Publish(new GuildMemberUpdated(oldUserState, newUserState));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnUserUpdated] Error - {Message}", ex.Message);
+
+            }
+        }
+        private async Task OnSlashCommandExecuted(SocketSlashCommand socketSlashCommand)
+        {
+            try
+            {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                await mediator.Publish(new SlashCommandExecuted(socketSlashCommand));
             }
             catch (Exception ex)
             {

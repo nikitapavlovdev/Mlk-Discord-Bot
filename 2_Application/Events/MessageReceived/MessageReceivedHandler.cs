@@ -25,7 +25,7 @@ namespace MlkAdmin._2_Application.Events.MessageReceived
 
                 int argPos = 0;
 
-                if (socketGuildUser.Id == 949714170453053450 && socketUserMessage.HasStringPrefix("$mlk:", ref argPos))
+                if (/*socketGuildUser.Id == 949714170453053450 && */socketUserMessage.HasStringPrefix("$mlk:", ref argPos))
                 {
                     string[] command = notification.SocketMessage.Content[argPos..].Split(" ");
                     string title = "ᴍᴀʟᴇɴᴋɪᴇ 🠒 ᴄᴏᴍᴍᴀɴᴅ";

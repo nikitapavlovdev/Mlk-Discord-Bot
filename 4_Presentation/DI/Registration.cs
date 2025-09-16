@@ -21,6 +21,7 @@ using MlkAdmin._2_Application.Events.SelectMenuExecuted;
 using MlkAdmin._2_Application.Events.UserJoined;
 using MlkAdmin._2_Application.Events.UserLeft;
 using MlkAdmin._2_Application.Events.UserVoiceStateUpdated;
+using MlkAdmin._2_Application.Events.SlashCommandExecuted;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using MlkAdmin._3_Infrastructure.Discord.Extensions;
 using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
@@ -37,6 +38,7 @@ using MlkAdmin._1_Domain.Interfaces;
 using MlkAdmin._2_Application.Managers.Users;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannels;
 using AniLiberty.NET.Client;
+using MlkAdmin._4_Presentation.Discord;
 
 namespace MlkAdmin.Presentation.DI
 {
@@ -57,8 +59,8 @@ namespace MlkAdmin.Presentation.DI
                 typeof(ReadyHandler).Assembly,
                 typeof(MessageReceivedHandler).Assembly,
                 typeof(ReactionAddedHandler).Assembly,
-                typeof(GuildMemberUpdated).Assembly));
-
+                typeof(GuildMemberUpdated).Assembly, 
+                typeof(SlashCommandExecutedHandler).Assembly));
 
             services.AddScoped<RolesManager>();
             services.AddScoped<AutorizationManager>();
@@ -105,6 +107,7 @@ namespace MlkAdmin.Presentation.DI
 
             services.AddScoped<DiscordEventsListener>();
             services.AddScoped<CommandService>();
+            services.AddScoped<DiscordSlashCommandAdder>();
 
             services.AddSingleton(new DiscordSocketClient(new() { GatewayIntents = GatewayIntents.All}));
             services.AddSingleton(new AnilibertyClient(new HttpClient()));
