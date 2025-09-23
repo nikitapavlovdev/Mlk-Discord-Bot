@@ -4,15 +4,14 @@ using Discord.Commands;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._3_Infrastructure.Discord.Extensions;
 using MlkAdmin._1_Domain.Interfaces;
-using MlkAdmin._1_Domain.Entities;
 using Discord;
-using AniLiberty.NET.Client;
+using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
 namespace MlkAdmin._2_Application.Events.MessageReceived
 {
     public class MessageReceivedHandler(
         ILogger<MessageReceivedHandler> logger,
-        IUserRepository userRepository) : INotificationHandler<MessageReceived>
+        JsonDiscordRolesProvider jsonDiscordRolesProvider) : INotificationHandler<MessageReceived>
     {
         public async Task Handle(MessageReceived notification, CancellationToken cancellationToken)
         {
@@ -25,10 +24,12 @@ namespace MlkAdmin._2_Application.Events.MessageReceived
 
                 int argPos = 0;
 
-                if (/*socketGuildUser.Id == 949714170453053450 && */socketUserMessage.HasStringPrefix("$mlk:", ref argPos))
+                if (socketGuildUser.Roles.Any(x => x.Id == jsonDiscordRolesProvider.AdminRoleId) || 
+                    socketGuildUser.Roles.Any(x => x.Id == jsonDiscordRolesProvider.HeadRoleId))
                 {
+                    if (!socketUserMessage.HasStringPrefix("$adm:", ref argPos)) return;
+
                     string[] command = notification.SocketMessage.Content[argPos..].Split(" ");
-                    string title = "ᴍᴀʟᴇɴᴋɪᴇ 🠒 ᴄᴏᴍᴍᴀɴᴅ";
 
                     switch (command[0])
                     {
@@ -44,28 +45,7 @@ namespace MlkAdmin._2_Application.Events.MessageReceived
 
                             break;
 
-                        case "lobbyname":
-
-                            string lobbyName = "";
-
-                            for(int i = 1; i < command.Length; i++)
-                            {
-                                lobbyName += " " + command[i];
-                            }
-
-                            User? user = await userRepository.GetDbUserAsync(notification.SocketMessage.Author.Id);
-                            user.LobbyName = lobbyName;
-
-                            await userRepository.UpsertUserAsync(user);
-
-                            break;
-
                         default:
-
-                            await socketUserMessage.Channel.SendMessageAsync(
-                                embed: EmbedMessageExtension.GetDefaultEmbedTemplate(title, "> Unknown command"));
-
-                            await socketUserMessage.DeleteAsync();
 
                             break;
                     }

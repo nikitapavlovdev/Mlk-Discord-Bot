@@ -11,7 +11,6 @@ namespace MlkAdmin._2_Application.Managers.Components
             return Task.FromResult(type switch
             {
                 DynamicMessageType.NameColor => selectionMenuExtension.GetColorSwitchSelectionMenu(),
-                DynamicMessageType.Features => MessageComponentsExtension.GetServerHubFeatuesButtons(),
                 _ => throw new ArgumentOutOfRangeException(nameof(type), $"Unknown type: {type}")
             });
         }

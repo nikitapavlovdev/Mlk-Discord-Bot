@@ -16,34 +16,27 @@ namespace MlkAdmin._2_Application.Managers.Embeds
             {
                 DynamicMessageType.Authorization => new EmbedDto()
                 {
-                    Title = "ᴀᴜᴛᴏʀɪᴢᴀᴛɪᴏɴ",
+                    Title = "Авторизация",
                     Description = embedDescriptionsCache.GetDescriptionForAutorization(),
                     PicturesUrl = jsonDiscordPicturesProvider.PinterestPictureForAuMessageLink
                 },
 
-                DynamicMessageType.Features => new EmbedDto()
-                {
-                    Title = "ꜰᴇᴀᴛᴜʀᴇs",
-                    Description = embedDescriptionsCache.GetDescriptionForFeatures(),
-                    PicturesUrl = jsonDiscordPicturesProvider.PinterestPictureForAutoLobbyNamingMessageLink
-                },
-
                 DynamicMessageType.Rules => new EmbedDto()
                 {
-                    Title = "ᴍᴀʟᴇɴᴋɪᴇ ʀᴜʟᴇs",
+                    Title = "Правила",
                     Description = embedDescriptionsCache.GetDescriptionForRules(),
                     PicturesUrl = jsonDiscordPicturesProvider.PinterestPictureForRulesLink
                 },
 
                 DynamicMessageType.Roles => new EmbedDto()
                 {
-                    Title = "ᴍᴀʟᴇɴᴋɪᴇ ʀᴏʟᴇs",
+                    Title = "Роли",
                     Description = embedDescriptionsCache.GetDiscriptionForMainRoles(), 
                 },
 
                 DynamicMessageType.NameColor => new EmbedDto()
                 {
-                    Title = "ɴɪᴄᴋɴᴀᴍᴇ ᴄᴏʟᴏʀ",
+                    Title = "Цвет имени",
                     Description = embedDescriptionsCache.GetDescriptionForNameColor(),
                 },
 

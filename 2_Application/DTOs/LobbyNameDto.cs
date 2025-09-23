@@ -2,7 +2,7 @@
 {
     public class LobbyNameResponse
     {
-        public string LobbyName { get; set; } = string.Empty;
+        public string? LobbyName { get; set; } = string.Empty;
         public bool IsSuccess { get; set; }
         public string Status { get; set; } = string.Empty;
         public string Message {  get; set; } = string.Empty;

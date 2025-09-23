@@ -22,6 +22,8 @@ namespace MlkAdmin._3_Infrastructure.Providers.JsonProvider
         public ulong RolesChannelId => RootChannel.Channels.TextChannels.ServerCategory.Roles.Id;
         public string? RolesChannelHttps => RootChannel.Channels.TextChannels.ServerCategory.Roles.Https;
         public ulong AutoGameLobbyId => RootChannel.Channels.VoiceChannels.AutoLobby.AutoGamesLobby.Id;
+        public ulong BotCommandChannelId => RootChannel.Channels.TextChannels.ServerCategory.BotCommands.Id;
+        public string? BotCommandChannelHttps => RootChannel.Channels.TextChannels.ServerCategory.BotCommands.Https;
         #endregion
 
         public JsonDiscordChannelsMapProvider(string filePath, ILogger<JsonDiscordChannelsMapProvider> logger)

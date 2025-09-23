@@ -113,12 +113,14 @@ namespace MlkAdmin._3_Infrastructure.Discord.Extensions
 
             return embed;
         }
-        public static Embed GetDefaultEmbedTemplate(string title, string descriptions) 
+        public static Embed GetDefaultEmbedTemplate(string title, string descriptions, Color color = default) 
         {
+            if (color == default) { color = new Color(50, 50, 53); }
+
             return new EmbedBuilder()
                 .WithTitle(title)
                 .WithDescription(descriptions)
-                .WithColor(0, 193, 255)
+                .WithColor(color)
                 .WithCurrentTimestamp()
                 .Build();
         }

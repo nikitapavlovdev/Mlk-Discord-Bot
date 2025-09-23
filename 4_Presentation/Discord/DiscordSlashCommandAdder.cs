@@ -16,11 +16,16 @@ namespace MlkAdmin._4_Presentation.Discord
         {
             try
             {
+                ulong guildId = jsonDiscordConfigurationProvider.GuildId;
+
+                await client.Rest.BulkOverwriteGuildCommands([], guildId);
+
+
                 SlashGuildCommands.Add(AddLobbyNameCommand());
 
                 foreach (SlashCommandProperties? command in SlashGuildCommands)
                 {
-                    await client.Rest.CreateGuildCommand(command, jsonDiscordConfigurationProvider.GuildId);
+                    await client.Rest.CreateGuildCommand(command, guildId);
                 }
 
             }
@@ -34,9 +39,9 @@ namespace MlkAdmin._4_Presentation.Discord
             try
             {
                 return new SlashCommandBuilder()
-                .WithName("set_lobby_name")
+                .WithName("set_lobby")
                 .WithDescription("Настраивает имя для создаваемой вами личной комнаты.")
-                .AddOption("lobbyname", ApplicationCommandOptionType.String, "Имя комнаты", isRequired: false)
+                .AddOption("name", ApplicationCommandOptionType.String, "Имя комнаты", isRequired: true)
                 .Build();
             }
             catch (Exception ex)

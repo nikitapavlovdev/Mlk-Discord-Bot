@@ -23,7 +23,6 @@ namespace MlkAdmin._2_Application.Managers.Messages
         {
             await Task.WhenAll(
                 SendMessageWithAutorization(guildId),
-                SendMessageWithFeatures(guildId),
                 SendMessageWithRules(guildId),
                 SendMessageWithGuildRoles(guildId),
                 SendMessageWithNameColor(guildId));
@@ -63,16 +62,6 @@ namespace MlkAdmin._2_Application.Managers.Messages
                 MessageId = jsonDiscordDynamicMessagesProvider.AuMessageId,
             },
             await embedDtoCreator.GetEmbedDto(DynamicMessageType.Authorization));
-        }
-        private async Task SendMessageWithFeatures(ulong guildId)
-        {
-            await SendOrUpdateAsync(new DynamicMessageDto()
-            {
-                GuildId = guildId,
-                ChannelId = jsonChannelsMapProvider.HubChannelId,
-                MessageId = jsonDiscordDynamicMessagesProvider.FeaturesMessageId,
-            },
-           await embedDtoCreator.GetEmbedDto(DynamicMessageType.Features), await componentsManager.GetMessageComponent(DynamicMessageType.Features));
         }
         private async Task SendMessageWithRules(ulong guildId)
         {

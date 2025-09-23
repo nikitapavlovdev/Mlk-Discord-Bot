@@ -96,7 +96,7 @@ namespace MlkAdmin.Presentation.DI
             services.AddSingleton<EmbedDescriptionsCache>();
             services.AddDbContext<MlkAdminDbContext>(options =>
             {
-                options.UseSqlite("Data Source =D:\\Programming Life\\It\\Bots\\MlkBot\\AdminBot\\mlkadmin.db");
+                options.UseSqlite("Data Source =D:\\Lifes\\Programming Life\\It\\Bots\\MlkBot\\AdminBot\\mlkadmin.db");
             });
 
             return services;

@@ -12,7 +12,6 @@ namespace MlkAdmin._2_Application.Commands
 			try
 			{
                 User? user = await userRepository.GetDbUserAsync(request.UserId);
-                user.LobbyName = request.LobbyName;
 
                 await userRepository.UpsertUserAsync(user);
 
