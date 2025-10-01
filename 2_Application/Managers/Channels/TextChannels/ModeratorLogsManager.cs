@@ -5,14 +5,19 @@ using Discord.WebSocket;
 
 namespace MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers
 {
-    public class ModeratorLogsManager(DiscordSocketClient discordSocketClient) : IModeratorLogsSender
+    public class ModeratorLogsManager(DiscordSocketClient discordSocketClient,
+        EmbedMessageExtension embedMessageExtension) : IModeratorLogsSender
     {
         public async Task SendLogMessageAsync(LogMessageDto logMessageDto)
         {
             SocketGuild guild = discordSocketClient.GetGuild(logMessageDto.GuildId);
             SocketTextChannel? logsChannel = guild.TextChannels.FirstOrDefault(x => x.Id == logMessageDto.ChannelId);
 
-            await logsChannel.SendMessageAsync(embed: EmbedMessageExtension.GetDefaultEmbedTemplate(logMessageDto.Title, logMessageDto.Description));
+            await logsChannel.SendMessageAsync(embed: embedMessageExtension.CreateEmbed(new()
+            {
+                Title = logMessageDto.Title,
+                Description = logMessageDto.Description,
+            }));
         }
     }
 }

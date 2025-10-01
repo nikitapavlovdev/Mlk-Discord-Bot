@@ -13,8 +13,8 @@ namespace MlkAdmin._2_Application.Managers.Messages
     public class DynamicMessageManager(
         ILogger<DynamicMessageManager> logger,
         IEmbedDtoCreator embedDtoCreator,
+        EmbedMessageExtension embedMessageExtension,
         DiscordSocketClient client,
-        EmbedMessageExtension embedExtension,
         JsonDiscordChannelsMapProvider jsonChannelsMapProvider,
         JsonDiscordDynamicMessagesProvider jsonDiscordDynamicMessagesProvider,
         ComponentsManager componentsManager) : IDynamicMessageCenter
@@ -39,13 +39,13 @@ namespace MlkAdmin._2_Application.Managers.Messages
                 {
                     await sentMessage.ModifyAsync(message =>
                     {
-                        message.Embed = embedExtension.GetDynamicMessageEmbedTamplate(embedDto);
+                        message.Embed = embedMessageExtension.CreateEmbed(embedDto);
                         message.Components = messageComponent;
                     });
                 }
                 else
                 {
-                    await channel.SendMessageAsync(embed: embedExtension.GetDynamicMessageEmbedTamplate(embedDto), components: messageComponent);
+                    await channel.SendMessageAsync(embed: embedMessageExtension.CreateEmbed(embedDto), components: messageComponent);
                 } 
             }
             catch (Exception ex)

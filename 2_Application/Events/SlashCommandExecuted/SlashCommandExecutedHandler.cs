@@ -10,7 +10,8 @@ namespace MlkAdmin._2_Application.Events.SlashCommandExecuted
     public class SlashCommandExecutedHandler(
 		ILogger<SlashCommandExecutedHandler> logger,
 		IMediator mediator, 
-		JsonDiscordChannelsMapProvider mapProvider) : INotificationHandler<SlashCommandExecuted>
+		JsonDiscordChannelsMapProvider mapProvider,
+        EmbedMessageExtension embedMessageExtension) : INotificationHandler<SlashCommandExecuted>
     {
         public async Task Handle(SlashCommandExecuted notification, CancellationToken cancellationToken)
         {
@@ -19,10 +20,13 @@ namespace MlkAdmin._2_Application.Events.SlashCommandExecuted
 				if(notification.SocketSlashCommand.Channel.Id != mapProvider.BotCommandChannelId)
 				{
 					await notification.SocketSlashCommand.RespondAsync(
-						embed: EmbedMessageExtension.GetDefaultEmbedTemplate(
-							title: "Кок-блок",
-							descriptions: $"Команды бота можно вызывать только в канале {mapProvider.BotCommandChannelHttps}.", 
-							color: Discord.Color.Red),
+						embed: embedMessageExtension.CreateEmbed(new EmbedDto() 
+
+                        {
+							Title = "Кок-блок",
+                            Description = $"Команды бота можно вызывать только в канале {mapProvider.BotCommandChannelHttps}.",
+                            Color = Discord.Color.Red
+                        }),
 						ephemeral: true);
 
 					return;
@@ -39,19 +43,22 @@ namespace MlkAdmin._2_Application.Events.SlashCommandExecuted
 						}, new());
 
                         await notification.SocketSlashCommand.RespondAsync(
-							embed: EmbedMessageExtension.GetDefaultEmbedTemplate(
-								title: "", 
-								descriptions: $"{response.Message}", 
-								color: response.IsSuccess ? Discord.Color.Green : Discord.Color.Red), 
+							embed: embedMessageExtension.CreateEmbed(new EmbedDto()
+							{
+								Description = response.Message,
+                                Color = response.IsSuccess ? Discord.Color.Green : Discord.Color.Red
+                            }), 
 							ephemeral: false);
                         break;
 
 					default:
                         await notification.SocketSlashCommand.RespondAsync(
-							embed: EmbedMessageExtension.GetDefaultEmbedTemplate(
-								title: "Технические шоколадки", 
-								descriptions: "Команда пока что в разработке", 
-								color: Discord.Color.Default),
+							embed: embedMessageExtension.CreateEmbed(new EmbedDto()
+							{
+								Title = "Технические шоколадки",
+								Description = "Команда пока что в разработке",
+                                Color = Discord.Color.Default
+                            }),
 							ephemeral: true);
                         break;
 				}

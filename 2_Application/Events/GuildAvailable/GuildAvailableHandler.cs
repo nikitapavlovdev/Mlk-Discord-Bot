@@ -4,15 +4,15 @@ using MlkAdmin._2_Application.Managers.RolesManagers;
 using MlkAdmin._2_Application.Managers.EmotesManagers;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
 using MlkAdmin._1_Domain.Interfaces.TextMessages;
-using MlkAdmin._2_Application.Managers.Users;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannels;
+using MlkAdmin._1_Domain.Interfaces;
 
 namespace MlkAdmin._2_Application.Events.GuildAvailable
 {   
     class GuildAvailableHandler(
         ILogger<GuildAvailableHandler> logger,
         IDynamicMessageCenter dynamicMessageCenter,
-        UserSyncService userSyncService,
+        IUserSyncService userSyncService,
         VoiceChannelsManager voiceChannelsManager,
         VoiceChannelSyncServices voiceChannelSyncServices,
         RolesManager rolesManager,
@@ -27,7 +27,7 @@ namespace MlkAdmin._2_Application.Events.GuildAvailable
                     rolesManager.GuildRolesInitialization(notification.SocketGuild),
                     emotesManager.EmotesInitialization(notification.SocketGuild),
                     dynamicMessageCenter.UpdateAllDM(notification.SocketGuild.Id),
-                    userSyncService.SyncUsersAsync(notification.SocketGuild),
+                    userSyncService.SyncUsersAsync(notification.SocketGuild.Id),
                     voiceChannelSyncServices.SyncVoiceChannelsDbWithGuildAsync(notification.SocketGuild)
                 );
             }

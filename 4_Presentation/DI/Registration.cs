@@ -5,6 +5,9 @@ using Discord.Commands;
 using MlkAdmin.Presentation.PresentationServices;
 using MlkAdmin.Presentation.DiscordListeners;
 using MlkAdmin.Infrastructure.Cache;
+using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
+using MlkAdmin._1_Domain.Interfaces.TextMessages;
+using MlkAdmin._1_Domain.Interfaces;
 using MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
 using MlkAdmin._2_Application.Managers.EmotesManagers;
@@ -12,33 +15,29 @@ using MlkAdmin._2_Application.Managers.RolesManagers;
 using MlkAdmin._2_Application.Managers.UserManagers;
 using MlkAdmin._2_Application.Events.ButtonExecuted;
 using MlkAdmin._2_Application.Events.GuildAvailable;
+using MlkAdmin._2_Application.Managers.Messages;
 using MlkAdmin._2_Application.Events.Log;
 using MlkAdmin._2_Application.Events.MessageReceived;
 using MlkAdmin._2_Application.Events.ModalSubmitted;
 using MlkAdmin._2_Application.Events.ReactionAdded;
 using MlkAdmin._2_Application.Events.Ready;
+using MlkAdmin._2_Application.Managers.Channels.VoiceChannels;
 using MlkAdmin._2_Application.Events.SelectMenuExecuted;
 using MlkAdmin._2_Application.Events.UserJoined;
 using MlkAdmin._2_Application.Events.UserLeft;
+using MlkAdmin._2_Application.Managers.Users;
 using MlkAdmin._2_Application.Events.UserVoiceStateUpdated;
 using MlkAdmin._2_Application.Events.SlashCommandExecuted;
+using MlkAdmin._2_Application.Managers.Embeds;
+using MlkAdmin._2_Application.Events.UserUpdated;
+using MlkAdmin._2_Application.Managers.Components;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using MlkAdmin._3_Infrastructure.Discord.Extensions;
-using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
-using MlkAdmin._1_Domain.Interfaces.TextMessages;
-using MlkAdmin._2_Application.Managers.Messages;
-using MlkAdmin._2_Application.Managers.Embeds;
 using MlkAdmin._3_Infrastructure.Cache;
-using MlkAdmin._4_Presentation.Extensions;
-using MlkAdmin._2_Application.Managers.Components;
-using MlkAdmin._2_Application.Events.UserUpdated;
 using MlkAdmin._3_Infrastructure.DataBase;
-using Microsoft.EntityFrameworkCore;
-using MlkAdmin._1_Domain.Interfaces;
-using MlkAdmin._2_Application.Managers.Users;
-using MlkAdmin._2_Application.Managers.Channels.VoiceChannels;
-using AniLiberty.NET.Client;
+using MlkAdmin._4_Presentation.Extensions;
 using MlkAdmin._4_Presentation.Discord;
+using Microsoft.EntityFrameworkCore;
 
 namespace MlkAdmin.Presentation.DI
 {
@@ -84,7 +83,7 @@ namespace MlkAdmin.Presentation.DI
             services.AddScoped<IEmbedDtoCreator, EmbedManager>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IVoiceChannelRepository, VoiceChannelRepository>();
-            services.AddScoped<UserSyncService>();
+            services.AddScoped<IUserSyncService, UserSyncService>();
             services.AddScoped<VoiceChannelSyncServices>();
 
             return services;
@@ -110,7 +109,6 @@ namespace MlkAdmin.Presentation.DI
             services.AddScoped<DiscordSlashCommandAdder>();
 
             services.AddSingleton(new DiscordSocketClient(new() { GatewayIntents = GatewayIntents.All}));
-            services.AddSingleton(new AnilibertyClient(new HttpClient()));
 
             services.AddJsonProvider<JsonDiscordChannelsMapProvider>("../../../3_Infrastructure/Configuration/DiscordChannelsMap.json");
             services.AddJsonProvider<JsonDiscordConfigurationProvider>("../../../3_Infrastructure/Configuration/DiscordConfiguration.json");

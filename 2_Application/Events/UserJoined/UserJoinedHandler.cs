@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.RolesManagers;
 using MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers;
+using MlkAdmin._2_Application.DTOs;
+
 using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
@@ -22,7 +24,8 @@ namespace MlkAdmin._2_Application.Events.UserJoined
 
                 await rolesManager.AddNotRegisteredRoleAsync(notification.SocketGuildUser);
                 await textChannelManager.SendWelcomeMessageAsync(notification.SocketGuildUser);
-                await moderatorLogsSender.SendLogMessageAsync(new DTOs.LogMessageDto
+
+                await moderatorLogsSender.SendLogMessageAsync(new LogMessageDto
                 {
                     Description = $"> Пользователь {notification.SocketGuildUser.Mention} присоединился к серверу",
                     Title = "Новый пользователь",

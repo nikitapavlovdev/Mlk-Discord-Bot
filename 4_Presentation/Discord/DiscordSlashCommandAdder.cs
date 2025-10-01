@@ -22,6 +22,7 @@ namespace MlkAdmin._4_Presentation.Discord
 
 
                 SlashGuildCommands.Add(AddLobbyNameCommand());
+                SlashGuildCommands.Add(GetUserStatistic());
 
                 foreach (SlashCommandProperties? command in SlashGuildCommands)
                 {
@@ -50,6 +51,22 @@ namespace MlkAdmin._4_Presentation.Discord
                 return default;
             }
 
+        }
+
+        private SlashCommandProperties? GetUserStatistic()
+        {
+            try
+            {
+                return new SlashCommandBuilder()
+                .WithName("statistic")
+                .WithDescription("Получить мою статистику на сервере")
+                .Build();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "");
+                return default;
+            }
         }
     }
 }
