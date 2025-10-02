@@ -1,11 +1,12 @@
-﻿using MlkAdmin._3_Infrastructure.Discord.Extensions;
+﻿using Discord.WebSocket;
 using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
-using MlkAdmin._2_Application.DTOs;
-using Discord.WebSocket;
+using MlkAdmin._2_Application.DTOs.Messages;
+using MlkAdmin._3_Infrastructure.Discord.Extensions;
 
 namespace MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers
 {
-    public class ModeratorLogsManager(DiscordSocketClient discordSocketClient,
+    public class ModeratorLogsManager(
+        DiscordSocketClient discordSocketClient,
         EmbedMessageExtension embedMessageExtension) : IModeratorLogsSender
     {
         public async Task SendLogMessageAsync(LogMessageDto logMessageDto)

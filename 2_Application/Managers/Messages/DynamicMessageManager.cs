@@ -1,12 +1,13 @@
-﻿using Discord.WebSocket;
-using Discord;
-using MlkAdmin._1_Domain.Interfaces.TextMessages;
-using MlkAdmin._2_Application.DTOs;
-using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
+﻿using Discord;
+using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
-using MlkAdmin._3_Infrastructure.Discord.Extensions;
 using MlkAdmin._1_Domain.Enums;
+using MlkAdmin._1_Domain.Interfaces.TextMessages;
+using MlkAdmin._2_Application.DTOs.Messages;
+using MlkAdmin._2_Application.DTOs.Embed;
 using MlkAdmin._2_Application.Managers.Components;
+using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
+using MlkAdmin._3_Infrastructure.Discord.Extensions;
 
 namespace MlkAdmin._2_Application.Managers.Messages
 {
@@ -91,7 +92,8 @@ namespace MlkAdmin._2_Application.Managers.Messages
                 ChannelId = jsonChannelsMapProvider.RolesChannelId,
                 MessageId = jsonDiscordDynamicMessagesProvider.NameColorRolesMessageId,
             },
-            await embedDtoCreator.GetEmbedDto(DynamicMessageType.NameColor), await componentsManager.GetMessageComponent(DynamicMessageType.NameColor));
+            await embedDtoCreator.GetEmbedDto(DynamicMessageType.NameColor), 
+            await componentsManager.CreateMessageComponent(DynamicMessageType.NameColor));
         }
     }
 }

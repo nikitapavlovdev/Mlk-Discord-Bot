@@ -1,4 +1,4 @@
-﻿using MlkAdmin._2_Application.DTOs;
+﻿using MlkAdmin._2_Application.DTOs.Messages;
 
 namespace MlkAdmin._1_Domain.Interfaces.ModeratorsHelper
 {

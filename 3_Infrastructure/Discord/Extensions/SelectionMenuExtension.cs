@@ -5,7 +5,7 @@ namespace MlkAdmin._3_Infrastructure.Discord.Extensions
 {
     public class SelectionMenuExtension(JsonDiscordRolesProvider jsonDiscordRolesProvider)
     {
-        public MessageComponent GetColorSwitchSelectionMenu()
+        public MessageComponent CreateNameColorSelectionMenu()
         {
             SelectMenuBuilder selectionMenuNameColor = new SelectMenuBuilder()
                 .WithPlaceholder("жʍяᴋни")

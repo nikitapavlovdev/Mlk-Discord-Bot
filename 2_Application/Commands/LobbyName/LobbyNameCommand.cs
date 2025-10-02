@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using MlkAdmin._2_Application.DTOs;
+using MlkAdmin._2_Application.DTOs.Responses;
 
 namespace MlkAdmin._2_Application.Commands 
 {

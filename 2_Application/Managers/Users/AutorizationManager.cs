@@ -3,6 +3,8 @@ using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.RolesManagers;
 using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
+using MlkAdmin._2_Application.DTOs.Messages;
+
 
 namespace MlkAdmin._2_Application.Managers.UserManagers;
 
@@ -30,7 +32,7 @@ public class AutorizationManager(
                 rolesManagers.DeleteNotRegisteredRoleAsync(socketGuildUser),
                 rolesManagers.AddBaseServerRoleAsync(socketGuildUser),
                 rolesManagers.AddGamerRoleAsync(socketGuildUser),
-                moderatorLogsSender.SendLogMessageAsync(new DTOs.LogMessageDto()
+                moderatorLogsSender.SendLogMessageAsync(new LogMessageDto()
                 {
                     ChannelId = jsonChannelsMapProvider.LogsChannelId,
                     Description = $"> Пользователь {socketGuildUser.Mention} завершил верификацию.",

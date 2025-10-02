@@ -24,6 +24,7 @@ namespace MlkAdmin._2_Application.Events.SelectMenuExecuted
                         {
                             await rolesManager.SetColorNameRole(notification.SocketMessageComponent.User, notification.SocketMessageComponent.Data.Values.ElementAt(0).ConvertId());
                         }
+
                         break;
 
                     default:

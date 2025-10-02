@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using MlkAdmin.Core.Utilities.General;
+using MlkAdmin._2_Application.DTOs.Messages;
 
 namespace MlkAdmin._2_Application.Events.UserUpdated
 {
@@ -28,7 +29,7 @@ namespace MlkAdmin._2_Application.Events.UserUpdated
                     return;
                 }
 
-                await moderatorLogsSender.SendLogMessageAsync(new DTOs.LogMessageDto
+                await moderatorLogsSender.SendLogMessageAsync(new LogMessageDto
                 {
                     ChannelId = jsonDiscordChannelsMapProvider.LogsChannelId,
                     Title = $"Изменение участника {notification.OldUserState.Value.GlobalName ?? "-"}",

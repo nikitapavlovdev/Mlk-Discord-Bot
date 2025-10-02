@@ -1,4 +1,4 @@
-﻿namespace MlkAdmin._2_Application.DTOs
+﻿namespace MlkAdmin._2_Application.DTOs.Messages
 {
     public class LogMessageDto
     {

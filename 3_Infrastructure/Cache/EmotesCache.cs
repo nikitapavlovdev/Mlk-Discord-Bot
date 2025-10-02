@@ -1,13 +1,10 @@
-﻿using System.Data;
-using System.Text.Json.Serialization;
-using Discord;
+﻿using Discord;
 
 namespace MlkAdmin.Infrastructure.Cache
 {
     public class EmotesCache
     {
         private readonly Dictionary<ulong, GuildEmote> MainServerEmotes = [];
-        private readonly TaskCompletionSource initTcs = new();
 
         private IReadOnlyCollection<GuildEmote>? GuildEmotes;
         

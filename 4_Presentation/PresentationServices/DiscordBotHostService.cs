@@ -16,11 +16,11 @@ namespace MlkAdmin.Presentation.PresentationServices
     {
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            string? MlkAdminBotApiKey = jsonDiscordConfigurationProvider.ApiKey;
+            string? ApiKey = jsonDiscordConfigurationProvider.ApiKey;
 
-            if (string.IsNullOrWhiteSpace(MlkAdminBotApiKey))
+            if (string.IsNullOrWhiteSpace(ApiKey))
             {
-                logger.LogWarning("API key not found");
+                logger.LogWarning("ApiKey is null");
                 return;
             }
 
@@ -29,7 +29,7 @@ namespace MlkAdmin.Presentation.PresentationServices
             DiscordEventsListener discordEventsController = scope.ServiceProvider.GetRequiredService<DiscordEventsListener>();
             discordEventsController.SubscribeOnEvents(discordClient);
 
-            await discordClient.LoginAsync(TokenType.Bot, MlkAdminBotApiKey);
+            await discordClient.LoginAsync(TokenType.Bot, ApiKey);
             await discordClient.StartAsync();
         }
 
