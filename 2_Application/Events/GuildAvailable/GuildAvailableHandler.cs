@@ -6,6 +6,7 @@ using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
 using MlkAdmin._1_Domain.Interfaces.TextMessages;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannels;
 using MlkAdmin._1_Domain.Interfaces;
+using MlkAdmin._3_Infrastructure.Cache.Channels;
 
 namespace MlkAdmin._2_Application.Events.GuildAvailable
 {   
@@ -16,7 +17,8 @@ namespace MlkAdmin._2_Application.Events.GuildAvailable
         VoiceChannelsManager voiceChannelsManager,
         VoiceChannelSyncServices voiceChannelSyncServices,
         RolesManager rolesManager,
-        EmotesManager emotesManager) : INotificationHandler<GuildAvailable>
+        EmotesManager emotesManager,
+        ChannelsCache channelsCache) : INotificationHandler<GuildAvailable>
     {
         public async Task Handle(GuildAvailable notification, CancellationToken cancellationToken)
         {
@@ -28,7 +30,8 @@ namespace MlkAdmin._2_Application.Events.GuildAvailable
                     emotesManager.EmotesInitialization(notification.SocketGuild),
                     dynamicMessageCenter.UpdateAllDM(notification.SocketGuild.Id),
                     userSyncService.SyncUsersAsync(notification.SocketGuild.Id),
-                    voiceChannelSyncServices.SyncVoiceChannelsDbWithGuildAsync(notification.SocketGuild)
+                    voiceChannelSyncServices.SyncVoiceChannelsDbWithGuildAsync(notification.SocketGuild),
+                    channelsCache.FillChannelsAsync(notification.SocketGuild.Channels)
                 );
             }
             catch (Exception ex)

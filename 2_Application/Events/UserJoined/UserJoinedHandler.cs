@@ -29,7 +29,6 @@ namespace MlkAdmin._2_Application.Events.UserJoined
                 {
                     Description = $"> Пользователь {notification.SocketGuildUser.Mention} присоединился к серверу",
                     Title = "Новый пользователь",
-                    GuildId = notification.SocketGuildUser.Guild.Id,
                     ChannelId = jsonChannelsMapProvider.LogsChannelId,
                     UserId = notification.SocketGuildUser.Id
 

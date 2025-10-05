@@ -1,50 +1,53 @@
-﻿using Discord.WebSocket;
+﻿using Discord;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using Microsoft.Extensions.Logging;
-using MlkAdmin._2_Application.Managers.RolesManagers;
 using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
 using MlkAdmin._2_Application.DTOs.Messages;
+using MlkAdmin._1_Domain.Interfaces.Roles;
+using Discord.WebSocket;
 
-
-namespace MlkAdmin._2_Application.Managers.UserManagers;
-
-public class AutorizationManager( 
-    RolesManager rolesManagers,
-    JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider,
-    ILogger<AutorizationManager> logger,
-    DiscordSocketClient client,
-    IModeratorLogsSender moderatorLogsSender,
-    JsonDiscordChannelsMapProvider jsonChannelsMapProvider)
+namespace MlkAdmin._2_Application.Managers.UserManagers
 {
-    public async Task AuthorizeUser(ulong socketGuildUserId)
+    public class AutorizationManager( 
+        ILogger<AutorizationManager> logger,
+        IRoleCenter roleCenter,
+        IModeratorLogsSender moderatorLogsSender,
+        JsonDiscordRolesProvider jsonDiscordRolesProvider,
+        JsonDiscordChannelsMapProvider jsonChannelsMapProvider)
     {
-        try
+        public async Task AuthorizeUser(IUser user)
         {
-            SocketGuild socketGuild = client.GetGuild(jsonDiscordConfigurationProvider.GuildId);
-            SocketGuildUser socketGuildUser = socketGuild.GetUser(socketGuildUserId);
-
-            if(socketGuildUser == null)
+            try
             {
-                return;
-            }
-
-            await Task.WhenAll(
-                rolesManagers.DeleteNotRegisteredRoleAsync(socketGuildUser),
-                rolesManagers.AddBaseServerRoleAsync(socketGuildUser),
-                rolesManagers.AddGamerRoleAsync(socketGuildUser),
-                moderatorLogsSender.SendLogMessageAsync(new LogMessageDto()
+                if (user is not SocketGuildUser guildUser)
                 {
-                    ChannelId = jsonChannelsMapProvider.LogsChannelId,
-                    Description = $"> Пользователь {socketGuildUser.Mention} завершил верификацию.",
-                    GuildId = socketGuild.Id,
-                    UserId = socketGuildUserId,
-                    Title = "Успешная верификация"
-                }));
-            
-        }
-        catch (Exception ex)
-        {
-            logger.LogError("Error: {Message} StackTrace: {StackTrace}", ex.Message, ex.StackTrace);
+                    return;
+                }
+
+                await Task.WhenAll(
+
+                    roleCenter.RemoveRoleFromUserAsync(guildUser,
+                    jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Autorization.NotRegistered.Id),
+
+                    roleCenter.AddRolesToUserAsync(guildUser,
+                    [
+                        jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Autorization.MalenkiyMember.Id,
+                        jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.Gamer.Id
+                    ]),
+
+                    moderatorLogsSender.SendLogMessageAsync(new LogMessageDto()
+                    {
+                        ChannelId = jsonChannelsMapProvider.LogsChannelId,
+                        Description = $"> Пользователь {guildUser.Mention} завершил верификацию.",
+                        UserId = guildUser.Id,
+                        Title = "Успешная верификация"
+                    })
+                );
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Ошибка при авторизации пользователя");
+            }
         }
     }
 }

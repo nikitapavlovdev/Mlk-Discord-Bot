@@ -19,7 +19,6 @@ namespace MlkAdmin._2_Application.Events.UserLeft
                 {
                     Description = $"> Пользователь {notification.SocketUser.Mention} покинул сервер",
                     ChannelId = jsonChannelsMapProvider.LogsChannelId,
-                    GuildId = notification.SocketGuild.Id,
                     Title = "Уход с сервера",
                     UserId = notification.SocketGuild.Id
                 });

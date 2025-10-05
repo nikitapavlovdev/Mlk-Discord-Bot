@@ -8,6 +8,7 @@ using MlkAdmin.Infrastructure.Cache;
 using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
 using MlkAdmin._1_Domain.Interfaces.TextMessages;
 using MlkAdmin._1_Domain.Interfaces;
+using MlkAdmin._2_Application.Services.Messages;
 using MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
 using MlkAdmin._2_Application.Managers.EmotesManagers;
@@ -38,6 +39,11 @@ using MlkAdmin._3_Infrastructure.DataBase;
 using MlkAdmin._4_Presentation.Extensions;
 using MlkAdmin._4_Presentation.Discord;
 using Microsoft.EntityFrameworkCore;
+using MlkAdmin._1_Domain.Interfaces.Roles;
+using MlkAdmin._2_Application.Services.Roles;
+using MlkAdmin._3_Infrastructure.Cache.Channels;
+using MlkAdmin._1_Domain.Interfaces.Channels;
+using MlkAdmin._2_Application.Services.Channels;
 
 namespace MlkAdmin.Presentation.DI
 {
@@ -66,24 +72,24 @@ namespace MlkAdmin.Presentation.DI
             services.AddScoped<VoiceChannelsManager>();
             services.AddScoped<TextChannelManager>();
             services.AddScoped<EmotesManager>();
-            services.AddScoped<ModeratorLogsManager>();
             services.AddScoped<StaticDataServices>();
             services.AddScoped<EmbedMessageExtension>();
             services.AddScoped<SelectionMenuExtension>();
             services.AddScoped<MessageComponentsExtension>();
-            services.AddScoped<ModalExtension>();
             services.AddScoped<ComponentsManager>();
 
             return services;
         }
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddScoped<IModeratorLogsSender, ModeratorLogsManager>();
+            services.AddScoped<IModeratorLogsSender, LogsService>();
             services.AddScoped<IDynamicMessageCenter, DynamicMessageManager>();
             services.AddScoped<IEmbedDtoCreator, EmbedManager>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IVoiceChannelRepository, VoiceChannelRepository>();
             services.AddScoped<IUserSyncService, UserSyncService>();
+            services.AddScoped<IRoleCenter, RolesService>();
+            services.AddScoped<IChannelsService, ChannelsService>();
             services.AddScoped<VoiceChannelSyncServices>();
 
             return services;
@@ -93,6 +99,7 @@ namespace MlkAdmin.Presentation.DI
             services.AddSingleton<RolesCache>();
             services.AddSingleton<EmotesCache>();
             services.AddSingleton<EmbedDescriptionsCache>();
+            services.AddSingleton<ChannelsCache>();
             services.AddDbContext<MlkAdminDbContext>(options =>
             {
                 options.UseSqlite("Data Source =D:\\Lifes\\Programming Life\\It\\Bots\\MlkBot\\AdminBot\\mlkadmin.db");

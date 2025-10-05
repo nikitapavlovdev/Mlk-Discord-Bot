@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Discord.WebSocket;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.UserManagers;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
@@ -16,7 +17,7 @@ namespace MlkAdmin._2_Application.Events.ReactionAdded
             {
                 if (notification.Message.Id == jsonDiscordDynamicMessagesProvider.AuMessageId)
                 {
-                    await autorizationManager.AuthorizeUser(notification.Reaction.UserId);
+                    await autorizationManager.AuthorizeUser(notification.Reaction.User.Value);
                 }
             }
             catch (Exception ex)

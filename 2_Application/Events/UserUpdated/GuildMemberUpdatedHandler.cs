@@ -11,8 +11,7 @@ namespace MlkAdmin._2_Application.Events.UserUpdated
     public class GuildMemberUpdatedHandler(
         IModeratorLogsSender moderatorLogsSender,
         ILogger<GuildMemberUpdatedHandler> logger,
-        JsonDiscordChannelsMapProvider jsonDiscordChannelsMapProvider,
-        JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider) : INotificationHandler<GuildMemberUpdated>
+        JsonDiscordChannelsMapProvider jsonDiscordChannelsMapProvider) : INotificationHandler<GuildMemberUpdated>
     {
         public async Task Handle(GuildMemberUpdated notification, CancellationToken cancellationToken)
         {
@@ -35,7 +34,6 @@ namespace MlkAdmin._2_Application.Events.UserUpdated
                     Title = $"Изменение участника {notification.OldUserState.Value.GlobalName ?? "-"}",
                     Description = descriptionBuilder.ToString(),
                     UserId = notification.NewUserState.Id,
-                    GuildId = jsonDiscordConfigurationProvider.GuildId
                 });
             }
             catch (Exception ex)
