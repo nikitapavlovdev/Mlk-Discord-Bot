@@ -26,10 +26,10 @@ namespace MlkAdmin._2_Application.Managers.UserManagers
 
                 await Task.WhenAll(
 
-                    roleCenter.RemoveRoleFromUserAsync(guildUser,
+                    roleCenter.RemoveRoleFromUserAsync(guildUser.Id,
                     jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Autorization.NotRegistered.Id),
 
-                    roleCenter.AddRolesToUserAsync(guildUser,
+                    roleCenter.AddRolesToUserAsync(guildUser.Id,
                     [
                         jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Autorization.MalenkiyMember.Id,
                         jsonDiscordRolesProvider.RootDiscordRoles.GeneralRole.Categories.Gamer.Id
