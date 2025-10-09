@@ -4,7 +4,7 @@ using MlkAdmin._2_Application.Managers.RolesManagers;
 using MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers;
 using MlkAdmin._2_Application.DTOs.Messages;
 
-using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
+using MlkAdmin._1_Domain.Interfaces.Messages;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
 namespace MlkAdmin._2_Application.Events.UserJoined

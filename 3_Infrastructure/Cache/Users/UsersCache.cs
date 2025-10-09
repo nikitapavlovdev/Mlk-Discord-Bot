@@ -10,37 +10,37 @@ namespace MlkAdmin._3_Infrastructure.Cache.Users
     {
         private readonly ConcurrentDictionary<ulong, SocketGuildUser> GuildUsers = [];
 
-        public DefaultResponse FillUsers(SocketGuild guild)
+        public Task<DefaultResponse> FillUsers(SocketGuild guild)
         {
             try
             {
                 if (guild is null)
-                    return new DefaultResponse()
+                    return Task.FromResult( new DefaultResponse()
                     {
                         IsSuccess = false,
                         Message = "Гильдия не найдена",
                         Exception = new Exception("Guild является null")
-                    };
+                    });
 
                 foreach(SocketGuildUser user in guild.Users)
                     GuildUsers.TryAdd(user.Id, user);
 
-                return new DefaultResponse() 
+                return Task.FromResult(new DefaultResponse() 
                 { 
                     IsSuccess = true, 
                     Message = "Кэш пользователей успешно заполнен"
-                };
+                });
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Ошибка при заполнении кэша пользователей");
 
-                return new DefaultResponse()
+                return Task.FromResult(new DefaultResponse()
                 {
                     IsSuccess = false,
                     Message = "Ошибка при заполнении кэша пользователей",
                     Exception = ex
-                };
+                });
             }
         }
         public ConcurrentDictionary<ulong, SocketGuildUser> GetAllUsers() => GuildUsers;

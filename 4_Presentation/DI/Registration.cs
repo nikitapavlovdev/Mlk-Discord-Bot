@@ -5,9 +5,9 @@ using Discord.Commands;
 using MlkAdmin.Presentation.PresentationServices;
 using MlkAdmin.Presentation.DiscordListeners;
 using MlkAdmin.Infrastructure.Cache;
-using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
-using MlkAdmin._1_Domain.Interfaces.TextMessages;
-using MlkAdmin._1_Domain.Interfaces;
+using MlkAdmin._1_Domain.Interfaces.Messages;
+using MlkAdmin._1_Domain.Interfaces.Discord;
+using MlkAdmin._1_Domain.Interfaces.Users;
 using MlkAdmin._2_Application.Services.Messages;
 using MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
@@ -44,6 +44,8 @@ using MlkAdmin._2_Application.Services.Roles;
 using MlkAdmin._3_Infrastructure.Cache.Channels;
 using MlkAdmin._1_Domain.Interfaces.Channels;
 using MlkAdmin._2_Application.Services.Channels;
+using MlkAdmin._2_Application.Services.Users;
+using MlkAdmin._3_Infrastructure.Cache.Users;
 
 namespace MlkAdmin.Presentation.DI
 {
@@ -86,11 +88,12 @@ namespace MlkAdmin.Presentation.DI
             services.AddScoped<IDynamicMessageCenter, DynamicMessageManager>();
             services.AddScoped<IEmbedDtoCreator, EmbedManager>();
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IVoiceChannelRepository, VoiceChannelRepository>();
             services.AddScoped<IUserSyncService, UserSyncService>();
+            services.AddScoped<IVoiceChannelRepository, VoiceChannelRepository>();
             services.AddScoped<IRoleCenter, RolesService>();
             services.AddScoped<IChannelsService, ChannelsService>();
             services.AddScoped<VoiceChannelSyncServices>();
+            services.AddScoped<UserService>();
 
             return services;
         }
@@ -100,6 +103,7 @@ namespace MlkAdmin.Presentation.DI
             services.AddSingleton<EmotesCache>();
             services.AddSingleton<EmbedDescriptionsCache>();
             services.AddSingleton<ChannelsCache>();
+            services.AddSingleton<UsersCache>();
             services.AddDbContext<MlkAdminDbContext>(options =>
             {
                 options.UseSqlite("Data Source =D:\\Lifes\\Programming Life\\It\\Bots\\MlkBot\\AdminBot\\mlkadmin.db");

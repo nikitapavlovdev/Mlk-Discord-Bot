@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using MlkAdmin._1_Domain.Entities;
-using MlkAdmin._1_Domain.Interfaces;
+using MlkAdmin._1_Domain.Interfaces.Users;
 using MlkAdmin._2_Application.DTOs.Responses;
 
 namespace MlkAdmin._2_Application.Commands

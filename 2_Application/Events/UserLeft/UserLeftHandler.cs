@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
+using MlkAdmin._1_Domain.Interfaces.Messages;
 using MlkAdmin._2_Application.DTOs.Messages;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 

@@ -2,7 +2,8 @@
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._1_Domain.Enums;
-using MlkAdmin._1_Domain.Interfaces.TextMessages;
+using MlkAdmin._1_Domain.Interfaces.Messages;
+using MlkAdmin._1_Domain.Interfaces.Discord;
 using MlkAdmin._2_Application.DTOs.Messages;
 using MlkAdmin._2_Application.DTOs.Embed;
 using MlkAdmin._2_Application.Managers.Components;

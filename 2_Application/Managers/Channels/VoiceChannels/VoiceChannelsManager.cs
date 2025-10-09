@@ -3,7 +3,8 @@ using Discord.Rest;
 using Discord.WebSocket;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using Microsoft.Extensions.Logging;
-using MlkAdmin._1_Domain.Interfaces;
+using MlkAdmin._1_Domain.Interfaces.Channels;
+using MlkAdmin._1_Domain.Interfaces.Users;
 using MlkAdmin._1_Domain.Entities;
 
 namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers

@@ -3,10 +3,11 @@ using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.RolesManagers;
 using MlkAdmin._2_Application.Managers.EmotesManagers;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
-using MlkAdmin._1_Domain.Interfaces.TextMessages;
+using MlkAdmin._1_Domain.Interfaces.Messages;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannels;
-using MlkAdmin._1_Domain.Interfaces;
+using MlkAdmin._1_Domain.Interfaces.Users;
 using MlkAdmin._3_Infrastructure.Cache.Channels;
+using MlkAdmin._3_Infrastructure.Cache.Users;
 
 namespace MlkAdmin._2_Application.Events.GuildAvailable
 {   
@@ -18,7 +19,8 @@ namespace MlkAdmin._2_Application.Events.GuildAvailable
         VoiceChannelSyncServices voiceChannelSyncServices,
         RolesManager rolesManager,
         EmotesManager emotesManager,
-        ChannelsCache channelsCache) : INotificationHandler<GuildAvailable>
+        ChannelsCache channelsCache,
+        UsersCache usersCache) : INotificationHandler<GuildAvailable>
     {
         public async Task Handle(GuildAvailable notification, CancellationToken cancellationToken)
         {
@@ -31,7 +33,8 @@ namespace MlkAdmin._2_Application.Events.GuildAvailable
                     dynamicMessageCenter.UpdateAllDM(notification.SocketGuild.Id),
                     userSyncService.SyncUsersAsync(notification.SocketGuild.Id),
                     voiceChannelSyncServices.SyncVoiceChannelsDbWithGuildAsync(notification.SocketGuild),
-                    channelsCache.FillChannelsAsync(notification.SocketGuild.Channels)
+                    channelsCache.FillChannelsAsync(notification.SocketGuild.Channels),
+                    usersCache.FillUsers(notification.SocketGuild)
                 );
             }
             catch (Exception ex)

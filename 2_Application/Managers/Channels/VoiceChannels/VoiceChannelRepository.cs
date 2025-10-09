@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._1_Domain.Entities;
-using MlkAdmin._1_Domain.Interfaces;
+using MlkAdmin._1_Domain.Interfaces.Channels;
 using MlkAdmin._3_Infrastructure.DataBase;
 
 namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannels

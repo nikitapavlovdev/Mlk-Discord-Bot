@@ -1,5 +1,5 @@
 ﻿using MlkAdmin._1_Domain.Enums;
-using MlkAdmin._1_Domain.Interfaces.TextMessages;
+using MlkAdmin._1_Domain.Interfaces.Discord;
 using MlkAdmin._2_Application.DTOs.Embed;
 using MlkAdmin._3_Infrastructure.Cache;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;

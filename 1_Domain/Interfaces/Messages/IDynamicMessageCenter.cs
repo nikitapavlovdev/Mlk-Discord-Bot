@@ -1,4 +1,4 @@
-﻿namespace MlkAdmin._1_Domain.Interfaces.TextMessages
+﻿namespace MlkAdmin._1_Domain.Interfaces.Messages
 {
     public interface IDynamicMessageCenter
     {

@@ -1,4 +1,4 @@
-﻿namespace MlkAdmin._1_Domain.Interfaces
+﻿namespace MlkAdmin._1_Domain.Interfaces.Users
 {
     public interface IUserSyncService
     {

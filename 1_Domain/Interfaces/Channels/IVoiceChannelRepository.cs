@@ -1,6 +1,6 @@
 ﻿using MlkAdmin._1_Domain.Entities;
 
-namespace MlkAdmin._1_Domain.Interfaces
+namespace MlkAdmin._1_Domain.Interfaces.Channels
 {
     public interface IVoiceChannelRepository
     {
