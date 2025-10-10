@@ -6,9 +6,9 @@ using MlkAdmin._3_Infrastructure.DataBase;
 
 namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannels
 {
-    public class TextChannelRepository(
-        ILogger<TextChannelRepository> logger,
-        MlkAdminDbContext mlkAdminDbContext) : ITextChannelRepository
+    public class TextChannelsRepository(
+        ILogger<TextChannelsRepository> logger,
+        MlkAdminDbContext mlkAdminDbContext) : ITextChannelsRepository
     {
         public async Task UpsertDbTextChannelAsync(TextChannel channel)
         {

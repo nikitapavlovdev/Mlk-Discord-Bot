@@ -1,19 +1,20 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.RolesManagers;
-using MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers;
 using MlkAdmin._2_Application.DTOs.Messages;
-
 using MlkAdmin._1_Domain.Interfaces.Messages;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
+using MlkAdmin._3_Infrastructure.Cache.Users;
+using MlkAdmin._2_Application.Services.Messages;
 
 namespace MlkAdmin._2_Application.Events.UserJoined
 {
     class UserJoinedHandler(
         ILogger<UserJoinedHandler> logger,
         IModeratorLogsSender moderatorLogsSender,
+        WelcomeService welcomeService,
+        UsersCache usersCache,
         RolesManager rolesManager,
-        TextChannelManager textChannelManager,
         JsonDiscordChannelsMapProvider jsonChannelsMapProvider) : INotificationHandler<UserJoined>
     {
         public async Task Handle(UserJoined notification, CancellationToken cancellationToken)
@@ -23,7 +24,8 @@ namespace MlkAdmin._2_Application.Events.UserJoined
                 if (notification.SocketGuildUser.IsBot) { return; }
 
                 await rolesManager.AddNotRegisteredRoleAsync(notification.SocketGuildUser);
-                await textChannelManager.SendWelcomeMessageAsync(notification.SocketGuildUser);
+                await welcomeService.SendWelcomeMessageAsync(notification.SocketGuildUser);
+                await usersCache.AddUserAsync(notification.SocketGuildUser);
 
                 await moderatorLogsSender.SendLogMessageAsync(new LogMessageDto
                 {

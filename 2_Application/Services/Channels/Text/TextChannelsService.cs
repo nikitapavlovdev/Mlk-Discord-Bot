@@ -5,8 +5,8 @@ using MlkAdmin._3_Infrastructure.Cache.Channels;
 
 namespace MlkAdmin._2_Application.Services.Channels
 {
-    public class ChannelsService(
-        ILogger<ChannelsService> logger, 
+    public class TextChannelsService(
+        ILogger<TextChannelsService> logger, 
         ChannelsCache channelsCache) : IChannelsService
     {
         public async Task<SocketTextChannel?> GetTextChannelAsync(ulong channelId)

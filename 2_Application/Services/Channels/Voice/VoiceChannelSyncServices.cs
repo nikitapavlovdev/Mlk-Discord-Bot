@@ -6,7 +6,7 @@ using MlkAdmin._3_Infrastructure.DataBase;
 
 namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannels
 {
-    public class VoiceChannelSyncServices(ILogger<TextChannelRepository> logger, 
+    public class VoiceChannelSyncServices(ILogger<TextChannelsRepository> logger, 
         MlkAdminDbContext mlkAdminDbContext)
     {
         public async Task SyncVoiceChannelsDbWithGuildAsync(SocketGuild socketGuild)

@@ -11,7 +11,7 @@ namespace MlkAdmin._2_Application.Events.UserVoiceStateUpdated
     class UserVoiceStateUpdatedHandler(
         ILogger<UserVoiceStateUpdatedHandler> logger,
         IVoiceChannelRepository voiceChannelRepository,
-        VoiceChannelsManager voiceChannelsCreator) : INotificationHandler<UserVoiceStateUpdated>
+        VoiceChannelsService voiceChannelsCreator) : INotificationHandler<UserVoiceStateUpdated>
     {
         public async Task Handle(UserVoiceStateUpdated notification, CancellationToken cancellationToken)
         {

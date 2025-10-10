@@ -5,12 +5,11 @@ using System.Collections.Concurrent;
 
 namespace MlkAdmin._3_Infrastructure.Cache.Users
 {
-    public class UsersCache(
-        ILogger<UsersCache> logger)
+    public class UsersCache(ILogger<UsersCache> logger)
     {
         private readonly ConcurrentDictionary<ulong, SocketGuildUser> GuildUsers = [];
 
-        public Task<DefaultResponse> FillUsers(SocketGuild guild)
+        public Task<DefaultResponse> FillUsersAsync(SocketGuild guild)
         {
             try
             {
@@ -39,6 +38,37 @@ namespace MlkAdmin._3_Infrastructure.Cache.Users
                 {
                     IsSuccess = false,
                     Message = "Ошибка при заполнении кэша пользователей",
+                    Exception = ex
+                });
+            }
+        }
+        public Task<DefaultResponse> AddUserAsync(SocketGuildUser user)
+        {
+            try
+            {
+                if (user is null)
+                    return Task.FromResult(new DefaultResponse()
+                    {
+                        IsSuccess = false,
+                        Message = "Пользователь не найден",
+                        Exception = new Exception("User является null")
+                    });
+
+                GuildUsers.TryAdd(user.Id, user);
+
+                return Task.FromResult(new DefaultResponse()
+                {
+                    IsSuccess = true,
+                    Message = "Пользователь успешно добавлен в кэш"
+                });
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Ошибка при добавлении пользователя в кэш");
+                return Task.FromResult(new DefaultResponse()
+                {
+                    IsSuccess = false,
+                    Message = "Ошибка при добавлении пользователя в кэш",
                     Exception = ex
                 });
             }

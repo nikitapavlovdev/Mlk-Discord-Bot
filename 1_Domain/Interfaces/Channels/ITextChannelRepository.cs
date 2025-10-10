@@ -2,7 +2,7 @@
 
 namespace MlkAdmin._1_Domain.Interfaces.Channels
 {
-    public interface ITextChannelRepository
+    public interface ITextChannelsRepository
     {
         Task UpsertDbTextChannelAsync(TextChannel channel);
         Task RemoveDbTextChannelAsync(ulong id);

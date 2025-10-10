@@ -9,7 +9,6 @@ using MlkAdmin._1_Domain.Interfaces.Messages;
 using MlkAdmin._1_Domain.Interfaces.Discord;
 using MlkAdmin._1_Domain.Interfaces.Users;
 using MlkAdmin._2_Application.Services.Messages;
-using MlkAdmin._2_Application.Managers.Channels.TextChannelsManagers;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
 using MlkAdmin._2_Application.Managers.EmotesManagers;
 using MlkAdmin._2_Application.Managers.RolesManagers;
@@ -71,10 +70,9 @@ namespace MlkAdmin.Presentation.DI
 
             services.AddScoped<RolesManager>();
             services.AddScoped<AutorizationManager>();
-            services.AddScoped<VoiceChannelsManager>();
-            services.AddScoped<TextChannelManager>();
+            services.AddScoped<VoiceChannelsService>();
+            services.AddScoped<WelcomeService>();
             services.AddScoped<EmotesManager>();
-            services.AddScoped<StaticDataServices>();
             services.AddScoped<EmbedMessageExtension>();
             services.AddScoped<SelectionMenuExtension>();
             services.AddScoped<MessageComponentsExtension>();
@@ -91,7 +89,7 @@ namespace MlkAdmin.Presentation.DI
             services.AddScoped<IUserSyncService, UserSyncService>();
             services.AddScoped<IVoiceChannelRepository, VoiceChannelRepository>();
             services.AddScoped<IRoleCenter, RolesService>();
-            services.AddScoped<IChannelsService, ChannelsService>();
+            services.AddScoped<IChannelsService, TextChannelsService>();
             services.AddScoped<VoiceChannelSyncServices>();
             services.AddScoped<UserService>();
 
@@ -106,7 +104,11 @@ namespace MlkAdmin.Presentation.DI
             services.AddSingleton<UsersCache>();
             services.AddDbContext<MlkAdminDbContext>(options =>
             {
-                options.UseSqlite("Data Source =D:\\Lifes\\Programming Life\\It\\Bots\\MlkBot\\AdminBot\\mlkadmin.db");
+                string baseDir = AppContext.BaseDirectory;
+                string projectRoot = Directory.GetParent(baseDir)!.Parent!.Parent!.Parent!.FullName;
+                string dbPath = Path.Combine(projectRoot, "mlkadmin.db");
+
+                options.UseSqlite($"Data Source ={dbPath}");
             });
 
             return services;
