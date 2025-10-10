@@ -9,15 +9,14 @@ using MlkAdmin._1_Domain.Entities;
 
 namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers
 {
-    public class VoiceChannelsManager(
-        ILogger<VoiceChannelsManager> logger,
+    public class VoiceChannelsService(
+        ILogger<VoiceChannelsService> logger,
         IVoiceChannelRepository voiceChannelRepository,
         IUserRepository userRepository,
         JsonDiscordCategoriesProvider jsonDiscordCategoriesProvider,
         JsonDiscordChannelsMapProvider jsonChannelsMapProvider,
         JsonDiscordRolesProvider discordRolesProvider)
     {
-        #region Private
         private async Task<string> GetLobbyName(ulong userId)
         {
             User? user = await userRepository.GetDbUserAsync(userId);
@@ -33,10 +32,6 @@ namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers
             return "ᴍʟᴋ_ʟᴏʙʙʏ";
 
         }
-
-        #endregion
-
-        #region Public
         public async Task UpsertGuildVoiceChannelsAsync(SocketGuild socketGuild)
         {
             try
@@ -90,6 +85,5 @@ namespace MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers
                 }
             );
         }
-        #endregion
     }
 }

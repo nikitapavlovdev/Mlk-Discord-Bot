@@ -15,7 +15,7 @@ namespace MlkAdmin._2_Application.Events.GuildAvailable
         ILogger<GuildAvailableHandler> logger,
         IDynamicMessageCenter dynamicMessageCenter,
         IUserSyncService userSyncService,
-        VoiceChannelsManager voiceChannelsManager,
+        VoiceChannelsService voiceChannelsManager,
         VoiceChannelSyncServices voiceChannelSyncServices,
         RolesManager rolesManager,
         EmotesManager emotesManager,
@@ -34,7 +34,7 @@ namespace MlkAdmin._2_Application.Events.GuildAvailable
                     userSyncService.SyncUsersAsync(notification.SocketGuild.Id),
                     voiceChannelSyncServices.SyncVoiceChannelsDbWithGuildAsync(notification.SocketGuild),
                     channelsCache.FillChannelsAsync(notification.SocketGuild.Channels),
-                    usersCache.FillUsers(notification.SocketGuild)
+                    usersCache.FillUsersAsync(notification.SocketGuild)
                 );
             }
             catch (Exception ex)

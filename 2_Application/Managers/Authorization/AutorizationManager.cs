@@ -21,7 +21,7 @@ namespace MlkAdmin._2_Application.Managers.UserManagers
             {
                 if (user is not SocketGuildUser guildUser)
                 {
-                    return;
+                    throw new Exception("Пользователь не является участником сервера");
                 }
 
                 await Task.WhenAll(
