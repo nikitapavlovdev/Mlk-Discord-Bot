@@ -90,6 +90,7 @@ namespace MlkAdmin.Presentation.DI
             services.AddScoped<IRoleCenter, RolesService>();
             services.AddScoped<IChannelsService, TextChannelsService>();
             services.AddScoped<IUserMessageRepository, UserMessageRepository>();
+            services.AddScoped<IUserVoiceSessionRepository, UserVoiceSessionRepository>();
             services.AddScoped<VoiceChannelSyncServices>();
             services.AddScoped<UserService>();
             services.AddScoped<UserStatManager>();

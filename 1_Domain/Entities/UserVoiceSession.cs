@@ -2,11 +2,11 @@
 
 namespace MlkAdmin._1_Domain.Entities
 {
-    public class UserMessagesStat
+    public class UserVoiceSession
     {
         [Key]
         public ulong UserId { get; set; }
-        public int Count { get; set; } = 0;
-        public DateTime? LastUpdate { get; set; } = DateTime.UtcNow;
+        public DateTime? VoiceStarting { get; set; } = null;
+        public long TotalSeconds { get; set; } = 0;
     }
 }

@@ -5,12 +5,14 @@ using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
 using MlkAdmin._1_Domain.Interfaces.Channels;
 using MlkAdmin._1_Domain.Entities;
+using MlkAdmin._2_Application.Managers.Users.Stat;
 
 namespace MlkAdmin._2_Application.Events.UserVoiceStateUpdated
 {
     class UserVoiceStateUpdatedHandler(
         ILogger<UserVoiceStateUpdatedHandler> logger,
         IVoiceChannelRepository voiceChannelRepository,
+        UserStatManager userStatManager,
         VoiceChannelsService voiceChannelsCreator) : INotificationHandler<UserVoiceStateUpdated>
     {
         public async Task Handle(UserVoiceStateUpdated notification, CancellationToken cancellationToken)
@@ -21,6 +23,8 @@ namespace MlkAdmin._2_Application.Events.UserVoiceStateUpdated
                 {
                     return;
                 }
+
+                await userStatManager.TrackUserVoiceSessionsAsync(guildUser.Id, notification.NewState, notification.OldState);
 
                 if (notification.OldState.VoiceChannel != null)
                 {

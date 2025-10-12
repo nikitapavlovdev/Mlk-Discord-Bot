@@ -9,5 +9,6 @@ namespace MlkAdmin._3_Infrastructure.DataBase
         public DbSet<VoiceChannel> Voices { get; set; }
         public DbSet<TextChannel> Texts { get; set; }
         public DbSet<UserMessagesStat> Messages { get; set; }
+        public DbSet<UserVoiceSession> VoiceSession { get; set; }
     }
 }

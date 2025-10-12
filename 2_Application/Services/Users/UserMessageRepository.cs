@@ -15,7 +15,7 @@ namespace MlkAdmin._2_Application.Services.Users
         {
             try
             {
-                UserMessagesStat? existing = await dbContext.Messages.FindAsync(stat.Id);
+                UserMessagesStat? existing = await dbContext.Messages.FindAsync(stat.UserId);
 
                 if (existing is null)
                 {
@@ -38,7 +38,7 @@ namespace MlkAdmin._2_Application.Services.Users
                 return new DefaultResponse
                 {
                     IsSuccess = true,
-                    Message = $"Обновлён счётчик сообщений пользователя {existing.Id}"
+                    Message = $"Обновлён счётчик сообщений пользователя {existing.UserId}"
                 };
             }
             catch (Exception ex)
