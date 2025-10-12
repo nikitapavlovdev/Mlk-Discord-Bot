@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MlkAdmin._3_Infrastructure.DataBase;
 
@@ -10,9 +11,11 @@ using MlkAdmin._3_Infrastructure.DataBase;
 namespace MlkAdmin.Migrations
 {
     [DbContext(typeof(MlkAdminDbContext))]
-    partial class MlkAdminDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251012130835_UserMessageStat")]
+    partial class UserMessageStat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.8");
@@ -71,7 +74,7 @@ namespace MlkAdmin.Migrations
 
             modelBuilder.Entity("MlkAdmin._1_Domain.Entities.UserMessagesStat", b =>
                 {
-                    b.Property<ulong>("UserId")
+                    b.Property<ulong>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -81,26 +84,9 @@ namespace MlkAdmin.Migrations
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("UserId");
+                    b.HasKey("Id");
 
                     b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("MlkAdmin._1_Domain.Entities.UserVoiceSession", b =>
-                {
-                    b.Property<ulong>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<long>("TotalSeconds")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("VoiceStarting")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("VoiceSession");
                 });
 
             modelBuilder.Entity("MlkAdmin._1_Domain.Entities.VoiceChannel", b =>

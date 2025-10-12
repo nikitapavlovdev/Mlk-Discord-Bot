@@ -43,6 +43,7 @@ using MlkAdmin._1_Domain.Interfaces.Channels;
 using MlkAdmin._2_Application.Services.Channels;
 using MlkAdmin._2_Application.Services.Users;
 using MlkAdmin._3_Infrastructure.Cache.Users;
+using MlkAdmin._2_Application.Managers.Users.Stat;
 
 namespace MlkAdmin.Presentation.DI
 {
@@ -88,8 +89,11 @@ namespace MlkAdmin.Presentation.DI
             services.AddScoped<IVoiceChannelRepository, VoiceChannelRepository>();
             services.AddScoped<IRoleCenter, RolesService>();
             services.AddScoped<IChannelsService, TextChannelsService>();
+            services.AddScoped<IUserMessageRepository, UserMessageRepository>();
+            services.AddScoped<IUserVoiceSessionRepository, UserVoiceSessionRepository>();
             services.AddScoped<VoiceChannelSyncServices>();
             services.AddScoped<UserService>();
+            services.AddScoped<UserStatManager>();
 
             return services;
         }
