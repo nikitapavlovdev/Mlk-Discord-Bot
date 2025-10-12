@@ -2,16 +2,16 @@
 using Discord.WebSocket;
 using Discord.Commands;
 using Microsoft.Extensions.Logging;
-using MlkAdmin._3_Infrastructure.Discord.Extensions;
-using MlkAdmin._1_Domain.Interfaces;
 using Discord;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
+using MlkAdmin._2_Application.Managers.Users.Stat;
 
 namespace MlkAdmin._2_Application.Events.MessageReceived
 {
     public class MessageReceivedHandler(
         ILogger<MessageReceivedHandler> logger,
-        JsonDiscordRolesProvider jsonDiscordRolesProvider) : INotificationHandler<MessageReceived>
+        JsonDiscordRolesProvider jsonDiscordRolesProvider,
+        UserStatManager userStatManager) : INotificationHandler<MessageReceived>
     {
         public async Task Handle(MessageReceived notification, CancellationToken cancellationToken)
         {
@@ -20,7 +20,10 @@ namespace MlkAdmin._2_Application.Events.MessageReceived
                 if (notification.SocketMessage.Author.IsBot) return;
                 if (notification.SocketMessage is not SocketUserMessage socketUserMessage) return;
 
+
                 SocketGuildUser? socketGuildUser = notification.SocketMessage.Author as SocketGuildUser;
+
+                await userStatManager.IncrementMessageCountAsync(socketGuildUser.Id);
 
                 int argPos = 0;
 
