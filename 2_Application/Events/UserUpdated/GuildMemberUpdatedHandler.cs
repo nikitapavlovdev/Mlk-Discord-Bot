@@ -1,17 +1,17 @@
 ﻿using System.Text;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
+using MlkAdmin._1_Domain.Interfaces.Messages;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
-using MlkAdmin.Core.Utilities.General;
+using MlkAdmin._1_Domain.Utilities;
+using MlkAdmin._2_Application.DTOs.Discord.Messages;
 
 namespace MlkAdmin._2_Application.Events.UserUpdated
 {
     public class GuildMemberUpdatedHandler(
         IModeratorLogsSender moderatorLogsSender,
         ILogger<GuildMemberUpdatedHandler> logger,
-        JsonDiscordChannelsMapProvider jsonDiscordChannelsMapProvider,
-        JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider) : INotificationHandler<GuildMemberUpdated>
+        JsonDiscordChannelsMapProvider jsonDiscordChannelsMapProvider) : INotificationHandler<GuildMemberUpdated>
     {
         public async Task Handle(GuildMemberUpdated notification, CancellationToken cancellationToken)
         {
@@ -28,13 +28,12 @@ namespace MlkAdmin._2_Application.Events.UserUpdated
                     return;
                 }
 
-                await moderatorLogsSender.SendLogMessageAsync(new DTOs.LogMessageDto
+                await moderatorLogsSender.SendLogMessageAsync(new LogMessageDto
                 {
                     ChannelId = jsonDiscordChannelsMapProvider.LogsChannelId,
                     Title = $"Изменение участника {notification.OldUserState.Value.GlobalName ?? "-"}",
                     Description = descriptionBuilder.ToString(),
                     UserId = notification.NewUserState.Id,
-                    GuildId = jsonDiscordConfigurationProvider.GuildId
                 });
             }
             catch (Exception ex)

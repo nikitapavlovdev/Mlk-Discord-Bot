@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using MlkAdmin._1_Domain.Interfaces.ModeratorsHelper;
-using MlkAdmin._2_Application.DTOs;
+using MlkAdmin._1_Domain.Interfaces.Messages;
+using MlkAdmin._2_Application.DTOs.Discord.Messages;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
 namespace MlkAdmin._2_Application.Events.UserLeft
@@ -19,7 +19,6 @@ namespace MlkAdmin._2_Application.Events.UserLeft
                 {
                     Description = $"> Пользователь {notification.SocketUser.Mention} покинул сервер",
                     ChannelId = jsonChannelsMapProvider.LogsChannelId,
-                    GuildId = notification.SocketGuild.Id,
                     Title = "Уход с сервера",
                     UserId = notification.SocketGuild.Id
                 });

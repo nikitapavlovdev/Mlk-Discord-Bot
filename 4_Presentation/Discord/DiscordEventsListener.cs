@@ -1,0 +1,231 @@
+﻿using Discord;
+using Discord.WebSocket;
+using MediatR;
+using MlkAdmin._2_Application.Events.UserJoined;
+using MlkAdmin._2_Application.Events.UserLeft;
+using MlkAdmin._2_Application.Events.ModalSubmitted;
+using MlkAdmin._2_Application.Events.ButtonExecuted;
+using MlkAdmin._2_Application.Events.GuildAvailable;
+using MlkAdmin._2_Application.Events.SelectMenuExecuted;
+using MlkAdmin._2_Application.Events.UserVoiceStateUpdated;
+using MlkAdmin._2_Application.Events.Log;
+using MlkAdmin._2_Application.Events.Ready;
+using MlkAdmin._2_Application.Events.MessageReceived;
+using MlkAdmin._2_Application.Events.ReactionAdded;
+using MlkAdmin._2_Application.Events.UserUpdated;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using MlkAdmin._2_Application.Events.SlashCommandExecuted;
+
+namespace MlkAdmin.Presentation.DiscordListeners
+{
+    public class DiscordEventsListener(
+        ILogger<DiscordEventsListener> logger,
+        IServiceScopeFactory serviceScopeFactory)
+    {
+        public void SubscribeOnEvents(DiscordSocketClient client)
+        {
+            client.Log += OnLog;
+            client.UserJoined += OnUserJoined;
+            client.UserLeft += OnUserLeft;
+            client.ModalSubmitted += OnModalSubmitted;
+            client.ButtonExecuted += OnButtonExecuted;
+            client.GuildAvailable += OnGuildAvailable;
+            client.UserVoiceStateUpdated += OnUserVoiceStateUpdated;
+            client.SelectMenuExecuted += OnSelectMenuExecuted;
+            client.Ready += OnReady;
+            client.MessageReceived += OnMessageReceived;
+            client.ReactionAdded += OnReactionAdded;
+            client.GuildMemberUpdated += GuildMemberUpdated;
+            client.SlashCommandExecuted += OnSlashCommandExecuted;
+        }
+        private async Task OnUserJoined(SocketGuildUser socketGuildUser)
+        {
+            try
+            {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                await mediator.Publish(new UserJoined(socketGuildUser));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnUserJoined] Error - {Message}", ex.Message);
+            }
+        }
+        private async Task OnMessageReceived(SocketMessage socketMessage)
+        {
+            try
+            {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                await mediator.Publish(new MessageReceived(socketMessage));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnMessageReceived] Error - {Message}", ex.Message);
+            }
+
+        }
+        private async Task OnUserLeft(SocketGuild socketGuild, SocketUser socketUser)
+        {
+            try
+            {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                await mediator.Publish(new UserLeft(socketGuild, socketUser));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnUserLeft] Error - {Message}", ex.Message);
+            }
+        }
+        private async Task OnModalSubmitted(SocketModal socketModal)
+        {
+            try
+            {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                await mediator.Publish(new ModalSubmitted(socketModal));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnModalSubmitted] Error - {Message}", ex.Message);
+            }
+        }
+        private async Task OnButtonExecuted(SocketMessageComponent socketMessageComponent)
+        {
+            try
+            {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                await mediator.Publish(new ButtonExecuted(socketMessageComponent));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnButtonExecuted] Error - {Message}", ex.Message);
+            }
+        }
+        private async Task OnGuildAvailable(SocketGuild socketGuild)
+        {
+            try
+            {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                await mediator.Publish(new GuildAvailable(socketGuild));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnGuildAvailable] Error - {Message}", ex.Message);
+            }
+        }
+        private async Task OnUserVoiceStateUpdated(SocketUser socketUser, SocketVoiceState oldState, SocketVoiceState newState)
+        {
+            try
+            {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                await mediator.Publish(new UserVoiceStateUpdated(socketUser, oldState, newState));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnUserVoiceStateUpdated] Error - {Message}", ex.Message);
+
+            }
+        }
+        private async Task OnLog(LogMessage logMessage)
+        {
+            try
+            {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                await mediator.Publish(new Log(logMessage));
+
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnLog] Error - {Message}", ex.Message);
+            }
+        }
+        private async Task OnSelectMenuExecuted(SocketMessageComponent socketMessageComponent)
+        {
+            try
+            {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                await mediator.Publish(new SelectMenuExecuted(socketMessageComponent));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnSelectMenuExecuted] Error - {Message}", ex.Message);
+            }
+
+        }
+        private async Task OnReady()
+        {
+            try
+            {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                await mediator.Publish(new Ready());
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnReady] Error - {Message}", ex.Message);
+            }
+        }
+        private async Task OnReactionAdded(Cacheable<IUserMessage, ulong> message, Cacheable<IMessageChannel, ulong> channel, SocketReaction reaction)
+        {
+            try
+            {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                await mediator.Publish(new ReactionAdded(message, channel, reaction));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnReactionAdded] Error - {Message}", ex.Message);
+            }
+        }
+        private async Task GuildMemberUpdated(Cacheable<SocketGuildUser, ulong> oldUserState, SocketGuildUser newUserState)
+        {
+            try
+            {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                await mediator.Publish(new GuildMemberUpdated(oldUserState, newUserState));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnUserUpdated] Error - {Message}", ex.Message);
+
+            }
+        }
+        private async Task OnSlashCommandExecuted(SocketSlashCommand socketSlashCommand)
+        {
+            try
+            {
+                using var scope = serviceScopeFactory.CreateScope();
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                await mediator.Publish(new SlashCommandExecuted(socketSlashCommand));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("[OnUserUpdated] Error - {Message}", ex.Message);
+
+            }
+        }
+    }
+}

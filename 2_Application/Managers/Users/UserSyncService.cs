@@ -1,16 +1,21 @@
 ﻿using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._1_Domain.Entities;
-using MlkAdmin._1_Domain.Interfaces;
+using MlkAdmin._1_Domain.Interfaces.Users;
 
 namespace MlkAdmin._2_Application.Managers.Users
 {
-    public class UserSyncService(ILogger<UserSyncService> logger, IUserRepository userRepository)
+    public class UserSyncService(
+        ILogger<UserSyncService> logger, 
+        IUserRepository userRepository,
+        DiscordSocketClient socketClient) : IUserSyncService
     {
-        public async Task SyncUsersAsync(SocketGuild guild)
+        public async Task SyncUsersAsync(ulong guildId)
         {
             try
             {
+                SocketGuild guild = socketClient.GetGuild(guildId);
+
                 foreach (var user in guild.Users)
                 {
                     User dtoUser = new()

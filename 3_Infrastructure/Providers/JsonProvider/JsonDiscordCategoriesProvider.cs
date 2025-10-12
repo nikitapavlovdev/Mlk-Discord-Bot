@@ -1,7 +1,7 @@
 ﻿using MlkAdmin._3_Infrastructure.JsonModels.Categories;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using MlkAdmin._1_Domain.Interfaces;
+using MlkAdmin._1_Domain.Interfaces.Discord;
 
 namespace MlkAdmin._3_Infrastructure.Providers.JsonProvider
 {

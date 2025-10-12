@@ -10,36 +10,32 @@ namespace MlkAdmin.Presentation.PresentationServices
 {
     public class DiscordBotHostService(
         ILogger <DiscordBotHostService> logger,
-        DiscordSocketClient discordClient,
         IServiceProvider serviceProvider,
+        DiscordSocketClient discordClient,
         JsonDiscordConfigurationProvider jsonDiscordConfigurationProvider) : IHostedService
     {
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            string? MlkAdminBotApiKey = jsonDiscordConfigurationProvider.ApiKey;
-               
+            string? ApiKey = jsonDiscordConfigurationProvider.ApiKey;
 
-            if (string.IsNullOrWhiteSpace(MlkAdminBotApiKey))
+            if (string.IsNullOrWhiteSpace(ApiKey))
             {
-                logger.LogWarning("API key not found");
+                logger.LogWarning("ApiKey is null");
                 return;
             }
 
             using var scope = serviceProvider.CreateScope();
+
             DiscordEventsListener discordEventsController = scope.ServiceProvider.GetRequiredService<DiscordEventsListener>();
             discordEventsController.SubscribeOnEvents(discordClient);
 
-            await discordClient.LoginAsync(TokenType.Bot, MlkAdminBotApiKey);
+            await discordClient.LoginAsync(TokenType.Bot, ApiKey);
             await discordClient.StartAsync();
-
-            logger.LogInformation("Bot successfully logged in and started.");
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
             await discordClient.StopAsync();
-
-            logger.LogInformation("Bot is shutting down.");
         }
     }
 }

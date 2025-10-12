@@ -1,4 +1,4 @@
-﻿using MlkAdmin._1_Domain.Interfaces;
+﻿using MlkAdmin._1_Domain.Interfaces.Discord;
 using MlkAdmin._3_Infrastructure.JsonModels.Pictures;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;

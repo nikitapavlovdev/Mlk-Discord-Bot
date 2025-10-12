@@ -3,7 +3,7 @@ using Discord.WebSocket;
 using Discord.Rest;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
-using MlkAdmin._1_Domain.Interfaces;
+using MlkAdmin._1_Domain.Interfaces.Channels;
 using MlkAdmin._1_Domain.Entities;
 
 namespace MlkAdmin._2_Application.Events.UserVoiceStateUpdated
@@ -11,7 +11,7 @@ namespace MlkAdmin._2_Application.Events.UserVoiceStateUpdated
     class UserVoiceStateUpdatedHandler(
         ILogger<UserVoiceStateUpdatedHandler> logger,
         IVoiceChannelRepository voiceChannelRepository,
-        VoiceChannelsManager voiceChannelsCreator) : INotificationHandler<UserVoiceStateUpdated>
+        VoiceChannelsService voiceChannelsCreator) : INotificationHandler<UserVoiceStateUpdated>
     {
         public async Task Handle(UserVoiceStateUpdated notification, CancellationToken cancellationToken)
         {

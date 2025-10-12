@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+﻿using Serilog;
+using Microsoft.Extensions.Hosting;
 using MlkAdmin.Presentation.DI;
 
 namespace MlkAdmin.Presentation
@@ -8,18 +8,19 @@ namespace MlkAdmin.Presentation
     {
         public static async Task Main()
         {
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
             IHost host = Host.CreateDefaultBuilder()
+                .UseSerilog()
                 .ConfigureServices((services) =>
                 {
                     services.AddDomainServices();
                     services.AddApplicationServices();
                     services.AddInfrastructureServices();
                     services.AddPresentationServices();
-                })
-                .ConfigureLogging((logging) =>
-                {
-                    logging.AddDebug();
-                    logging.AddConsole();
                 })
                 .Build();
 

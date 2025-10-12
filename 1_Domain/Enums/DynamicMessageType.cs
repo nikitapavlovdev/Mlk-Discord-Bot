@@ -6,6 +6,5 @@
         NameColor,
         Rules,
         Authorization,
-        Features
     }
 }
