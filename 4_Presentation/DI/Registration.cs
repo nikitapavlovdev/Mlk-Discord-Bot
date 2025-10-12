@@ -10,7 +10,6 @@ using MlkAdmin._1_Domain.Interfaces.Discord;
 using MlkAdmin._1_Domain.Interfaces.Users;
 using MlkAdmin._2_Application.Services.Messages;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
-using MlkAdmin._2_Application.Managers.EmotesManagers;
 using MlkAdmin._2_Application.Managers.RolesManagers;
 using MlkAdmin._2_Application.Managers.UserManagers;
 using MlkAdmin._2_Application.Events.ButtonExecuted;
@@ -28,9 +27,8 @@ using MlkAdmin._2_Application.Events.UserLeft;
 using MlkAdmin._2_Application.Managers.Users;
 using MlkAdmin._2_Application.Events.UserVoiceStateUpdated;
 using MlkAdmin._2_Application.Events.SlashCommandExecuted;
-using MlkAdmin._2_Application.Managers.Embeds;
 using MlkAdmin._2_Application.Events.UserUpdated;
-using MlkAdmin._2_Application.Managers.Components;
+using MlkAdmin._2_Application.Managers.Discord;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using MlkAdmin._3_Infrastructure.Discord.Extensions;
 using MlkAdmin._3_Infrastructure.Cache;
@@ -72,7 +70,7 @@ namespace MlkAdmin.Presentation.DI
             services.AddScoped<AutorizationManager>();
             services.AddScoped<VoiceChannelsService>();
             services.AddScoped<WelcomeService>();
-            services.AddScoped<EmotesManager>();
+            services.AddScoped<EmoteManager>();
             services.AddScoped<EmbedMessageExtension>();
             services.AddScoped<SelectionMenuExtension>();
             services.AddScoped<MessageComponentsExtension>();
@@ -131,6 +129,7 @@ namespace MlkAdmin.Presentation.DI
             services.AddJsonProvider<JsonDiscordCategoriesProvider>("../../../3_Infrastructure/Configuration/DiscordCategoriesMap.json");
             services.AddJsonProvider<JsonDiscordDynamicMessagesProvider>("../../../3_Infrastructure/Configuration/DiscordDynamicMessages.json");
             services.AddJsonProvider<JsonDiscordUsersLobbyProvider>("../../../3_Infrastructure/Configuration/DiscordUsersLobby.json");
+            services.AddJsonProvider<JsonDiscordRolesListProvider>("../../../3_Infrastructure/Configuration/DiscordRolesList.json");
 
             return services;
         }

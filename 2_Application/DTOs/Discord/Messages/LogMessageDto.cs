@@ -1,6 +1,4 @@
-﻿using Discord.WebSocket;
-
-namespace MlkAdmin._2_Application.DTOs.Messages
+﻿namespace MlkAdmin._2_Application.DTOs.Discord.Messages
 {
     public class LogMessageDto
     {

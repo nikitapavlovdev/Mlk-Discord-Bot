@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.RolesManagers;
-using MlkAdmin._2_Application.Managers.EmotesManagers;
+using MlkAdmin._2_Application.Managers.Discord;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannelsManagers;
 using MlkAdmin._1_Domain.Interfaces.Messages;
 using MlkAdmin._2_Application.Managers.Channels.VoiceChannels;
@@ -18,7 +18,7 @@ namespace MlkAdmin._2_Application.Events.GuildAvailable
         VoiceChannelsService voiceChannelsManager,
         VoiceChannelSyncServices voiceChannelSyncServices,
         RolesManager rolesManager,
-        EmotesManager emotesManager,
+        EmoteManager emotesManager,
         ChannelsCache channelsCache,
         UsersCache usersCache) : INotificationHandler<GuildAvailable>
     {

@@ -1,7 +1,7 @@
 ﻿using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._1_Domain.Interfaces.Roles;
-using MlkAdmin._2_Application.DTOs.Responses;
+using MlkAdmin._2_Application.DTOs.Discord.Responses;
 using MlkAdmin._2_Application.Services.Users;
 
 namespace MlkAdmin._2_Application.Services.Roles

@@ -1,9 +1,10 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using MlkAdmin._1_Domain.Enums;
 using MlkAdmin.Infrastructure.Cache;
-using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using Microsoft.Extensions.DependencyInjection;
+using MlkAdmin._1_Domain.Enums;
+using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
+using MlkAdmin._3_Infrastructure.JsonModels.Discord.Roles;
 
 namespace MlkAdmin._3_Infrastructure.Cache
 {
@@ -49,6 +50,47 @@ namespace MlkAdmin._3_Infrastructure.Cache
             }
 
             return description;
+        }
+        public string GetDiscriptionForMainRolesNewVers()
+        {
+            using var scope = serviceProvider.CreateScope();
+            JsonDiscordRolesListProvider jsonDiscordRolesListProvider = scope.ServiceProvider.GetRequiredService<JsonDiscordRolesListProvider>();
+
+            GuildEmote pointEmote = emotesCache.GetEmote("grey_dot");
+
+            List<RoleDto> roleDtos = jsonDiscordRolesListProvider.GetRoles();
+
+            string result = $"В данном блоке представлены все основные роли нашего сервера. " +
+                $"Что-то можно выбрать самостоятельно, " +
+                $"а что-то получить лично по желанию/на усмотрение администрации!\n";
+
+            string serverRolesDescription = $"иᴇᴩᴀᴩхия ᴄᴇᴩʙᴇᴩᴀ\n\n";
+            string categoryRolesDescription = $"ᴋᴀᴛᴇᴦоᴩии\n\n";
+            string uniqueRolesDescription = $"униᴋᴀᴧьныᴇ ᴩоᴧи\n\n";
+
+            for(int i = 0; i < roleDtos.Count; i++)
+            {
+                RoleDto role = roleDtos[i];
+
+                string roleLine = $"{pointEmote} <@&{role.Id}> 🠒 {role.Description}\n";
+
+                switch (role.Type)
+                {
+                    case RoleType.Server:
+                        serverRolesDescription += roleLine;
+                        break;
+                    case RoleType.Category:
+                        categoryRolesDescription += roleLine;
+                        break;
+                    case RoleType.Unique:
+                        uniqueRolesDescription += roleLine;
+                        break;
+                }
+            }
+
+            return result+= $"### {serverRolesDescription}\n" +
+                $"### {categoryRolesDescription}\n" +
+                $"### {uniqueRolesDescription}\n";
         }
         public string GetDescriptionForNameColor()
         {

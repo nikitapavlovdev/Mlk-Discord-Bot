@@ -1,4 +1,4 @@
-﻿namespace MlkAdmin._2_Application.DTOs.Responses
+﻿namespace MlkAdmin._2_Application.DTOs.Discord.Responses
 {
     public class DefaultResponse
     {

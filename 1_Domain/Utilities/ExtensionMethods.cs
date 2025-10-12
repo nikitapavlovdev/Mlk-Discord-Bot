@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace MlkAdmin.Core.Utilities.General
+namespace MlkAdmin._1_Domain.Utilities
 {
     public static class ExtensionMethods
     {

@@ -1,6 +1,6 @@
 ﻿using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
-using MlkAdmin._2_Application.DTOs.Responses;
+using MlkAdmin._2_Application.DTOs.Discord.Responses;
 using System.Collections.Concurrent;
 
 namespace MlkAdmin._3_Infrastructure.Cache.Users

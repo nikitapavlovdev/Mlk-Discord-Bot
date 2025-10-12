@@ -57,7 +57,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="2_Application\Commands\Statistic\" />
+    <Folder Include="2_Application\Commands\UserStat\" />
   </ItemGroup>
 
 </Project>

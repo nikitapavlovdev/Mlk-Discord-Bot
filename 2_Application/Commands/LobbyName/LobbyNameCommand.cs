@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using MlkAdmin._2_Application.DTOs.Responses;
+using MlkAdmin._2_Application.DTOs.Discord.Responses;
 
-namespace MlkAdmin._2_Application.Commands 
+namespace MlkAdmin._2_Application.Commands.LobbyName 
 {
     public class LobbyNameCommand : IRequest<LobbyNameResponse>
     {

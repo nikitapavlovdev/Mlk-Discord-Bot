@@ -1,10 +1,10 @@
 ﻿using MlkAdmin._1_Domain.Enums;
 using MlkAdmin._1_Domain.Interfaces.Discord;
-using MlkAdmin._2_Application.DTOs.Embed;
+using MlkAdmin._2_Application.DTOs.Discord.Embed;
 using MlkAdmin._3_Infrastructure.Cache;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 
-namespace MlkAdmin._2_Application.Managers.Embeds
+namespace MlkAdmin._2_Application.Managers.Discord
 {
     public class EmbedManager(
         EmbedDescriptionsCache embedDescriptionsCache,
@@ -31,27 +31,14 @@ namespace MlkAdmin._2_Application.Managers.Embeds
                 DynamicMessageType.Roles => new EmbedDto()
                 {
                     Title = "Роли",
-                    Description = embedDescriptionsCache.GetDiscriptionForMainRoles(), 
+                    //Description = embedDescriptionsCache.GetDiscriptionForMainRoles(), 
+                    Description = embedDescriptionsCache.GetDiscriptionForMainRolesNewVers()
                 },
 
                 DynamicMessageType.NameColor => new EmbedDto()
                 {
                     Title = "Цвет имени",
                     Description = embedDescriptionsCache.GetDescriptionForNameColor(),
-                },
-
-                _ => throw new ArgumentOutOfRangeException(nameof(type), $"Unknown type: {type}")
-            });
-        }
-        public Task<EmbedDto> GetEmbedDto(StaticMessageType type)
-        {
-            return Task.FromResult(type switch
-            {
-                StaticMessageType.ServerPeculiarities => new EmbedDto()
-                {
-                    Title = "ᴘᴇᴄᴜʟɪᴀʀɪᴛɪᴇs",
-                    Description = embedDescriptionsCache.GetDescriptionForServerPeculiarities(),
-                    PicturesUrl = jsonDiscordPicturesProvider.PinterestPictureForServerPeculiaritiesImg
                 },
 
                 _ => throw new ArgumentOutOfRangeException(nameof(type), $"Unknown type: {type}")

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using MlkAdmin._2_Application.Managers.RolesManagers;
-using MlkAdmin._2_Application.DTOs.Messages;
+using MlkAdmin._2_Application.DTOs.Discord.Messages;
 using MlkAdmin._1_Domain.Interfaces.Messages;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using MlkAdmin._3_Infrastructure.Cache.Users;

@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using MlkAdmin._2_Application.Commands;
-using MlkAdmin._2_Application.DTOs.Embed;
-using MlkAdmin._2_Application.DTOs.Responses;
+using MlkAdmin._2_Application.Commands.LobbyName;
+using MlkAdmin._2_Application.DTOs.Discord.Embed;
+using MlkAdmin._2_Application.DTOs.Discord.Responses;
 using MlkAdmin._3_Infrastructure.Discord.Extensions;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 

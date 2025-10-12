@@ -1,4 +1,4 @@
-﻿using MlkAdmin._2_Application.DTOs.Messages;
+﻿using MlkAdmin._2_Application.DTOs.Discord.Messages;
 
 namespace MlkAdmin._1_Domain.Interfaces.Messages;
 

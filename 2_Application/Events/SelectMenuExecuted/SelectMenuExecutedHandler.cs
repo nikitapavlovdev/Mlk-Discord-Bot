@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using MlkAdmin.Core.Utilities.General;
+using MlkAdmin._1_Domain.Utilities;
 using MlkAdmin._2_Application.Managers.RolesManagers;
 using Microsoft.Extensions.Logging;
 

@@ -4,9 +4,9 @@ using Microsoft.Extensions.Logging;
 using MlkAdmin._1_Domain.Enums;
 using MlkAdmin._1_Domain.Interfaces.Messages;
 using MlkAdmin._1_Domain.Interfaces.Discord;
-using MlkAdmin._2_Application.DTOs.Messages;
-using MlkAdmin._2_Application.DTOs.Embed;
-using MlkAdmin._2_Application.Managers.Components;
+using MlkAdmin._2_Application.DTOs.Discord.Messages;
+using MlkAdmin._2_Application.DTOs.Discord.Embed;
+using MlkAdmin._2_Application.Managers.Discord;
 using MlkAdmin._3_Infrastructure.Providers.JsonProvider;
 using MlkAdmin._3_Infrastructure.Discord.Extensions;
 

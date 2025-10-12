@@ -1,6 +1,6 @@
 ﻿using Discord;
 
-namespace MlkAdmin._2_Application.DTOs.Embed
+namespace MlkAdmin._2_Application.DTOs.Discord.Embed
 {
     public class EmbedDto
     {

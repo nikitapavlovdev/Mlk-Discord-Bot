@@ -3,10 +3,10 @@ using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using MlkAdmin.Infrastructure.Cache;
 
-namespace MlkAdmin._2_Application.Managers.EmotesManagers
+namespace MlkAdmin._2_Application.Managers.Discord
 {
-    public class EmotesManager(
-        ILogger<EmotesManager> logger,
+    public class EmoteManager(
+        ILogger<EmoteManager> logger,
         EmotesCache emotesCache)
     {
         public async Task EmotesInitialization(SocketGuild socketGuild)

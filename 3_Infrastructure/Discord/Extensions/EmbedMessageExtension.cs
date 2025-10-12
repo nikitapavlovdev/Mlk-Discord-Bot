@@ -1,6 +1,6 @@
 ﻿using Discord;
 using Microsoft.Extensions.Logging;
-using MlkAdmin._2_Application.DTOs.Embed;
+using MlkAdmin._2_Application.DTOs.Discord.Embed;
 
 namespace MlkAdmin._3_Infrastructure.Discord.Extensions
 {

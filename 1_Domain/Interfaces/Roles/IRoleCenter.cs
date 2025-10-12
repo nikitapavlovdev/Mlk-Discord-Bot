@@ -1,4 +1,4 @@
-﻿using MlkAdmin._2_Application.DTOs.Responses;
+﻿using MlkAdmin._2_Application.DTOs.Discord.Responses;
 
 namespace MlkAdmin._1_Domain.Interfaces.Roles
 {

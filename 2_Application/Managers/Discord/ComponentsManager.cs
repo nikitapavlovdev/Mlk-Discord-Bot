@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using MlkAdmin._1_Domain.Enums;
 using MlkAdmin._3_Infrastructure.Discord.Extensions;
 
-namespace MlkAdmin._2_Application.Managers.Components
+namespace MlkAdmin._2_Application.Managers.Discord
 {
     public class ComponentsManager(
         ILogger<ComponentsManager> logger,
