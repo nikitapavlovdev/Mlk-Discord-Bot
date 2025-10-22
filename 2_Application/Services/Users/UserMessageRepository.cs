@@ -77,5 +77,16 @@ namespace MlkAdmin._2_Application.Services.Users
                 return [];
             }
         }
+        public async Task<int> GetMessagesNumberAsync(ulong userId)
+        {
+            UserMessagesStat? stat = await dbContext.Messages.FirstAsync(x => x.UserId == userId);
+
+            if(stat == null)
+            {
+                return -1;
+            }
+
+            return stat.Count;
+        }
     }
 }
