@@ -20,7 +20,6 @@ namespace MlkAdmin._4_Presentation.Discord
 
                 await client.Rest.BulkOverwriteGuildCommands([], guildId);
 
-
                 SlashGuildCommands.Add(AddLobbyNameCommand());
                 SlashGuildCommands.Add(GetUserStatistic());
 

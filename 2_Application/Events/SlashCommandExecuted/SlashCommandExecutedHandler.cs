@@ -64,13 +64,18 @@ namespace MlkAdmin._2_Application.Events.SlashCommandExecuted
 
 						await notification.SocketSlashCommand.RespondAsync(embed: embedMessageExtension.CreateEmbed(new EmbedDto()
 						{
-							Description = $"> Отправленных сообщений: {userStatResponse.MessageCount}\n" +
-							$"> Времени в голосовом канале: **{userStatResponse.TotalSeconds}**",
-							Title = $"Статистика по пользователю: **{notification.SocketSlashCommand.User.Mention}**"
-						}));
+							Description = $"Общая статистика {notification.SocketSlashCommand.User.GlobalName}\n" +
+							$"> Сообщений отправлено: **{userStatResponse.MessageCount}**\n" +
+							$"> Времени в голосовом канале: **{(userStatResponse.TotalSeconds != -1 ? userStatResponse.TotalSeconds / 3600 : 0)}h " +
+							$"{(userStatResponse.TotalSeconds != -1 ? userStatResponse.TotalSeconds % 3600 / 60 : 0)}m " +
+							$"{(userStatResponse.TotalSeconds != -1 ? userStatResponse.TotalSeconds % 3600 % 60 : 0)}s**",
+							Color = new(87, 206, 255)
+
+						}), ephemeral: true);
 
 						break;
-					default:
+
+                    default:
                         await notification.SocketSlashCommand.RespondAsync(
 							embed: embedMessageExtension.CreateEmbed(new EmbedDto()
 							{
