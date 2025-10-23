@@ -5,6 +5,7 @@ namespace MlkAdmin._1_Domain.Interfaces.Users
 {
     public interface IUserVoiceSessionRepository
     {
-        public Task<DefaultResponse> AddOrUpdateAsync(UserVoiceSession voiceSession); 
+        public Task<DefaultResponse> AddOrUpdateAsync(UserVoiceSession voiceSession);
+        public Task<long> GetVoiceSpendTimeAsync(ulong userId);
     }
 }

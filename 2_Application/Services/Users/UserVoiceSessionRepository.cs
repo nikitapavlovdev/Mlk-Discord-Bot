@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using MlkAdmin._1_Domain.Entities;
 using MlkAdmin._1_Domain.Interfaces.Users;
 using MlkAdmin._2_Application.DTOs.Discord.Responses;
@@ -75,6 +76,17 @@ namespace MlkAdmin._2_Application.Services.Users
                     Exception = ex
                 };
             }
+        }
+        public async Task<long> GetVoiceSpendTimeAsync(ulong userId)
+        {
+            UserVoiceSession? session = await dbContext.VoiceSession.FirstAsync(x => x.UserId == userId);
+
+            if (session == null)
+            {
+                return 0;
+            }
+
+            return session.TotalSeconds;
         }
     }
 }
