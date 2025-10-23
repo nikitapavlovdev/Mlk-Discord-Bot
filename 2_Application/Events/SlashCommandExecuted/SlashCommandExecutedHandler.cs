@@ -65,7 +65,7 @@ namespace MlkAdmin._2_Application.Events.SlashCommandExecuted
 						await notification.SocketSlashCommand.RespondAsync(embed: embedMessageExtension.CreateEmbed(new EmbedDto()
 						{
 							Description = $"Общая статистика {notification.SocketSlashCommand.User.GlobalName}\n" +
-							$"> Сообщений отправлено: **{userStatResponse.MessageCount}**\n" +
+							$"> Сообщений отправлено: **{(userStatResponse.MessageCount == -1 ? "-" : userStatResponse.MessageCount)}**\n" +
 							$"> Времени в голосовом канале: **{(userStatResponse.TotalSeconds != -1 ? userStatResponse.TotalSeconds / 3600 : 0)}h " +
 							$"{(userStatResponse.TotalSeconds != -1 ? userStatResponse.TotalSeconds % 3600 / 60 : 0)}m " +
 							$"{(userStatResponse.TotalSeconds != -1 ? userStatResponse.TotalSeconds % 3600 % 60 : 0)}s**",

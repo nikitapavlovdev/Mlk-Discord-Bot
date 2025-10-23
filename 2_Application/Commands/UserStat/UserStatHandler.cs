@@ -41,9 +41,6 @@ namespace MlkAdmin._2_Application.Commands.UserStat
                     TotalSeconds = -1
                 };
             }
-            
-
-
         }
     }
 }
